@@ -34,7 +34,7 @@ class _StartState extends State<StartService> {
   XFile? image;
   File? galleryFile;
   List<XFile> images = [];
-  final ImagePicker picker = ImagePicker();
+  final ImagePicker picker = ImagePicker(); 
   //show popup dialog
   void myAlert() {
     showDialog(
