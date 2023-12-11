@@ -15,10 +15,7 @@ class TripRepository{
         "status": status,
         "reason": '',
       };
-
       log('Complaint id : $complaintId');
-      
-
       Response? response =
       await apiQuery.patchQuery('${APIConstants.apiUpdateStatus}$complaintId/', data,'updateStatus',true);
       log('responsein the api $response');

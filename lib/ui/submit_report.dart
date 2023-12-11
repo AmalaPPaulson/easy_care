@@ -10,6 +10,11 @@ class SubmitReport extends StatefulWidget {
 class _SubmitReportState extends State<SubmitReport> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      height: MediaQuery.of(context).size.height
+      ,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.purple,
+    );
   }
 }

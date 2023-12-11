@@ -185,7 +185,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
         floatingActionButton: BlocBuilder<TripBloc, TripState>(
           buildWhen: (previous, current) => (previous != current),
           builder: (context, state) {
-            bool isPressed = false;
+            bool  isPressed = false;
             if (state.isLoading) {
               isPressed = true;
             }
