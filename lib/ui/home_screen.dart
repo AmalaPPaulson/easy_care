@@ -186,6 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: <Widget>[
           TabTitleTile(
+            width: MediaQuery.of(context).size.width/3,
             title: 'Active',
             currentTab: currentTab,
             tabNo: 0,
@@ -207,6 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : BorderRadius.circular(0),
           ),
           TabTitleTile(
+            width: MediaQuery.of(context).size.width/3,
             title: 'Completed',
             tabNo: 1,
             currentTab: currentTab,
@@ -229,6 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           TabTitleTile(
+            width: MediaQuery.of(context).size.width/3,
             title: 'Rescheduled',
             currentTab: currentTab,
             tabNo: 2,
@@ -259,8 +262,6 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (index) {
-         
-       
           //context.read<HomeScreenBloc>().add(TabClickET(tabNo: index));
         },
         children: const [

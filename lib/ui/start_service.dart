@@ -203,7 +203,7 @@ class _StartState extends State<StartService> {
             MaterialPageRoute(builder: (context) => const SubmitReport()),
           );
         }
-        if(state.isLoading ==false && state.errorMsg != null){
+        if (state.isLoading == false && state.errorMsg != null) {
           Fluttertoast.showToast(
               msg: '${state.errorMsg}',
               gravity: ToastGravity.CENTER,
@@ -226,16 +226,26 @@ class _StartState extends State<StartService> {
           ),
         ),
         body: createBody(complaint),
-        floatingActionButton: FloatingActionBtn(
-            onTap: () {
-              context.read<ServicesBloc>().add(StartServiceApiET(
-                    id: complaint.id.toString(),
-                    description: descriptionController.text,
-                    audio: paths!,
-                  ));
-            },
-            isPressed: false,
-            text: 'Start Service'),
+        floatingActionButton: BlocBuilder<ServicesBloc, ServicesState>(
+          buildWhen: (previous, current) => (previous != current),
+          builder: (context, state) {
+
+            bool  isPressed = false;
+            if (state.isLoading) {
+              isPressed = true;
+            }
+            return FloatingActionBtn(
+                onTap: () {
+                  context.read<ServicesBloc>().add(StartServiceApiET(
+                        id: complaint.id.toString(),
+                        description: descriptionController.text,
+                        audio: paths!,
+                      ));
+                },
+                isPressed: isPressed,
+                text: 'Start Service');
+          },
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
@@ -460,90 +470,6 @@ class _StartState extends State<StartService> {
     );
   }
 
-  Widget audioPlayer() {
-    String strDigits(int n) => n.toString().padLeft(2, '0');
-    final minutes = strDigits(myDuration.inMinutes.remainder(60));
-    //var timer = int.parse(minutes);
-    final seconds = strDigits(myDuration.inSeconds.remainder(60));
-    return Container(
-      decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius:
-              BorderRadius.circular(SizeConfig.blockSizeHorizontal * 1),
-          border: Border.all(
-            color: isRecording == false
-                ? Colors.black
-                : ColorConstants.primaryColor,
-          )),
-      child: Padding(
-          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2.0),
-          child: Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              isRecording
-                  ? Flexible(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                        child: const Text(
-                          'Press and hold to add a voice note.',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontFamily: AssetConstants.poppinsRegular,
-                            color: Colors.black45,
-                          ),
-                        ),
-                      ),
-                    )
-                  : Text(
-                      '$minutes:$seconds',
-                      style: const TextStyle(
-                          color: ColorConstants.primaryColor, fontSize: 12),
-                    ),
-              const Spacer(),
-              GestureDetector(
-                child: AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  height: isRecording ? 70 : 40,
-                  width: isRecording ? 70 : 40,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ColorConstants.primaryColor,
-                  ),
-                  child: const Icon(
-                    Icons.mic,
-                    color: Colors.white,
-                  ),
-                ),
-                onLongPressStart: (LongPressStartDetails details) {
-                  print("");
-                  log("12");
-                  setState(() {
-                    isRecording = true;
-                    startTimer();
-                  });
-
-                  startRecording(true);
-                },
-                onLongPressEnd: (LongPressEndDetails details) {
-                  print("end");
-                  setState(() {
-                    isRecording = false;
-                    if (countdownTimer == null || countdownTimer!.isActive) {
-                      stopTimer();
-                      resetTimer();
-                    }
-                  });
-
-                  startRecording(false);
-                },
-              ),
-            ],
-          )),
-    );
-  }
-
   Widget audioPlayerCopy() {
     String strDigits(int n) => n.toString().padLeft(2, '0');
     return Container(
@@ -582,8 +508,8 @@ class _StartState extends State<StartService> {
                             final position =
                                 positionData?.position ?? Duration.zero;
                             Duration remaining = duration - position;
-                            final remainingInSec =
-                                strDigits(remaining.inMinutes.remainder(60));
+                            //  final remainingInSec =
+                            //       strDigits(remaining.inMinutes.remainder(60));
                             return Column(
                               children: [
                                 const Icon(

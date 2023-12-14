@@ -24,7 +24,7 @@ class StartServiceRepository {
       FormData formData = FormData.fromMap(data);
       Response? response = await apiQuery.patchQuery(
           '${APIConstants.apiUpdateStatus}$id/', formData, status, true);
-      log('responsein the api $response');
+      log('responsein the start serviceapi $response');
       return response;
     } catch (exception) {
       return null;
@@ -43,8 +43,22 @@ class StartServiceRepository {
     MultipartFile? imageFile;
     imageFile = null;
 
+   // var image = File(imageList![index].path);
+    //imageFile = await MultipartFile.fromFile(image.path, filename: "img.jpg");
+
+    DateTime now = DateTime.now();
+    String d = now.toString();
+    d = d.replaceAll(':', '');
+    d = d.replaceAll(',', '');
+    d = d.replaceAll(' ', '');
+    d = d.replaceAll('-', '');
+    d = d.replaceAll('.', '');
+    d = d.trim();
     var image = File(imageList![index].path);
-    imageFile = await MultipartFile.fromFile(image.path, filename: "img.jpg");
+    imageFile = await MultipartFile.fromFile(
+      image.path,
+      filename: (fileType == 'video') ? "${d}clip.mp4" : "${d}img.jpg",
+    );
 
     try {
       data = {
@@ -64,26 +78,25 @@ class StartServiceRepository {
 
       FormData formData = FormData.fromMap(data);
 
-      log('data.toString()');
-      log(data.toString());
-      log('data.toString()');
-
-      Response? response = await apiQuery.postQuery(APIConstants.addLog, headers, formData, '');
-
-      if (response != null) {
+      Response? response =
+          await apiQuery.postQuery(APIConstants.addLog, headers, formData, '');
+      log('response in the addaudiovideoApi-------------');
+      log('------------------ response of addvideoimg api ${response!.data.toString()}');
+      //if (response != null) {
         if (response.statusCode == 201) {
           if (index < imageList.length - 1) {
             index = index + 1;
-            return await addVideoAndImages(index: index, id: id, imageList: imageList, isPreCheck: isPreCheck);
+            return await addVideoAndImages(
+                index: index,
+                id: id,
+                imageList: imageList,
+                isPreCheck: isPreCheck);
           } else {
             return true;
           }
         }
-      }
-    } catch (exception) {
-
-  }
+      //}
+    } catch (exception) {}
     return false;
-
   }
 }

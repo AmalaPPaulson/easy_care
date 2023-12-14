@@ -1,0 +1,1 @@
+ /Users/Amala/StudioProjects/easy_care/.dart_tool/flutter_build/d539c5cad2d0362544a3e2305462d145/native_assets.yaml: 

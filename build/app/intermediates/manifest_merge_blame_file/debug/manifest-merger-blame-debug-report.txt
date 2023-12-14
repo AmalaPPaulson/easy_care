@@ -1,0 +1,240 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.easy_care"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="33" />
+10    <!--
+11         The INTERNET permission is required for development. Specifically,
+12         the Flutter tool needs it to communicate with the running application
+13         to allow setting breakpoints, to provide hot reload, etc.
+14    -->
+15    <uses-permission android:name="android.permission.INTERNET" />
+15-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:6:5-66
+15-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:6:22-64
+16    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+16-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:7:5-79
+16-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:7:22-76
+17    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+17-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:8:1-77
+17-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:8:18-74
+18    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+18-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:9:1-81
+18-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:9:18-78
+19    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+19-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:10:1-67
+19-->/Users/Amala/StudioProjects/easy_care/android/app/src/debug/AndroidManifest.xml:10:18-64
+20    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+20-->[com.google.android.exoplayer:exoplayer-core:2.18.7] /Users/Amala/.gradle/caches/transforms-3/e255c6ce9910a673f2619b479a7d74a8/transformed/jetified-exoplayer-core-2.18.7/AndroidManifest.xml:24:5-79
+20-->[com.google.android.exoplayer:exoplayer-core:2.18.7] /Users/Amala/.gradle/caches/transforms-3/e255c6ce9910a673f2619b479a7d74a8/transformed/jetified-exoplayer-core-2.18.7/AndroidManifest.xml:24:22-76
+21
+22    <queries>
+22-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:24:5-34:15
+23        <intent>
+23-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:25:9-27:18
+24            <action android:name="android.media.browse.MediaBrowserService" />
+24-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:26:13-79
+24-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:26:21-76
+25        </intent>
+26        <intent>
+26-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:28:9-30:18
+27            <action android:name="androidx.media2.session.MediaSessionService" />
+27-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:29:13-82
+27-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:29:21-79
+28        </intent>
+29        <intent>
+29-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:31:9-33:18
+30            <action android:name="androidx.media2.session.MediaLibraryService" />
+30-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:32:13-82
+30-->[androidx.media2:media2-session:1.2.1] /Users/Amala/.gradle/caches/transforms-3/1c11fcd5d741b7583794ec56efdeaa69/transformed/jetified-media2-session-1.2.1/AndroidManifest.xml:32:21-79
+31        </intent>
+32    </queries>
+33
+34    <permission
+34-->[androidx.core:core:1.10.1] /Users/Amala/.gradle/caches/transforms-3/c4988ff80110f75080a936fc6f044848/transformed/core-1.10.1/AndroidManifest.xml:22:5-24:47
+35        android:name="com.example.easy_care.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+35-->[androidx.core:core:1.10.1] /Users/Amala/.gradle/caches/transforms-3/c4988ff80110f75080a936fc6f044848/transformed/core-1.10.1/AndroidManifest.xml:23:9-81
+36        android:protectionLevel="signature" />
+36-->[androidx.core:core:1.10.1] /Users/Amala/.gradle/caches/transforms-3/c4988ff80110f75080a936fc6f044848/transformed/core-1.10.1/AndroidManifest.xml:24:9-44
+37
+38    <uses-permission android:name="com.example.easy_care.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+38-->[androidx.core:core:1.10.1] /Users/Amala/.gradle/caches/transforms-3/c4988ff80110f75080a936fc6f044848/transformed/core-1.10.1/AndroidManifest.xml:26:5-97
+38-->[androidx.core:core:1.10.1] /Users/Amala/.gradle/caches/transforms-3/c4988ff80110f75080a936fc6f044848/transformed/core-1.10.1/AndroidManifest.xml:26:22-94
+39
+40    <application
+41        android:name="android.app.Application"
+42        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+42-->[androidx.core:core:1.10.1] /Users/Amala/.gradle/caches/transforms-3/c4988ff80110f75080a936fc6f044848/transformed/core-1.10.1/AndroidManifest.xml:28:18-86
+43        android:debuggable="true"
+44        android:icon="@mipmap/ic_launcher"
+45        android:label="easy_care" >
+46        <activity
+47            android:name="com.example.easy_care.MainActivity"
+48            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+49            android:exported="true"
+50            android:hardwareAccelerated="true"
+51            android:launchMode="singleTop"
+52            android:theme="@style/LaunchTheme"
+53            android:windowSoftInputMode="adjustResize" >
+54
+55            <!--
+56                 Specifies an Android theme to apply to this Activity as soon as
+57                 the Android process has started. This theme is visible to the user
+58                 while the Flutter UI initializes. After that, this theme continues
+59                 to determine the Window background behind the Flutter UI.
+60            -->
+61            <meta-data
+62                android:name="io.flutter.embedding.android.NormalTheme"
+63                android:resource="@style/NormalTheme" />
+64
+65            <intent-filter>
+66                <action android:name="android.intent.action.MAIN" />
+67
+68                <category android:name="android.intent.category.LAUNCHER" />
+69            </intent-filter>
+70        </activity>
+71        <!--
+72             Don't delete the meta-data below.
+73             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+74        -->
+75        <meta-data
+76            android:name="flutterEmbedding"
+77            android:value="2" />
+78
+79        <service
+79-->[:geolocator_android] /Users/Amala/StudioProjects/easy_care/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-14:56
+80            android:name="com.baseflow.geolocator.GeolocatorLocationService"
+80-->[:geolocator_android] /Users/Amala/StudioProjects/easy_care/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-77
+81            android:enabled="true"
+81-->[:geolocator_android] /Users/Amala/StudioProjects/easy_care/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-35
+82            android:exported="false"
+82-->[:geolocator_android] /Users/Amala/StudioProjects/easy_care/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-37
+83            android:foregroundServiceType="location" />
+83-->[:geolocator_android] /Users/Amala/StudioProjects/easy_care/build/geolocator_android/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-53
+84
+85        <provider
+85-->[:image_picker_android] /Users/Amala/StudioProjects/easy_care/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-18:20
+86            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+86-->[:image_picker_android] /Users/Amala/StudioProjects/easy_care/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-82
+87            android:authorities="com.example.easy_care.flutter.image_provider"
+87-->[:image_picker_android] /Users/Amala/StudioProjects/easy_care/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-74
+88            android:exported="false"
+88-->[:image_picker_android] /Users/Amala/StudioProjects/easy_care/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-37
+89            android:grantUriPermissions="true" >
+89-->[:image_picker_android] /Users/Amala/StudioProjects/easy_care/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-47
+90            <meta-data
+90-->[:image_picker_android] /Users/Amala/StudioProjects/easy_care/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-17:75
+91                android:name="android.support.FILE_PROVIDER_PATHS"
+91-->[:image_picker_android] /Users/Amala/StudioProjects/easy_care/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:16:17-67
+92                android:resource="@xml/flutter_image_picker_file_paths" />
+92-->[:image_picker_android] /Users/Amala/StudioProjects/easy_care/build/image_picker_android/intermediates/merged_manifest/debug/AndroidManifest.xml:17:17-72
+93        </provider>
+94
+95        <activity
+95-->[:url_launcher_android] /Users/Amala/StudioProjects/easy_care/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-13:74
+96            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+96-->[:url_launcher_android] /Users/Amala/StudioProjects/easy_care/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-74
+97            android:exported="false"
+97-->[:url_launcher_android] /Users/Amala/StudioProjects/easy_care/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-37
+98            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+98-->[:url_launcher_android] /Users/Amala/StudioProjects/easy_care/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-71
+99        <activity
+99-->[com.google.android.gms:play-services-base:18.1.0] /Users/Amala/.gradle/caches/transforms-3/781e5567158e59d38ee2b89930f9808b/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:20:9-22:45
+100            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+100-->[com.google.android.gms:play-services-base:18.1.0] /Users/Amala/.gradle/caches/transforms-3/781e5567158e59d38ee2b89930f9808b/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:20:19-85
+101            android:exported="false"
+101-->[com.google.android.gms:play-services-base:18.1.0] /Users/Amala/.gradle/caches/transforms-3/781e5567158e59d38ee2b89930f9808b/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:22:19-43
+102            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+102-->[com.google.android.gms:play-services-base:18.1.0] /Users/Amala/.gradle/caches/transforms-3/781e5567158e59d38ee2b89930f9808b/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:21:19-78
+103
+104        <meta-data
+104-->[com.google.android.gms:play-services-basement:18.1.0] /Users/Amala/.gradle/caches/transforms-3/58aa1384bde170d075503b845cfcf44c/transformed/jetified-play-services-basement-18.1.0/AndroidManifest.xml:21:9-23:69
+105            android:name="com.google.android.gms.version"
+105-->[com.google.android.gms:play-services-basement:18.1.0] /Users/Amala/.gradle/caches/transforms-3/58aa1384bde170d075503b845cfcf44c/transformed/jetified-play-services-basement-18.1.0/AndroidManifest.xml:22:13-58
+106            android:value="@integer/google_play_services_version" />
+106-->[com.google.android.gms:play-services-basement:18.1.0] /Users/Amala/.gradle/caches/transforms-3/58aa1384bde170d075503b845cfcf44c/transformed/jetified-play-services-basement-18.1.0/AndroidManifest.xml:23:13-66
+107
+108        <provider
+108-->[androidx.emoji2:emoji2:1.2.0] /Users/Amala/.gradle/caches/transforms-3/e04bc3769bedd8dd6f8ca688986b0355/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+109            android:name="androidx.startup.InitializationProvider"
+109-->[androidx.emoji2:emoji2:1.2.0] /Users/Amala/.gradle/caches/transforms-3/e04bc3769bedd8dd6f8ca688986b0355/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:25:13-67
+110            android:authorities="com.example.easy_care.androidx-startup"
+110-->[androidx.emoji2:emoji2:1.2.0] /Users/Amala/.gradle/caches/transforms-3/e04bc3769bedd8dd6f8ca688986b0355/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:26:13-68
+111            android:exported="false" >
+111-->[androidx.emoji2:emoji2:1.2.0] /Users/Amala/.gradle/caches/transforms-3/e04bc3769bedd8dd6f8ca688986b0355/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:27:13-37
+112            <meta-data
+112-->[androidx.emoji2:emoji2:1.2.0] /Users/Amala/.gradle/caches/transforms-3/e04bc3769bedd8dd6f8ca688986b0355/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+113                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+113-->[androidx.emoji2:emoji2:1.2.0] /Users/Amala/.gradle/caches/transforms-3/e04bc3769bedd8dd6f8ca688986b0355/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:30:17-75
+114                android:value="androidx.startup" />
+114-->[androidx.emoji2:emoji2:1.2.0] /Users/Amala/.gradle/caches/transforms-3/e04bc3769bedd8dd6f8ca688986b0355/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:31:17-49
+115            <meta-data
+115-->[androidx.lifecycle:lifecycle-process:2.6.1] /Users/Amala/.gradle/caches/transforms-3/34e3313412f6bb2343705c93422b49a8/transformed/jetified-lifecycle-process-2.6.1/AndroidManifest.xml:29:13-31:52
+116                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+116-->[androidx.lifecycle:lifecycle-process:2.6.1] /Users/Amala/.gradle/caches/transforms-3/34e3313412f6bb2343705c93422b49a8/transformed/jetified-lifecycle-process-2.6.1/AndroidManifest.xml:30:17-78
+117                android:value="androidx.startup" />
+117-->[androidx.lifecycle:lifecycle-process:2.6.1] /Users/Amala/.gradle/caches/transforms-3/34e3313412f6bb2343705c93422b49a8/transformed/jetified-lifecycle-process-2.6.1/AndroidManifest.xml:31:17-49
+118            <meta-data
+118-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:29:13-31:52
+119                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+119-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:30:17-85
+120                android:value="androidx.startup" />
+120-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:31:17-49
+121        </provider>
+122
+123        <uses-library
+123-->[androidx.window:window:1.0.0-beta04] /Users/Amala/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
+124            android:name="androidx.window.extensions"
+124-->[androidx.window:window:1.0.0-beta04] /Users/Amala/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
+125            android:required="false" />
+125-->[androidx.window:window:1.0.0-beta04] /Users/Amala/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
+126        <uses-library
+126-->[androidx.window:window:1.0.0-beta04] /Users/Amala/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
+127            android:name="androidx.window.sidecar"
+127-->[androidx.window:window:1.0.0-beta04] /Users/Amala/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
+128            android:required="false" />
+128-->[androidx.window:window:1.0.0-beta04] /Users/Amala/.gradle/caches/transforms-3/25cee5f028ac2a6b79fd6278ff5b59e2/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
+129
+130        <receiver
+130-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:34:9-52:20
+131            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+131-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:35:13-76
+132            android:directBootAware="false"
+132-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:36:13-44
+133            android:enabled="true"
+133-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:37:13-35
+134            android:exported="true"
+134-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:38:13-36
+135            android:permission="android.permission.DUMP" >
+135-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:39:13-57
+136            <intent-filter>
+136-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:40:13-42:29
+137                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+137-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:41:17-91
+137-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:41:25-88
+138            </intent-filter>
+139            <intent-filter>
+139-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:43:13-45:29
+140                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+140-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:44:17-85
+140-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:44:25-82
+141            </intent-filter>
+142            <intent-filter>
+142-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:46:13-48:29
+143                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+143-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:47:17-88
+143-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:47:25-85
+144            </intent-filter>
+145            <intent-filter>
+145-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:49:13-51:29
+146                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+146-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:50:17-95
+146-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/Amala/.gradle/caches/transforms-3/635b1770925726da461e843c0a3c6641/transformed/jetified-profileinstaller-1.3.0/AndroidManifest.xml:50:25-92
+147            </intent-filter>
+148        </receiver>
+149    </application>
+150
+151</manifest>

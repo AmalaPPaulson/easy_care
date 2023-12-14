@@ -26,14 +26,7 @@ class _LoginPinState extends State<LoginPin> {
   TextEditingController textEditingController = TextEditingController();
   String currentText = "";
 
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
-    textEditingController.dispose();
-    super.dispose();
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

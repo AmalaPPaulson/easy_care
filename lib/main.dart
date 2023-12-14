@@ -6,6 +6,8 @@ import 'package:easy_care/blocs/login_bloc/login_bloc_bloc.dart';
 import 'package:easy_care/blocs/rescheduled/bloc/rescheduled_bloc.dart';
 import 'package:easy_care/blocs/services/bloc/services_bloc.dart';
 import 'package:easy_care/blocs/start_service/bloc/start_service_bloc.dart';
+import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
+import 'package:easy_care/blocs/submit_visible/bloc/submit_visible_bloc.dart';
 import 'package:easy_care/blocs/trip_bloc/trip_bloc.dart';
 import 'package:easy_care/repositories/user_repo.dart';
 import 'package:easy_care/ui/home_screen.dart';
@@ -60,6 +62,8 @@ class _MyAppState extends State<MyApp> {
           create: (BuildContext context) => StartServiceBloc(),
         ),
         BlocProvider(create: (BuildContext context) => ServicesBloc()),
+        BlocProvider(create: (BuildContext context) => SubmitTabBloc()),
+        BlocProvider(create: (BuildContext context) => SubmitVisibleBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

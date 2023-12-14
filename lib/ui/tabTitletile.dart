@@ -11,9 +11,11 @@ class TabTitleTile extends StatefulWidget {
     required this.tabNo,
     required this.borderRadiusGeometry,
     required this.color2,
+    this.width,
   });
 
-  final int? currentTab, tabNo;
+  final int? currentTab, tabNo ;
+  final double? width;
   final String? title;
   final BorderRadiusGeometry? borderRadiusGeometry;
   final Color?  color2;
@@ -38,7 +40,7 @@ class _TabTitleTileState extends State<TabTitleTile> {
         children: <Widget>[
           Container(
             height: SizeConfig.blockSizeHorizontal * 13,
-            width: MediaQuery.of(context).size.width / 3,
+            width: widget.width ,
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: widget.color2,
@@ -73,7 +75,7 @@ class _TabTitleTileState extends State<TabTitleTile> {
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeIn,
               width: (widget.currentTab == widget.tabNo)
-                  ? MediaQuery.of(context).size.width / 3.4
+                  ? widget.width
                   : 0,
               color: (widget.currentTab == widget.tabNo)
                   ? ColorConstants.primaryColor
