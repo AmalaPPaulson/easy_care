@@ -18,5 +18,11 @@ class TripVisibleBloc extends Bloc<TripVisibleEvent, TripVisibleState> {
       bool isVisible = !(event.visible);
       emit(TripVisibleState(isVisible: isVisible, card: false));
     });
+
+    on<CleanTripVisibleET>((event, emit) {
+      
+      emit(state.copyWith(isShow: true, card: false,isVisible: true));
+    });
+    
   }
 }

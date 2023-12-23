@@ -9,7 +9,7 @@ class TripVisibleState {
   const TripVisibleState({
      this.isShow =true,
     this.isVisible= true,
-     this.card = true,
+     this.card = false,
   });
 
   TripVisibleState copyWith({

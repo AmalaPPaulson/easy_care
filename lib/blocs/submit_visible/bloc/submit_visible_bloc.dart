@@ -14,6 +14,10 @@ class SubmitVisibleBloc extends Bloc<SubmitVisibleEvent, SubmitVisibleState> {
       bool isShow = !(event.show);
       emit(SubmitVisibleState(isShow: isShow, card: true));
     });
+    on<CleanSubmitVisibleET>((event, emit) {
+      
+      emit(state.copyWith(isShow: true, card: false,isVisible: true));
+    });
   }
 
 }

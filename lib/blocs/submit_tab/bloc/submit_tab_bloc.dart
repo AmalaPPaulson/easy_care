@@ -252,15 +252,15 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
         try {
           Response? response = await startServiceRepository.submitReport(
               event.id.toString(), data);
-               
+
           if (response != null) {
             log('api response in the error : ${response.data.toString()}');
             log('api response in the error : ${response.statusCode.toString()}');
             log('api response in the error : ${response.statusMessage.toString()}');
             if (response.statusCode == 200 || response.statusCode == 201) {
-               log('api response in the success of submitreport : ${response.data.toString()}');
-            log('api response in the success : ${response.statusCode.toString()}');
-            log('api response in the success : ${response.statusMessage.toString()}');
+              log('api response in the success of submitreport : ${response.data.toString()}');
+              log('api response in the success : ${response.statusCode.toString()}');
+              log('api response in the success : ${response.statusMessage.toString()}');
               if (imageList.isNotEmpty) {
                 log('imagelist above api ----------------------------------${imageList.isNotEmpty}');
                 startServiceRepository.addVideoAndImages(
@@ -280,7 +280,6 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
               }
               await userRepository.setTripStatus('');
               emit(state.copyWith(isLoading: false, started: true));
-
             } else {
               Fluttertoast.showToast(
                   msg: response.statusMessage ??
@@ -292,12 +291,23 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
             emit(state.copyWith(isLoading: false));
           }
         } catch (e) {
-          
           log('error in the submit api ----------------${e.toString()}');
           Fluttertoast.showToast(msg: e.toString());
         }
       }
-       
+    });
+
+    on<CleanSubmitTabReportET>((event, emit) {
+      emit(state.copyWith(
+        images: [],
+        currentTab: 0,
+        selectedOption: 1,
+        isLoading: false,
+        started: false,
+        thumbnail: [],
+        videoFiles: [],
+        isChecked: false,
+      ));
     });
   }
 }

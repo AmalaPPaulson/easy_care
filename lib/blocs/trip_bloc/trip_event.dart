@@ -22,5 +22,7 @@ class TrackingET extends TripEvent {
   });
 
 }
-
+class CleanTripET extends TripEvent{
+  
+}
 

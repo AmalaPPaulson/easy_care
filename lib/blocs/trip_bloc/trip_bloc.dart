@@ -181,5 +181,10 @@ class TripBloc extends Bloc<TripEvent, TripState> {
         emit(state.copyWith(errorMsg: 'Unable to upload end position '));
       }
     });
+
+    on<CleanTripET>((event, emit) {
+      
+      emit(state.copyWith(isLoading: false,started: false,reached: false));
+    });
   }
 }

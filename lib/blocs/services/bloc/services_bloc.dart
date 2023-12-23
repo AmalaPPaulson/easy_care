@@ -17,7 +17,7 @@ part 'services_state.dart';
 
 class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
   ServicesBloc() : super(const ServicesState()) {
-   // List<XFile> images = [];
+    // List<XFile> images = [];
     List<File> imageList = [];
     List<File> videoFiles = [];
     String? audioFile;
@@ -26,9 +26,8 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
     UserRepository userRepository = UserRepository();
     StartServiceRepository startServiceRepository = StartServiceRepository();
     on<ImagePickerET>((event, emit) {
-      
       //images.addAll(state.images);
-     // images.add(event.image);
+      // images.add(event.image);
       var updatedImages = state.images.toList();
       updatedImages.add(event.image);
       // log('image length in imagePickerEt---------------------${images.length}');
@@ -122,7 +121,8 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
                       imageList: state.videoFiles,
                       isPreCheck: true);
                 }
-                 await userRepository.setTripStatus(StringConstants.tripStartService);
+                await userRepository
+                    .setTripStatus(StringConstants.tripStartService);
                 emit(state.copyWith(isLoading: false, started: true));
               } else {
                 Fluttertoast.showToast(
@@ -144,6 +144,15 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       } catch (e) {
         Fluttertoast.showToast(msg: e.toString());
       }
+    });
+
+    on<CleanServiceET>((event, emit) {
+      emit(state.copyWith(
+          images: [],
+          videoFiles: [],
+          thumbnail: [],
+          isLoading: false,
+          started: false));
     });
   }
 }

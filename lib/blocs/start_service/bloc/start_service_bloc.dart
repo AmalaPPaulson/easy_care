@@ -19,5 +19,10 @@ class StartServiceBloc extends Bloc<StartServiceEvent, StartServiceState> {
       emit(StartServiceState(isShow: isShow,card: true));
 
     });
+     on<CleanStartServiceET>((event, emit) {
+     
+      emit(state.copyWith(isShow: true,card: false,isVisible: true));
+
+    });
   }
 }

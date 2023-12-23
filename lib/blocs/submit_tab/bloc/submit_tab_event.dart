@@ -68,3 +68,4 @@ class SubmitReportET extends SubmitTabEvent {
     this.isPaid = false,
   });
 }
+ class CleanSubmitTabReportET extends SubmitTabEvent {}

@@ -45,3 +45,7 @@ class StartServiceApiET extends ServicesEvent {
   });
   
 }
+
+class CleanServiceET extends ServicesEvent {
+
+}

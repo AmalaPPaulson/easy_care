@@ -17,3 +17,7 @@ class ShowET extends SubmitVisibleEvent {
     required this.show,
   });
 }
+
+class CleanSubmitVisibleET extends SubmitVisibleEvent{
+  
+}

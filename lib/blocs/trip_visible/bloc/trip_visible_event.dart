@@ -19,3 +19,5 @@ class VisibilityET extends TripVisibleEvent{
   });
 
 }
+class CleanTripVisibleET extends TripVisibleEvent{
+}
