@@ -43,9 +43,7 @@ class StartServiceRepository {
     MultipartFile? imageFile;
     imageFile = null;
 
-   // var image = File(imageList![index].path);
-    //imageFile = await MultipartFile.fromFile(image.path, filename: "img.jpg");
-
+   
     DateTime now = DateTime.now();
     String d = now.toString();
     d = d.replaceAll(':', '');
@@ -80,13 +78,19 @@ class StartServiceRepository {
 
       Response? response =
           await apiQuery.postQuery(APIConstants.addLog, headers, formData, '');
+          
+           
       log('response in the addaudiovideoApi-------------');
       log('------------------ response of addvideoimg api ${response!.data.toString()}');
+       log('api response in the success : ${response.statusCode.toString()}');
+            log('api response in the success : ${response.statusMessage.toString()}');
+       log('imageList length ---------------------------${imageList.length}');
       //if (response != null) {
         if (response.statusCode == 201) {
           if (index < imageList.length - 1) {
             index = index + 1;
             return await addVideoAndImages(
+                fileType: fileType,
                 index: index,
                 id: id,
                 imageList: imageList,
@@ -98,5 +102,20 @@ class StartServiceRepository {
       //}
     } catch (exception) {}
     return false;
+  }
+
+  //Submit Report
+  Future<Response?> submitReport(String id, Map<String, dynamic>? data) async {
+    try {
+      Response? response = await apiQuery.patchQuery(
+        '${APIConstants.apiUpdateStatus}$id/',
+        data,
+        'ChangeStatusApi',
+        true,
+      );
+      return response;
+    } catch (exception) {
+      return null;
+    }
   }
 }

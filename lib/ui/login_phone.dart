@@ -4,6 +4,7 @@ import 'package:easy_care/ui/widgets/Buttons/login_button1.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class _LoginPhoneState extends State<LoginPhone> {
     phoneNoController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -64,7 +66,9 @@ class _LoginPhoneState extends State<LoginPhone> {
                   onChanged: (text) {
                     // phoneNo = phoneNoController.text;
                   },
-                  keyboardType: TextInputType.number,
+                  keyboardType: defaultTargetPlatform == TargetPlatform.iOS
+                      ? const TextInputType.numberWithOptions(decimal: true,signed: true)
+                      : TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly,
                     LengthLimitingTextInputFormatter(10),

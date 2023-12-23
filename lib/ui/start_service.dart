@@ -14,7 +14,7 @@ import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
@@ -96,7 +96,7 @@ class _StartState extends State<StartService> {
                     child: const Row(
                       children: [
                         Icon(Icons.image),
-                        Text('From Gallery'),
+                        Text('From Gallery', overflow: TextOverflow.ellipsis,),
                       ],
                     ),
                   ),
@@ -109,7 +109,7 @@ class _StartState extends State<StartService> {
                     child: const Row(
                       children: [
                         Icon(Icons.camera),
-                        Text('From Camera'),
+                        Text('From Camera', overflow: TextOverflow.ellipsis,),
                       ],
                     ),
                   ),
@@ -149,7 +149,7 @@ class _StartState extends State<StartService> {
                     child: const Row(
                       children: [
                         Icon(Icons.image),
-                        Text('From Gallery'),
+                        Text('From Gallery', overflow: TextOverflow.ellipsis,),
                       ],
                     ),
                   ),
@@ -162,7 +162,7 @@ class _StartState extends State<StartService> {
                     child: const Row(
                       children: [
                         Icon(Icons.camera),
-                        Text('From Camera'),
+                        Text('From Camera', overflow: TextOverflow.ellipsis,),
                       ],
                     ),
                   ),
@@ -198,19 +198,9 @@ class _StartState extends State<StartService> {
     return BlocListener<ServicesBloc, ServicesState>(
       listener: (context, state) {
         if (state.isLoading == false && state.started) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const SubmitReport()),
-          );
-        }
-        if (state.isLoading == false && state.errorMsg != null) {
-          Fluttertoast.showToast(
-              msg: '${state.errorMsg}',
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: SizeConfig.blockSizeHorizontal * 4);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const SubmitReport()),
+              (Route route) => false);
         }
       },
       child: Scaffold(
@@ -229,8 +219,7 @@ class _StartState extends State<StartService> {
         floatingActionButton: BlocBuilder<ServicesBloc, ServicesState>(
           buildWhen: (previous, current) => (previous != current),
           builder: (context, state) {
-
-            bool  isPressed = false;
+            bool isPressed = false;
             if (state.isLoading) {
               isPressed = true;
             }
@@ -239,7 +228,7 @@ class _StartState extends State<StartService> {
                   context.read<ServicesBloc>().add(StartServiceApiET(
                         id: complaint.id.toString(),
                         description: descriptionController.text,
-                        audio: paths!,
+                        audio: paths,
                       ));
                 },
                 isPressed: isPressed,
@@ -295,6 +284,7 @@ class _StartState extends State<StartService> {
               )),
           child: BlocBuilder<ServicesBloc, ServicesState>(
             builder: (context, state) {
+              log('${state.images.length}');
               return Row(
                 children: [
                   state.images.isEmpty
@@ -413,7 +403,7 @@ class _StartState extends State<StartService> {
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              //  Uint8List thumbNail = state.thumbnail[index];
+                              // Uint8List thumbNail = state.thumbnail[index];
                               return Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal:
@@ -472,210 +462,270 @@ class _StartState extends State<StartService> {
 
   Widget audioPlayerCopy() {
     String strDigits(int n) => n.toString().padLeft(2, '0');
-    return Container(
-      decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius:
-              BorderRadius.circular(SizeConfig.blockSizeHorizontal * 1),
-          border: Border.all(
-            color: ColorConstants.primaryColor,
-          )),
-      child: Padding(
-          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2.0),
-          child: Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              StreamBuilder<RecordState>(
-                  stream: record.onStateChanged(),
-                  builder: (context, snapshot) {
-                    bool recodingFinished = false;
-                    if (snapshot.data != null) {
-                      if (snapshot.data == RecordState.stop) {
-                        if (paths != null) {
-                          if (paths!.isNotEmpty) {
-                            recodingFinished = true;
+    return Dismissible(
+      key: UniqueKey(),
+      direction: DismissDirection.endToStart,
+      background: ElevatedButton(
+        onPressed: () {
+          showDialog<bool>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Are you sure you want to delete?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text('No'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, true),
+                    child: const Text('Yes'),
+                  )
+                ],
+              );
+            },
+          );
+        },
+        child: const Text("Delete"),
+      ),
+      onDismissed: (DismissDirection direction) {
+        log('Dismissed with direction $direction');
+        // Your deletion logic goes here.
+        player.stop();
+        record.stop();
+        setState(() {
+          paths = null;
+        });
+      },
+      confirmDismiss: (DismissDirection direction) async {
+        // final confirmed = await showDialog<bool>(
+        //   context: context,
+        //   builder: (context) {
+        //     return AlertDialog(
+        //       title: const Text('Are you sure you want to delete?'),
+        //       actions: [
+        //         TextButton(
+        //           onPressed: () => Navigator.pop(context, false),
+        //           child: const Text('No'),
+        //         ),
+        //         TextButton(
+        //           onPressed: () => Navigator.pop(context, true),
+        //           child: const Text('Yes'),
+        //         )
+        //       ],
+        //     );
+        //   },
+        // );
+        // log('Deletion confirmed: $confirmed');
+        return false;
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius:
+                BorderRadius.circular(SizeConfig.blockSizeHorizontal * 1),
+            border: Border.all(
+              color: Colors.black,
+            )),
+        child: Padding(
+            padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2.0),
+            child: Row(
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                StreamBuilder<RecordState>(
+                    stream: record.onStateChanged(),
+                    builder: (context, snapshot) {
+                      bool recodingFinished = false;
+                      if (snapshot.data != null) {
+                        if (snapshot.data == RecordState.stop) {
+                          if (paths != null) {
+                            if (paths!.isNotEmpty) {
+                              recodingFinished = true;
+                            }
                           }
                         }
                       }
-                    }
-                    if (recodingFinished) {
-                      return StreamBuilder<PositionData>(
-                          stream: _positionDataStream,
-                          builder: (context, snapshot) {
-                            final positionData = snapshot.data;
-                            final duration =
-                                positionData?.duration ?? Duration.zero;
-                            final position =
-                                positionData?.position ?? Duration.zero;
-                            Duration remaining = duration - position;
-                            //  final remainingInSec =
-                            //       strDigits(remaining.inMinutes.remainder(60));
-                            return Column(
-                              children: [
-                                const Icon(
-                                  Icons.mic,
-                                  color: Colors.grey,
-                                ),
-                                Text(
-                                  RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
-                                          .firstMatch("$remaining")
-                                          ?.group(1) ??
-                                      '$remaining',
-                                  style: const TextStyle(
-                                      color: Colors.grey, fontSize: 12),
-                                ),
-                              ],
-                            );
-                          });
-                    }
+                      if (recodingFinished) {
+                        return StreamBuilder<PositionData>(
+                            stream: _positionDataStream,
+                            builder: (context, snapshot) {
+                              final positionData = snapshot.data;
+                              final duration =
+                                  positionData?.duration ?? Duration.zero;
+                              final position =
+                                  positionData?.position ?? Duration.zero;
+                              Duration remaining = duration - position;
+                              //  final remainingInSec =
+                              //       strDigits(remaining.inMinutes.remainder(60));
+                              return Column(
+                                children: [
+                                  const Icon(
+                                    Icons.mic,
+                                    color: Colors.grey,
+                                  ),
+                                  Text(
+                                    RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
+                                            .firstMatch("$remaining")
+                                            ?.group(1) ??
+                                        '$remaining',
+                                    style: const TextStyle(
+                                        color: Colors.grey, fontSize: 12),
+                                  ),
+                                ],
+                              );
+                            });
+                      }
 
-                    return const SizedBox();
-                  }),
-              StreamBuilder<RecordState>(
-                  stream: record.onStateChanged(),
-                  builder: (context, snapshot) {
-                    final minutes =
-                        strDigits(myDuration.inMinutes.remainder(60));
-                    //var timer = int.parse(minutes);
-                    final seconds =
-                        strDigits(myDuration.inSeconds.remainder(60));
-                    bool recording = false;
-                    bool recodingFinished = false;
-                    if (snapshot.data != null) {
-                      recording = snapshot.data == RecordState.record;
-                      if (snapshot.data == RecordState.stop) {
-                        if (paths != null) {
-                          if (paths!.isNotEmpty) {
-                            recodingFinished = true;
+                      return const SizedBox();
+                    }),
+                StreamBuilder<RecordState>(
+                    stream: record.onStateChanged(),
+                    builder: (context, snapshot) {
+                      final minutes =
+                          strDigits(myDuration.inMinutes.remainder(60));
+                      //var timer = int.parse(minutes);
+                      final seconds =
+                          strDigits(myDuration.inSeconds.remainder(60));
+                      bool recording = false;
+                      bool recodingFinished = false;
+                      if (snapshot.data != null) {
+                        recording = snapshot.data == RecordState.record;
+                        if (snapshot.data == RecordState.stop) {
+                          if (paths != null) {
+                            if (paths!.isNotEmpty) {
+                              recodingFinished = true;
+                            }
                           }
                         }
                       }
-                    }
 
-                    return recording
-                        ? Text(
-                            '$minutes:$seconds',
-                            style: const TextStyle(
-                                color: ColorConstants.primaryColor,
-                                fontSize: 12),
-                          )
-                        : (recodingFinished
-                            ? StreamBuilder<PositionData>(
-                                stream: _positionDataStream,
-                                builder: (context, snapshot) {
-                                  final positionData = snapshot.data;
-                                  return SeekBar(
-                                    duration:
-                                        positionData?.duration ?? Duration.zero,
-                                    position:
-                                        positionData?.position ?? Duration.zero,
-                                    bufferedPosition:
-                                        positionData?.bufferedPosition ??
-                                            Duration.zero,
-                                    onChangeEnd: player.seek,
-                                  );
-                                },
-                              )
-                            : Flexible(
-                                child: Padding(
-                                  padding: EdgeInsets.all(
-                                      SizeConfig.blockSizeHorizontal * 2),
-                                  child: const Text(
-                                    'Press and hold to add a voice note.',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontFamily: AssetConstants.poppinsRegular,
-                                      color: Colors.black45,
+                      return recording
+                          ? Text(
+                              '$minutes:$seconds',
+                              style: const TextStyle(
+                                  color: ColorConstants.primaryColor,
+                                  fontSize: 12),
+                            )
+                          : (recodingFinished
+                              ? StreamBuilder<PositionData>(
+                                  stream: _positionDataStream,
+                                  builder: (context, snapshot) {
+                                    final positionData = snapshot.data;
+                                    return SeekBar(
+                                      duration: positionData?.duration ??
+                                          Duration.zero,
+                                      position: positionData?.position ??
+                                          Duration.zero,
+                                      bufferedPosition:
+                                          positionData?.bufferedPosition ??
+                                              Duration.zero,
+                                      onChangeEnd: player.seek,
+                                    );
+                                  },
+                                )
+                              : Flexible(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 2),
+                                    child: const Text(
+                                      'Press and hold to add a voice note.',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontFamily:
+                                            AssetConstants.poppinsRegular,
+                                        color: Colors.black45,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ));
-                  }),
-              const Spacer(),
-              StreamBuilder<RecordState>(
-                  stream: record.onStateChanged(),
-                  builder: (context, snapshot) {
-                    bool recording = false;
-                    bool recodingFinished = false;
-                    if (snapshot.data != null) {
-                      recording = snapshot.data == RecordState.record;
-                      if (snapshot.data == RecordState.stop) {
-                        if (paths != null) {
-                          if (paths!.isNotEmpty) {
-                            recodingFinished = true;
+                                ));
+                    }),
+                const Spacer(),
+                StreamBuilder<RecordState>(
+                    stream: record.onStateChanged(),
+                    builder: (context, snapshot) {
+                      bool recording = false;
+                      bool recodingFinished = false;
+                      if (snapshot.data != null) {
+                        recording = snapshot.data == RecordState.record;
+                        if (snapshot.data == RecordState.stop) {
+                          if (paths != null) {
+                            if (paths!.isNotEmpty) {
+                              recodingFinished = true;
+                            }
                           }
                         }
                       }
-                    }
-                    return recodingFinished
-                        ? StreamBuilder<PlayerState>(
-                            stream: player.playerStateStream,
-                            builder: (context, snapshot) {
-                              bool isPlaying = false;
-                              if (snapshot.data != null) {
-                                isPlaying = snapshot.data!.playing;
-                                if (snapshot.data!.processingState ==
-                                    ProcessingState.completed) {
-                                  isPlaying = false;
-                                }
-                              }
-                              return InkWell(
-                                onTap: () {
-                                  if (isPlaying) {
-                                    player.pause();
-                                  } else {
-                                    player.setAudioSource(
-                                        AudioSource.file(paths!));
-                                    player.play();
+                      return recodingFinished
+                          ? StreamBuilder<PlayerState>(
+                              stream: player.playerStateStream,
+                              builder: (context, snapshot) {
+                                bool isPlaying = false;
+                                if (snapshot.data != null) {
+                                  isPlaying = snapshot.data!.playing;
+                                  if (snapshot.data!.processingState ==
+                                      ProcessingState.completed) {
+                                    isPlaying = false;
                                   }
-                                },
-                                child: CircleAvatar(
-                                    backgroundColor: Colors.grey,
-                                    radius: 20,
-                                    child: Icon(
-                                      !isPlaying
-                                          ? Icons.play_arrow
-                                          : Icons.pause,
-                                      color: ColorConstants.primaryColor,
-                                    )),
-                              );
-                            })
-                        : GestureDetector(
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              height: recording ? 70 : 40,
-                              width: recording ? 70 : 40,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: ColorConstants.primaryColor,
-                              ),
-                              child: const Icon(
-                                Icons.mic,
-                                color: Colors.white,
-                              ),
-                            ),
-                            onLongPressStart: (LongPressStartDetails details) {
-                              startTimer();
-                              startRecording(true);
-                            },
-                            onLongPressEnd: (LongPressEndDetails details) {
-                              log("10");
-                              setState(() {
-                                isRecording = false;
-                                if (countdownTimer == null ||
-                                    countdownTimer!.isActive) {
-                                  stopTimer();
-                                  resetTimer();
                                 }
-                              });
+                                return InkWell(
+                                  onTap: () {
+                                    if (isPlaying) {
+                                      player.pause();
+                                    } else {
+                                      player.setAudioSource(
+                                          AudioSource.file(paths!));
+                                      player.play();
+                                    }
+                                  },
+                                  child: CircleAvatar(
+                                      backgroundColor: Colors.grey,
+                                      radius: 20,
+                                      child: Icon(
+                                        !isPlaying
+                                            ? Icons.play_arrow
+                                            : Icons.pause,
+                                        color: ColorConstants.primaryColor,
+                                      )),
+                                );
+                              })
+                          : GestureDetector(
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                height: recording ? 70 : 40,
+                                width: recording ? 70 : 40,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: ColorConstants.primaryColor,
+                                ),
+                                child: const Icon(
+                                  Icons.mic,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onLongPressStart:
+                                  (LongPressStartDetails details) {
+                                startTimer();
+                                startRecording(true);
+                              },
+                              onLongPressEnd: (LongPressEndDetails details) {
+                                log("10");
+                                setState(() {
+                                  isRecording = false;
+                                  if (countdownTimer == null ||
+                                      countdownTimer!.isActive) {
+                                    stopTimer();
+                                    resetTimer();
+                                  }
+                                });
 
-                              startRecording(false);
-                            },
-                          );
-                  }),
-            ],
-          )),
+                                startRecording(false);
+                              },
+                            );
+                    }),
+              ],
+            )),
+      ),
     );
   }
 
@@ -839,7 +889,10 @@ class _StartState extends State<StartService> {
                             ));
                       },
                     ),
-                    const Divider(color: ColorConstants.backgroundColor2),
+                    Visibility(
+                        visible: isVisible,
+                        child: const Divider(
+                            color: ColorConstants.backgroundColor2)),
                     Visibility(
                       visible: isVisible,
                       child: Column(
@@ -945,7 +998,10 @@ class _StartState extends State<StartService> {
                             .add(ShowET(show: isShow));
                       },
                     ),
-                    const Divider(color: ColorConstants.backgroundColor2),
+                    Visibility(
+                      visible: isShow,
+                        child: const Divider(
+                            color: ColorConstants.backgroundColor2)),
                     Visibility(
                       visible: isShow,
                       child: Padding(

@@ -23,22 +23,4 @@ class TrackingET extends TripEvent {
 
 }
 
-class VisibilityET extends TripEvent {
-  final bool visible;
-  
-  VisibilityET({
-    required this.visible,
-    
-  });
 
-  
-}
-
-class ShowET extends TripEvent {
-  final bool show;
-
-  ShowET({
-    required this.show,
-   
-  });
-}

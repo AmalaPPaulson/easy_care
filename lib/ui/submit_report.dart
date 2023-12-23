@@ -1,9 +1,17 @@
+import 'dart:developer';
+
 import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
 import 'package:easy_care/blocs/submit_visible/bloc/submit_visible_bloc.dart';
 import 'package:easy_care/model/complaint_model.dart';
 import 'package:easy_care/repositories/complaint_repo.dart';
 import 'package:easy_care/repositories/user_repo.dart';
+import 'package:easy_care/ui/success_screen.dart';
 import 'package:easy_care/ui/tabTitletile.dart';
+import 'package:easy_care/ui/widgets/Buttons/floatingaction_button.dart';
+import 'package:easy_care/ui/widgets/submit_report/instant_product.dart';
+import 'package:easy_care/ui/widgets/submit_report/instant_service.dart';
+import 'package:easy_care/ui/widgets/submit_report/instant_spare.dart';
+import 'package:easy_care/ui/widgets/submit_report/service_details.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
@@ -22,25 +30,62 @@ class _SubmitReportState extends State<SubmitReport> {
   bool isShow = true;
   bool isVisible = true;
   ComplaintRepository complaintRepository = ComplaintRepository();
+
+  TextEditingController serviceController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController sparePartController = TextEditingController();
+
   bool tab = true;
+  int currentTab = 0;
   int selectedOption = 1;
   int option = 1;
   @override
   Widget build(BuildContext context) {
     ComplaintResult complaint = userRepository.getComplaint();
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorConstants.primaryColor,
-        leading: null,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Complaint Id : ${complaint.complaint!.complaintId.toString()}  ',
-          style: const TextStyle(
-              color: Colors.white, fontFamily: AssetConstants.poppinsMedium),
+
+    return BlocListener<SubmitTabBloc, SubmitTabState>(
+      listener: (context, state) {
+        if (state.isLoading == false &&state.started) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SuccessScreen()),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: ColorConstants.primaryColor,
+          leading: null,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Complaint Id : ${complaint.complaint!.complaintId.toString()}  ',
+            style: const TextStyle(
+                color: Colors.white, fontFamily: AssetConstants.poppinsMedium),
+          ),
         ),
+        body: createBody(complaint),
+        floatingActionButton: BlocBuilder<SubmitTabBloc, SubmitTabState>(
+          builder: (context, state) {
+            bool isPressed = false;
+            if (state.isLoading) {
+              isPressed = true;
+            }
+            return FloatingActionBtn(
+                onTap: () {
+                  log(serviceController.text);
+                  context.read<SubmitTabBloc>().add(SubmitReportET(
+                      serviceText: serviceController.text,
+                      id: complaint.id.toString(),
+                      spareName: sparePartController.text,
+                      price: priceController.text));
+                },
+                isPressed: isPressed,
+                text: 'Submit Report');
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      body: createBody(complaint),
     );
   }
 
@@ -54,51 +99,80 @@ class _SubmitReportState extends State<SubmitReport> {
             const SizedBox(
               height: 24,
             ),
-            tabContainer(),
+            BlocBuilder<SubmitTabBloc, SubmitTabState>(
+              builder: (context, state) {
+                if (state.currentTab != null) {
+                  currentTab = state.currentTab!;
+                }
+                if (state.selectedOption != null) {
+                  selectedOption = state.selectedOption!;
+                }
+                return Column(
+                  children: [
+                    tabContainer(currentTab, selectedOption),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    if (currentTab == 1)
+                      ServiceDetails(
+                        controller: serviceController,
+                      ),
+                    if (currentTab == 0)
+                      switch (selectedOption) {
+                        1 => InstantService(
+                            instantServiceController: serviceController,
+                          ),
+                        2 => InstantSpare(
+                            spareServiceController: serviceController,
+                            spareController: sparePartController,
+                            sparePriceController: priceController,
+                          ),
+                        _ => InstantProduct(
+                            serviceController: serviceController,
+                            priceController: priceController,
+                            productController: sparePartController,
+                          ),
+                      }
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget tabContainer() {
+  Widget tabContainer(int currentTab, int selectedOption) {
     return DecoratedBox(
-      decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius:
-              BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2),
-          border: Border.all(
-            color: Colors.black,
-          )),
-      child: BlocBuilder<SubmitTabBloc, SubmitTabState>(
-        builder: (context, state) {
-          int currentTab =0 ;
-            if(state.currentTab !=null){
-              currentTab =state.currentTab!;
-            }
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              tabTitle(currentTab),
-              tab == true ? tabOne() : tabTwo(),
-                
-            ],
-          );
-        },
-      ),
-    );
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius:
+                BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2),
+            border: Border.all(
+              color: Colors.black,
+            )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            tabTitle(currentTab),
+            tab == true ? tabOne(selectedOption) : tabTwo(),
+          ],
+        ));
   }
 
   Widget tabTitle(int currentTab) {
-    return Container(
-      height: SizeConfig.blockSizeHorizontal * 15,
-      width: MediaQuery.of(context).size.width,
-      color: ColorConstants.backgroundColor1,
-      child: Expanded(
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Container(
+        height: SizeConfig.blockSizeHorizontal * 15,
+        width: MediaQuery.of(context).size.width,
+        color: ColorConstants.backgroundColor1,
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Expanded(
+            Flexible(
               child: TabTitleTile(
                 width: MediaQuery.of(context).size.width,
                 currentTab: currentTab,
@@ -111,14 +185,15 @@ class _SubmitReportState extends State<SubmitReport> {
                 borderRadiusGeometry: (currentTab == 0)
                     ? const BorderRadius.only(topRight: Radius.circular(5))
                     : (currentTab == 1)
-                        ? const BorderRadius.only(bottomRight: Radius.circular(5))
+                        ? const BorderRadius.only(
+                            bottomRight: Radius.circular(5))
                         : BorderRadius.circular(0),
                 color2: (currentTab == 0)
                     ? ColorConstants.backgroundColor1
                     : ColorConstants.backgroundColor2,
               ),
             ),
-            Expanded(
+            Flexible(
               child: TabTitleTile(
                 width: MediaQuery.of(context).size.width,
                 title: 'Rescheduled',
@@ -133,7 +208,8 @@ class _SubmitReportState extends State<SubmitReport> {
                         ? const BorderRadius.only(
                             topLeft: Radius.circular(8),
                             topRight: Radius.circular(8))
-                        : const BorderRadius.only(bottomRight: Radius.circular(8)),
+                        : const BorderRadius.only(
+                            bottomRight: Radius.circular(8)),
                 onPressed: () {
                   tab = false;
                   context.read<SubmitTabBloc>().add(TabClickET(tabNo: 1));
@@ -146,7 +222,7 @@ class _SubmitReportState extends State<SubmitReport> {
     );
   }
 
-  Widget tabOne() {
+  Widget tabOne(int selectedOption) {
     return Column(
       children: [
         ListTile(
@@ -155,33 +231,42 @@ class _SubmitReportState extends State<SubmitReport> {
             value: 1,
             groupValue: selectedOption,
             onChanged: (value) {
-              setState(() {
-                selectedOption = value!;
-              });
+              context
+                  .read<SubmitTabBloc>()
+                  .add(RadialBtnClickET(value: value!));
+              serviceController.clear();
+              priceController.clear();
+              sparePartController.clear();
             },
           ),
         ),
         ListTile(
-          title: const Text('Spare Rplacement'),
+          title: const Text('Spare Replacement'),
           leading: Radio(
             value: 2,
             groupValue: selectedOption,
             onChanged: (value) {
-              setState(() {
-                selectedOption = value!;
-              });
+              context
+                  .read<SubmitTabBloc>()
+                  .add(RadialBtnClickET(value: value!));
+                   serviceController.clear();
+              priceController.clear();
+              sparePartController.clear();
             },
           ),
         ),
         ListTile(
-          title: const Text('Product Rplacement'),
+          title: const Text('Product Replacement'),
           leading: Radio(
             value: 3,
             groupValue: selectedOption,
             onChanged: (value) {
-              setState(() {
-                selectedOption = value!;
-              });
+              context
+                  .read<SubmitTabBloc>()
+                  .add(RadialBtnClickET(value: value!));
+                   serviceController.clear();
+              priceController.clear();
+              sparePartController.clear();
             },
           ),
         ),
@@ -198,9 +283,7 @@ class _SubmitReportState extends State<SubmitReport> {
             value: 1,
             groupValue: option,
             onChanged: (value) {
-              setState(() {
-                option = value!;
-              });
+              option = value!;
             },
           ),
         ),

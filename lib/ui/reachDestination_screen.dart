@@ -1,4 +1,5 @@
 import 'package:easy_care/blocs/trip_bloc/trip_bloc.dart';
+import 'package:easy_care/blocs/trip_visible/bloc/trip_visible_bloc.dart';
 import 'package:easy_care/model/complaint_model.dart';
 import 'package:easy_care/repositories/complaint_repo.dart';
 import 'package:easy_care/repositories/user_repo.dart';
@@ -9,6 +10,7 @@ import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ReachDestination extends StatefulWidget {
   const ReachDestination({super.key});
@@ -18,6 +20,8 @@ class ReachDestination extends StatefulWidget {
 }
 
 class _ReachDestinationState extends State<ReachDestination> {
+  bool isShow = true;
+  bool isVisible = true;
   UserRepository userRepository = UserRepository();
   ComplaintRepository complaintRepository = ComplaintRepository();
 
@@ -29,9 +33,17 @@ class _ReachDestinationState extends State<ReachDestination> {
 
     return BlocListener<TripBloc, TripState>(
       listener: (context, state) {
-        if (state.reached == true) {
+        if (state.reached == true && state.isLoading == false) {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const StartService()));
+        } else if (state.errorMsg != null) {
+          Fluttertoast.showToast(
+              msg: '${state.errorMsg}',
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: SizeConfig.blockSizeHorizontal * 4);
         }
       },
       child: Scaffold(
@@ -47,7 +59,7 @@ class _ReachDestinationState extends State<ReachDestination> {
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal*4),
+          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
           child: Column(
             children: [
               Card(
@@ -55,55 +67,59 @@ class _ReachDestinationState extends State<ReachDestination> {
                 color: Colors.white,
                 elevation: 4.0,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*2.5)),
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 2.5)),
                 child: Padding(
                   padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                  child: BlocBuilder<TripBloc, TripState>(
+                  child: BlocBuilder<TripVisibleBloc, TripVisibleState>(
                     buildWhen: (previous, current) {
                       return current.card == false;
                     },
                     builder: (context, state) {
-                      // bool isVisible = true;
-                      // isVisible = state.isVisible;
+                      isVisible = state.isVisible;
+
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(
-                                    SizeConfig.blockSizeHorizontal * 2),
-                                child: const Text(
-                                  'Customer Name & Address',
-                                  style: TextStyle(
-                                      fontFamily: AssetConstants.poppinsBold),
+                          InkWell(
+                            onTap: () {
+                              context.read<TripVisibleBloc>().add(VisibilityET(
+                                    visible: isVisible,
+                                  ));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                      SizeConfig.blockSizeHorizontal * 2),
+                                  child: const Text(
+                                    'Customer Name & Address',
+                                    style: TextStyle(
+                                        fontFamily: AssetConstants.poppinsBold),
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal*4),
-                                child: InkWell(
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                      SizeConfig.blockSizeHorizontal * 4),
                                   child: Icon(
-                                    state.isVisible
+                                    isVisible
                                         ? Icons.expand_less_rounded
                                         : Icons.expand_more,
                                     color: ColorConstants.blackColor,
                                     size: SizeConfig.blockSizeHorizontal * 5,
                                   ),
-                                  onTap: () {
-                                    context.read<TripBloc>().add(
-                                        VisibilityET(visible: state.isVisible));
-                                  },
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          const Divider(color: ColorConstants.backgroundColor2),
                           Visibility(
-                            visible: state.isVisible,
+                            visible: isVisible,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                const Divider(
+                                    color: ColorConstants.backgroundColor2),
                                 Padding(
                                   padding: EdgeInsets.all(
                                       SizeConfig.blockSizeHorizontal * 2),
@@ -154,59 +170,67 @@ class _ReachDestinationState extends State<ReachDestination> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: SizeConfig.blockSizeHorizontal * 4,
+              ),
               Card(
                 surfaceTintColor: Colors.white,
                 color: Colors.white,
                 elevation: 4.0,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2.5)),
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 2.5)),
                 child: Padding(
                   padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                  child: BlocBuilder<TripBloc, TripState>(
+                  child: BlocBuilder<TripVisibleBloc, TripVisibleState>(
                     buildWhen: (previous, current) {
                       return (current.card == true);
                     },
                     builder: (context, state) {
-                      // bool isShow =true;
-                      //isShow = state.isShow;
+                      isShow = state.isShow;
+
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(
-                                    SizeConfig.blockSizeHorizontal * 2),
-                                child: const Text(
-                                  'Complaint:',
-                                  style: TextStyle(
-                                      fontFamily:
-                                          AssetConstants.poppinsSemiBold),
+                          InkWell(
+                            onTap: () {
+                              context
+                                  .read<TripVisibleBloc>()
+                                  .add(ShowET(show: isShow));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                      SizeConfig.blockSizeHorizontal * 2),
+                                  child: const Text(
+                                    'Complaint:',
+                                    style: TextStyle(
+                                        fontFamily:
+                                            AssetConstants.poppinsSemiBold),
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                                child: InkWell(
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                      SizeConfig.blockSizeHorizontal * 2),
                                   child: Icon(
-                                    state.isShow
+                                    isShow
                                         ? Icons.expand_less
                                         : Icons.expand_more,
                                     color: ColorConstants.blackColor,
                                     size: SizeConfig.blockSizeHorizontal * 5,
                                   ),
-                                  onTap: () {
-                                    context
-                                        .read<TripBloc>()
-                                        .add(ShowET(show: state.isShow));
-                                  },
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                          const Divider(color: ColorConstants.backgroundColor2),
                           Visibility(
-                            visible: state.isShow,
+                            visible: isShow,
+                              child: const Divider(
+                                  color: ColorConstants.backgroundColor2)),
+                          Visibility(
+                            visible: isShow,
                             child: Padding(
                               padding: EdgeInsets.all(
                                   SizeConfig.blockSizeHorizontal * 2),
@@ -219,9 +243,11 @@ class _ReachDestinationState extends State<ReachDestination> {
                                   return Text(
                                     complaintLines[index],
                                     textAlign: TextAlign.start,
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: SizeConfig.blockSizeHorizontal * 3.5,
+                                        fontSize:
+                                            SizeConfig.blockSizeHorizontal *
+                                                3.5,
                                         fontWeight: FontWeight.w600,
                                         fontFamily:
                                             AssetConstants.poppinsMedium),

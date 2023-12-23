@@ -5,7 +5,9 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_care/repositories/start_service_repo.dart';
+import 'package:easy_care/repositories/user_repo.dart';
 import 'package:easy_care/utils/constants/string_constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -15,23 +17,30 @@ part 'services_state.dart';
 
 class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
   ServicesBloc() : super(const ServicesState()) {
-    List<XFile> images = [];
+   // List<XFile> images = [];
     List<File> imageList = [];
     List<File> videoFiles = [];
     String? audioFile;
     MultipartFile? audio;
     String? description;
+    UserRepository userRepository = UserRepository();
     StartServiceRepository startServiceRepository = StartServiceRepository();
     on<ImagePickerET>((event, emit) {
-      images.addAll(state.images);
-      images.add(event.image);
-      emit(state.copyWith(images: images));
+      
+      //images.addAll(state.images);
+     // images.add(event.image);
+      var updatedImages = state.images.toList();
+      updatedImages.add(event.image);
+      // log('image length in imagePickerEt---------------------${images.length}');
+      emit(state.copyWith(images: updatedImages));
     });
     on<VideoPickerET>((event, emit) async {
       File? galleryFile = File(event.xfilePick.path);
       videoFiles.addAll(state.videoFiles);
       videoFiles.add(galleryFile);
-      emit(state.copyWith(videoFiles: videoFiles));
+      var updatedVideos = state.videoFiles.toList();
+      updatedVideos.add(galleryFile);
+      emit(state.copyWith(videoFiles: updatedVideos));
       final uint8list = await VideoThumbnail.thumbnailData(
         video: galleryFile.path,
         imageFormat: ImageFormat.JPEG,
@@ -43,49 +52,59 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       if (uint8list != null) {
         thumbNails.addAll(state.thumbnail);
         thumbNails.add(uint8list);
-        emit(state.copyWith(thumbnail: thumbNails));
+        var updatedThumbNails = state.thumbnail.toList();
+        updatedThumbNails.add(uint8list);
+        emit(state.copyWith(thumbnail: updatedThumbNails));
       }
     });
 
     on<ImageDeleteET>((event, emit) {
       state.images.removeAt(event.index);
-      images.addAll(state.images);
-      emit(state.copyWith(images: images));
+      var updatedImages = state.images.toList();
+      emit(state.copyWith(images: updatedImages));
     });
 
     on<VideoDeleteET>((event, emit) {
       state.videoFiles.removeAt(event.index);
       videoFiles.addAll(state.videoFiles);
-      emit(state.copyWith(videoFiles: videoFiles));
+      var updatedVideos = state.videoFiles.toList();
+      emit(state.copyWith(videoFiles: updatedVideos));
       state.thumbnail.removeAt(event.index);
       List<Uint8List> thumbNails = [];
       thumbNails.addAll(state.thumbnail);
-      emit(state.copyWith(thumbnail: thumbNails));
+      var updatedThumbnails = state.thumbnail.toList();
+      emit(state.copyWith(thumbnail: updatedThumbnails));
     });
 
     on<StartServiceApiET>((event, emit) async {
-      //imageList = images.map<File>((xfile) => File(xfile.path)).toList();
-      audioFile = event.audio;
-      description = event.description;
-
+      log('image length ---------------------${state.images.length}');
+      imageList = state.images.map<File>((xfile) => File(xfile.path)).toList();
+      log('imageList length -------------------------${imageList.length}');
       try {
-        emit(state.copyWith(isLoading: true));
-        if ((description != null && description != '') ||
-            (audioFile != null && audioFile != '')) {
-          if (audioFile != null) {
-            audio = await MultipartFile.fromFile(event.audio,
+        if ((event.description != null && event.description != '') ||
+            (event.audio != null && event.audio != '')) {
+          audioFile = event.audio;
+          description = event.description;
+          if (event.audio != null) {
+            audio = await MultipartFile.fromFile(audioFile!,
                 filename: "audioDescription.m4a");
           }
-          if (imageList.isNotEmpty) {
-            log('imagelist ----------------------------------${imageList.isNotEmpty}');
+          bool isValid = false;
+          String videoAudioMsg = '';
+          if (imageList.isNotEmpty || videoFiles.isNotEmpty) {
+            isValid = true;
+          } else {
+            isValid = false;
+            videoAudioMsg = 'please add atleast one video/image';
+          }
+          if (isValid) {
+            emit(state.copyWith(
+              isLoading: true,
+            ));
             Response? response = await startServiceRepository.startServiceApi(
-                event.id,
-                event.description,
-                audio,
-                StringConstants.startService);
+                event.id, description, audio, StringConstants.startService);
             if (response != null) {
               if (response.statusCode == 200 || response.statusCode == 201) {
-                // print('api response in the success : ${response.data.toString()}');
                 if (imageList.isNotEmpty) {
                   log('imagelist above api ----------------------------------${imageList.isNotEmpty}');
                   startServiceRepository.addVideoAndImages(
@@ -94,56 +113,36 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
                       fileType: "image",
                       imageList: imageList,
                       isPreCheck: true);
-                  emit(state.copyWith(isLoading: false, started: true));
                 }
-              } else {
-                log('api response in the error : ${response.data.toString()}');
-                log('api response in the error : ${response.statusCode.toString()}');
-                log('api response in the error : ${response.statusMessage.toString()}');
-                emit(state.copyWith(isLoading: false));
-                emit(state.copyWith(errorMsg: 'unable to update status'));
-              }
-            } else {
-              emit(state.copyWith(errorMsg: 'error', isLoading: false));
-            }
-          }
-          if (videoFiles.isNotEmpty) {
-            log('videoFiles is not empty ---------------------------${videoFiles.isNotEmpty}');
-            Response? response = await startServiceRepository.startServiceApi(
-                event.id,
-                event.description,
-                audio,
-                StringConstants.startService);
-            if (response != null) {
-              log('response of videofiles------------------------- ${response.statusCode}');
-              if (response.statusCode == 200 || response.statusCode == 201) {
-                if (videoFiles.isNotEmpty) {
-                  log('inside where video api is gong to work ');
-                  log('length of videofiles ${videoFiles.length}');
+                if (state.videoFiles.isNotEmpty) {
                   startServiceRepository.addVideoAndImages(
                       index: 0,
                       id: event.id,
                       fileType: "video",
-                      imageList: videoFiles,
+                      imageList: state.videoFiles,
                       isPreCheck: true);
-                  emit(state.copyWith(isLoading: false, started: true));
-                } else {
-                  log('Response status code : ${response.statusCode.toString()}');
-                  log('Response status message : ${response.statusMessage.toString()}');
-                  log('Response data : ${response.data.toString()}');
-                  emit(state.copyWith(isLoading: false));
-                  emit(state.copyWith(errorMsg: 'unable to update status'));
                 }
+                 await userRepository.setTripStatus(StringConstants.tripStartService);
+                emit(state.copyWith(isLoading: false, started: true));
+              } else {
+                Fluttertoast.showToast(
+                    msg: response.statusMessage ??
+                        'Something went wrong !Please try agian.');
+                emit(state.copyWith(isLoading: false));
               }
+            } else {
+              Fluttertoast.showToast(msg: 'Network issue! Please try again..');
+              emit(state.copyWith(isLoading: false));
             }
           } else {
-            emit(state.copyWith(errorMsg: 'Please upload atleast one video'));
+            Fluttertoast.showToast(msg: videoAudioMsg);
+            emit(state.copyWith(isLoading: false));
           }
         } else {
-          emit(state.copyWith(errorMsg: 'Please add description(Audio/Text)'));
+          Fluttertoast.showToast(msg: 'Please add description(Audio/Text)');
         }
       } catch (e) {
-        emit(state.copyWith(errorMsg: e.toString()));
+        Fluttertoast.showToast(msg: e.toString());
       }
     });
   }

@@ -36,12 +36,12 @@ class VideoDeleteET extends ServicesEvent {
 
 class StartServiceApiET extends ServicesEvent {
   final String id;
-  final String description;
-  final String  audio;
+  final String? description;
+  final String?  audio;
   StartServiceApiET({
     required this.id,
-    required this.description,
-     required this.audio,
+     this.description,
+      this.audio,
   });
   
 }

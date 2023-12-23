@@ -26,15 +26,15 @@ class _LoginPinState extends State<LoginPin> {
   TextEditingController textEditingController = TextEditingController();
   String currentText = "";
 
-  
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return BlocListener<LoginBlocBloc, LoginBlocState>(
       listener: (context, state) {
         if (state is LoginSuccessST) {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-          builder: (context) => const HomeScreen()), (Route route) => false);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+              (Route route) => false);
         }
         if (state is LoginFailureST) {
           Fluttertoast.showToast(msg: state.errorMsg!);
@@ -135,12 +135,7 @@ class _LoginPinState extends State<LoginPin> {
                           blurRadius: 10,
                         )
                       ],
-                      
-                      // onTap: () {
-                      //   print("Pressed");
-                      // },
-                      
-                      
+
                     ),
                   ),
                 ),

@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
   ApiQuery apiQuery = ApiQuery();
- ComplaintModel complaintModel = ComplaintModel();
+  ComplaintModel complaintModel = ComplaintModel();
   //Login
   Future<Response?> login(String phoneNo, String pin) async {
     try {
@@ -64,27 +64,64 @@ class UserRepository {
     return prefs.getBool(StringConstants.IS_LOGGED_IN) ?? false;
   }
 
-  //Set is Logged
+  //Set isStartTrip
   Future<bool> setIsStartTrip(bool isStartTrip) async {
     return await prefs.setBool(StringConstants.IS_START_TRIP, isStartTrip);
   }
 
-  //Get Is Logged
+  //Get Is startTrip
   bool getIsStartTrip() {
     return prefs.getBool(StringConstants.IS_START_TRIP) ?? false;
   }
 
-  //storing complaint list of a case in to a string then save that string to shared preference
-  Future<bool> setComplaint(ComplaintResult  complaintResult)async{
-   
-   String activeComplaint = jsonEncode(complaintResult);
-   return prefs.setString('activeComplaint',activeComplaint );
-  }
-  
-  //getting the string value stored in the shared prefence and decode in to a complaint model
-  ComplaintResult getComplaint(){
-    String? activeComplaint = prefs.getString('activeComplaint');
-   return  ComplaintResult.fromJson(jsonDecode(activeComplaint!));
+// Storing and getting trip status of the complaint
+  setTripStatus(String? tripStatus) async {
+    return prefs.setString(StringConstants.TRIP_STATUS, tripStatus!);
   }
 
+  String? getTripStatus() {
+    return prefs.getString(StringConstants.TRIP_STATUS);
+  }
+
+  //Storing start latitude
+  setStarLatitude(double? latitude) async {
+    return prefs.setDouble('StartLatitude', latitude!);
+  }
+
+  //getting start latitude
+  double? getStartLatitude() {
+    return prefs.getDouble('StartLatitude');
+  }
+
+  //Storing start longitue
+  setStartLongitude(double? longitude) async {
+    return prefs.setDouble('StartLongitude', longitude!);
+  }
+
+  //getting start longitude
+  double? getStartLongitude() {
+    return prefs.getDouble('StartLongitude');
+  }
+
+  //Storing start time of the trip
+  setStartTime(String? startTime) async {
+    return prefs.setString('StartTime', startTime!);
+  }
+
+  //getting starttime of the the trip
+  String? getStartTime() {
+    return prefs.getString('StartTime');
+  }
+
+  //storing complaint list of a case in to a string then save that string to shared preference
+  Future<bool> setComplaint(ComplaintResult complaintResult) async {
+    String activeComplaint = jsonEncode(complaintResult);
+    return prefs.setString('activeComplaint', activeComplaint);
+  }
+
+  //getting the string value stored in the shared prefence and decode in to a complaint model
+  ComplaintResult getComplaint() {
+    String? activeComplaint = prefs.getString('activeComplaint');
+    return ComplaintResult.fromJson(jsonDecode(activeComplaint!));
+  }
 }
