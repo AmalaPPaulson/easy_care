@@ -4,7 +4,7 @@ import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
 import 'package:easy_care/blocs/submit_visible/bloc/submit_visible_bloc.dart';
 import 'package:easy_care/blocs/trip_bloc/trip_bloc.dart';
 import 'package:easy_care/blocs/trip_visible/bloc/trip_visible_bloc.dart';
-import 'package:easy_care/ui/active_screen.dart';
+
 import 'package:easy_care/ui/home_screen.dart';
 import 'package:easy_care/ui/widgets/Buttons/login_button1.dart';
 import 'package:flutter/material.dart';

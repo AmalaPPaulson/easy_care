@@ -97,12 +97,12 @@ class _InstantSpareState extends State<InstantSpare> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
+             SizedBox(
+              height: SizeConfig.blockSizeHorizontal*5,
             ),
             Row(
               children: [
-                const SizedBox(width: 10), //SizedBox
+                 SizedBox(width: SizeConfig.blockSizeHorizontal*2.5), //SizedBox
                 /** Checkbox Widget **/
                 Checkbox(
                   value: isChecked,
@@ -112,8 +112,8 @@ class _InstantSpareState extends State<InstantSpare> {
                         .add(CheckET(isChecked: value!));
                   },
                 ),
-                const SizedBox(
-                  width: 10,
+                 SizedBox(
+                  width: SizeConfig.blockSizeHorizontal*2.5,
                 ), //SizedBox
                 const Text(
                   'Paid replacment',
@@ -143,8 +143,8 @@ class _InstantSpareState extends State<InstantSpare> {
                     )),
               ),
             ),
-            const SizedBox(
-              height: 20,
+             SizedBox(
+              height: SizeConfig.blockSizeHorizontal*5,
             ),
             Container(
               decoration: BoxDecoration(
@@ -351,9 +351,9 @@ class _InstantSpareState extends State<InstantSpare> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select'),
+            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 6,
+              height: MediaQuery.of(context).size.height / 5,
               child: Column(
                 children: [
                   ElevatedButton(
@@ -403,9 +403,9 @@ class _InstantSpareState extends State<InstantSpare> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select'),
+            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 6,
+              height: MediaQuery.of(context).size.height / 5,
               child: Column(
                 children: [
                   ElevatedButton(

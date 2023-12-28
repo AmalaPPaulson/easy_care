@@ -74,6 +74,15 @@ class UserRepository {
     return prefs.getBool(StringConstants.IS_START_TRIP) ?? false;
   }
 
+//Storing phone number of the account
+  setPhoneNo(String? phoneNo) async {
+    return prefs.setString('Phone Number', phoneNo!);
+  }
+
+  String? getPhoneNo() {
+    return prefs.getString('Phone Number');
+  }
+
 // Storing and getting trip status of the complaint
   setTripStatus(String? tripStatus) async {
     return prefs.setString(StringConstants.TRIP_STATUS, tripStatus!);

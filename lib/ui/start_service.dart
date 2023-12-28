@@ -82,9 +82,9 @@ class _StartState extends State<StartService> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select'),
+            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 6,
+              height: MediaQuery.of(context).size.height / 5,
               child: Column(
                 children: [
                   ElevatedButton(
@@ -135,9 +135,9 @@ class _StartState extends State<StartService> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select'),
+            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 6,
+              height: MediaQuery.of(context).size.height / 5,
               child: Column(
                 children: [
                   ElevatedButton(
@@ -244,26 +244,26 @@ class _StartState extends State<StartService> {
     return SingleChildScrollView(
       child: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*4),
         child: Column(
           children: [
             card(complaint),
-            const SizedBox(
-              height: 24,
+             SizedBox(
+              height: SizeConfig.blockSizeHorizontal*6,
             ),
             textfield(),
-            const SizedBox(
-              height: 24,
+             SizedBox(
+              height: SizeConfig.blockSizeHorizontal*6,
             ),
             audioPlayerCopy(),
-            const SizedBox(
-              height: 24,
+             SizedBox(
+              height: SizeConfig.blockSizeHorizontal*6,
             ),
             imagePicker(),
 
             //example(),
-            const SizedBox(
-              height: 56,
+             SizedBox(
+              height: SizeConfig.blockSizeHorizontal*14,
             ),
           ],
         ),
@@ -471,7 +471,7 @@ class _StartState extends State<StartService> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: const Text('Are you sure you want to delete?'),
+                title: const Text('Are you sure you want to delete?',overflow: TextOverflow.ellipsis,),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context, false),
@@ -692,8 +692,8 @@ class _StartState extends State<StartService> {
                           : GestureDetector(
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
-                                height: recording ? 70 : 40,
-                                width: recording ? 70 : 40,
+                                height: recording ? SizeConfig.blockSizeHorizontal*17.5 : SizeConfig.blockSizeHorizontal*10,
+                                width: recording ? SizeConfig.blockSizeHorizontal*17.5: SizeConfig.blockSizeHorizontal*10,
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: ColorConstants.primaryColor,
@@ -822,10 +822,10 @@ class _StartState extends State<StartService> {
             );
           },
         ),
-        const CircleAvatar(
+         CircleAvatar(
             backgroundColor: Colors.grey,
-            radius: 6,
-            child: Icon(
+            radius: SizeConfig.blockSizeHorizontal*1.5,
+            child: const Icon(
               Icons.play_arrow,
               color: ColorConstants.primaryColor,
             )),

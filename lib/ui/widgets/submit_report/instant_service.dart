@@ -225,9 +225,9 @@ class _InstantServiceState extends State<InstantService> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select'),
+            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 6,
+              height: MediaQuery.of(context).size.height / 5,
               child: Column(
                 children: [
                   ElevatedButton(
@@ -278,9 +278,9 @@ class _InstantServiceState extends State<InstantService> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select'),
+            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height / 6,
+              height: MediaQuery.of(context).size.height / 5,
               child: Column(
                 children: [
                   ElevatedButton(

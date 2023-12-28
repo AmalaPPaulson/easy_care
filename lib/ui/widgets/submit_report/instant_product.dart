@@ -58,8 +58,8 @@ class _InstantProductState extends State<InstantProduct> {
                 ),
                 Visibility(
                   visible: isChecked,
-                  child: const SizedBox(
-                    width: 20.0,
+                  child: SizedBox(
+                    width: SizeConfig.blockSizeHorizontal*5,
                   ),
                 ),
                 Visibility(
@@ -91,12 +91,12 @@ class _InstantProductState extends State<InstantProduct> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
+             SizedBox(
+              height: SizeConfig.blockSizeHorizontal*5,
             ),
             Row(
               children: [
-                const SizedBox(width: 10), //SizedBox
+                 SizedBox(width: SizeConfig.blockSizeHorizontal*2.5), //SizedBox
                 /** Checkbox Widget **/
                 Checkbox(
                   value: isChecked,
@@ -110,8 +110,8 @@ class _InstantProductState extends State<InstantProduct> {
                     // });
                   },
                 ),
-                const SizedBox(
-                  width: 10,
+                 SizedBox(
+                  width: SizeConfig.blockSizeHorizontal*2.5,
                 ), //SizedBox
                 const Text(
                   'Paid replacement',
@@ -123,8 +123,8 @@ class _InstantProductState extends State<InstantProduct> {
             ServiceDetails(
               controller: widget.serviceController!,
             ),
-            const SizedBox(
-              height: 80,
+             SizedBox(
+              height: SizeConfig.blockSizeHorizontal*20,
             ),
           ],
         );

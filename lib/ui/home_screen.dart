@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:easy_care/blocs/HomeScreen/bloc/home_screen_bloc.dart';
 import 'package:easy_care/blocs/auth_bloc/auth_bloc_bloc.dart';
+import 'package:easy_care/repositories/user_repo.dart';
 import 'package:easy_care/ui/active_screen.dart';
 import 'package:easy_care/ui/completed_screen.dart';
 import 'package:easy_care/ui/login_phone.dart';
@@ -22,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  UserRepository userRepository = UserRepository();
   final PageController _pageController = PageController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -44,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+     String?  phoneNo = userRepository.getPhoneNo();
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -83,9 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 4,
                 ),
-                const Text(
-                  '7123451234',
-                  style: TextStyle(fontFamily: AssetConstants.poppinsBold),
+               Text(
+                  '$phoneNo',
+                  style: const TextStyle(fontFamily: AssetConstants.poppinsBold),
                 ),
               ],
             ),

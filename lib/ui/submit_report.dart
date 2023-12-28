@@ -92,12 +92,12 @@ class _SubmitReportState extends State<SubmitReport> {
   Widget createBody(ComplaintResult complaint) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*3),
         child: Column(
           children: [
             card(complaint),
-            const SizedBox(
-              height: 24,
+             SizedBox(
+              height: SizeConfig.blockSizeHorizontal*8,
             ),
             BlocBuilder<SubmitTabBloc, SubmitTabState>(
               builder: (context, state) {
@@ -110,8 +110,8 @@ class _SubmitReportState extends State<SubmitReport> {
                 return Column(
                   children: [
                     tabContainer(currentTab, selectedOption),
-                    const SizedBox(
-                      height: 24,
+                     SizedBox(
+                      height: SizeConfig.blockSizeHorizontal*8,
                     ),
                     if (currentTab == 1)
                       ServiceDetails(
@@ -132,7 +132,10 @@ class _SubmitReportState extends State<SubmitReport> {
                             priceController: priceController,
                             productController: sparePartController,
                           ),
-                      }
+                      },
+                      SizedBox(
+                      height: SizeConfig.blockSizeHorizontal*20,
+                    ),
                   ],
                 );
               },
@@ -164,7 +167,7 @@ class _SubmitReportState extends State<SubmitReport> {
 
   Widget tabTitle(int currentTab) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*1),
       child: Container(
         height: SizeConfig.blockSizeHorizontal * 15,
         width: MediaQuery.of(context).size.width,
@@ -183,10 +186,10 @@ class _SubmitReportState extends State<SubmitReport> {
                 title: 'Instant',
                 tabNo: 0,
                 borderRadiusGeometry: (currentTab == 0)
-                    ? const BorderRadius.only(topRight: Radius.circular(5))
+                    ?  BorderRadius.only(topRight: Radius.circular(SizeConfig.blockSizeHorizontal*1.5))
                     : (currentTab == 1)
-                        ? const BorderRadius.only(
-                            bottomRight: Radius.circular(5))
+                        ?  BorderRadius.only(
+                            bottomRight: Radius.circular(SizeConfig.blockSizeHorizontal*1.5))
                         : BorderRadius.circular(0),
                 color2: (currentTab == 0)
                     ? ColorConstants.backgroundColor1
@@ -203,13 +206,13 @@ class _SubmitReportState extends State<SubmitReport> {
                     ? ColorConstants.backgroundColor1
                     : ColorConstants.backgroundColor2,
                 borderRadiusGeometry: (currentTab == 0)
-                    ? const BorderRadius.only(bottomLeft: Radius.circular(8))
+                    ?  BorderRadius.only(bottomLeft: Radius.circular(SizeConfig.blockSizeHorizontal*2))
                     : (currentTab == 1)
-                        ? const BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            topRight: Radius.circular(8))
-                        : const BorderRadius.only(
-                            bottomRight: Radius.circular(8)),
+                        ?  BorderRadius.only(
+                            topLeft: Radius.circular(SizeConfig.blockSizeHorizontal*2),
+                            topRight: Radius.circular(SizeConfig.blockSizeHorizontal*2))
+                        :  BorderRadius.only(
+                            bottomRight: Radius.circular(SizeConfig.blockSizeHorizontal*2)),
                 onPressed: () {
                   tab = false;
                   context.read<SubmitTabBloc>().add(TabClickET(tabNo: 1));

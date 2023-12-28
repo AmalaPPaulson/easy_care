@@ -41,8 +41,22 @@ class _LoginPinState extends State<LoginPin> {
         }
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
+          
+        ),
         body: Padding(
-          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
+          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3.5),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
