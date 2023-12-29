@@ -45,7 +45,7 @@ class _SubmitReportState extends State<SubmitReport> {
 
     return BlocListener<SubmitTabBloc, SubmitTabState>(
       listener: (context, state) {
-        if (state.isLoading == false &&state.started) {
+        if (state.isLoading == false && state.started) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const SuccessScreen()),
@@ -92,12 +92,12 @@ class _SubmitReportState extends State<SubmitReport> {
   Widget createBody(ComplaintResult complaint) {
     return SingleChildScrollView(
       child: Padding(
-        padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*3),
+        padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
         child: Column(
           children: [
             card(complaint),
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*8,
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 8,
             ),
             BlocBuilder<SubmitTabBloc, SubmitTabState>(
               builder: (context, state) {
@@ -110,8 +110,8 @@ class _SubmitReportState extends State<SubmitReport> {
                 return Column(
                   children: [
                     tabContainer(currentTab, selectedOption),
-                     SizedBox(
-                      height: SizeConfig.blockSizeHorizontal*8,
+                    SizedBox(
+                      height: SizeConfig.blockSizeHorizontal * 8,
                     ),
                     if (currentTab == 1)
                       ServiceDetails(
@@ -133,8 +133,8 @@ class _SubmitReportState extends State<SubmitReport> {
                             productController: sparePartController,
                           ),
                       },
-                      SizedBox(
-                      height: SizeConfig.blockSizeHorizontal*20,
+                    SizedBox(
+                      height: SizeConfig.blockSizeHorizontal * 20,
                     ),
                   ],
                 );
@@ -167,7 +167,7 @@ class _SubmitReportState extends State<SubmitReport> {
 
   Widget tabTitle(int currentTab) {
     return Padding(
-      padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*1),
+      padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 1),
       child: Container(
         height: SizeConfig.blockSizeHorizontal * 15,
         width: MediaQuery.of(context).size.width,
@@ -186,10 +186,13 @@ class _SubmitReportState extends State<SubmitReport> {
                 title: 'Instant',
                 tabNo: 0,
                 borderRadiusGeometry: (currentTab == 0)
-                    ?  BorderRadius.only(topRight: Radius.circular(SizeConfig.blockSizeHorizontal*1.5))
+                    ? BorderRadius.only(
+                        topRight: Radius.circular(
+                            SizeConfig.blockSizeHorizontal * 1.5))
                     : (currentTab == 1)
-                        ?  BorderRadius.only(
-                            bottomRight: Radius.circular(SizeConfig.blockSizeHorizontal*1.5))
+                        ? BorderRadius.only(
+                            bottomRight: Radius.circular(
+                                SizeConfig.blockSizeHorizontal * 1.5))
                         : BorderRadius.circular(0),
                 color2: (currentTab == 0)
                     ? ColorConstants.backgroundColor1
@@ -206,13 +209,18 @@ class _SubmitReportState extends State<SubmitReport> {
                     ? ColorConstants.backgroundColor1
                     : ColorConstants.backgroundColor2,
                 borderRadiusGeometry: (currentTab == 0)
-                    ?  BorderRadius.only(bottomLeft: Radius.circular(SizeConfig.blockSizeHorizontal*2))
+                    ? BorderRadius.only(
+                        bottomLeft:
+                            Radius.circular(SizeConfig.blockSizeHorizontal * 2))
                     : (currentTab == 1)
-                        ?  BorderRadius.only(
-                            topLeft: Radius.circular(SizeConfig.blockSizeHorizontal*2),
-                            topRight: Radius.circular(SizeConfig.blockSizeHorizontal*2))
-                        :  BorderRadius.only(
-                            bottomRight: Radius.circular(SizeConfig.blockSizeHorizontal*2)),
+                        ? BorderRadius.only(
+                            topLeft: Radius.circular(
+                                SizeConfig.blockSizeHorizontal * 2),
+                            topRight: Radius.circular(
+                                SizeConfig.blockSizeHorizontal * 2))
+                        : BorderRadius.only(
+                            bottomRight: Radius.circular(
+                                SizeConfig.blockSizeHorizontal * 2)),
                 onPressed: () {
                   tab = false;
                   context.read<SubmitTabBloc>().add(TabClickET(tabNo: 1));
@@ -229,7 +237,10 @@ class _SubmitReportState extends State<SubmitReport> {
     return Column(
       children: [
         ListTile(
-          title: const Text('Service'),
+          title: const Text(
+            'Service',
+            style: TextStyle(fontFamily: AssetConstants.poppinsMedium),
+          ),
           leading: Radio(
             value: 1,
             groupValue: selectedOption,
@@ -244,7 +255,10 @@ class _SubmitReportState extends State<SubmitReport> {
           ),
         ),
         ListTile(
-          title: const Text('Spare Replacement'),
+          title: const Text(
+            'Spare Replacement',
+            style: TextStyle(fontFamily: AssetConstants.poppinsMedium),
+          ),
           leading: Radio(
             value: 2,
             groupValue: selectedOption,
@@ -252,14 +266,17 @@ class _SubmitReportState extends State<SubmitReport> {
               context
                   .read<SubmitTabBloc>()
                   .add(RadialBtnClickET(value: value!));
-                   serviceController.clear();
+              serviceController.clear();
               priceController.clear();
               sparePartController.clear();
             },
           ),
         ),
         ListTile(
-          title: const Text('Product Replacement'),
+          title: const Text(
+            'Product Replacement',
+            style: TextStyle(fontFamily: AssetConstants.poppinsMedium),
+          ),
           leading: Radio(
             value: 3,
             groupValue: selectedOption,
@@ -267,7 +284,7 @@ class _SubmitReportState extends State<SubmitReport> {
               context
                   .read<SubmitTabBloc>()
                   .add(RadialBtnClickET(value: value!));
-                   serviceController.clear();
+              serviceController.clear();
               priceController.clear();
               sparePartController.clear();
             },
@@ -281,7 +298,10 @@ class _SubmitReportState extends State<SubmitReport> {
     return Column(
       children: [
         ListTile(
-          title: const Text('Assign to another technician'),
+          title: const Text(
+            'Assign to another technician',
+            style: TextStyle(fontFamily: AssetConstants.poppinsMedium),
+          ),
           leading: Radio(
             value: 1,
             groupValue: option,
@@ -394,7 +414,7 @@ class _SubmitReportState extends State<SubmitReport> {
                                 'Contact Number: ${complaint.complaint!.contactNumber!.toString()}',
                                 style: const TextStyle(
                                     fontFamily:
-                                        AssetConstants.poppinsSemiBold)),
+                                        AssetConstants.poppinsBold)),
                           )
                         ],
                       ),
@@ -436,7 +456,7 @@ class _SubmitReportState extends State<SubmitReport> {
                             child: const Text(
                               'Complaint:',
                               style: TextStyle(
-                                  fontFamily: AssetConstants.poppinsSemiBold),
+                                  fontFamily: AssetConstants.poppinsBold),
                             ),
                           ),
                           Padding(

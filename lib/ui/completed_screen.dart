@@ -158,16 +158,16 @@ class _CompletedScreenState extends State<CompletedScreen> {
                       fontFamily: AssetConstants.poppinsRegular),
                 ),
               ),
-              const Divider(color: ColorConstants.backgroundColor2),
-              Padding(
-                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                child: Text(
-                  result.status.toString(),
-                  style: const TextStyle(
-                      color: ColorConstants.primaryColor,
-                      fontFamily: AssetConstants.poppinsSemiBold),
-                ),
-              ),
+              // const Divider(color: ColorConstants.backgroundColor2),
+              // Padding(
+              //   padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+              //   child: Text(
+              //     result.status.toString(),
+              //     style: const TextStyle(
+              //         color: ColorConstants.primaryColor,
+              //         fontFamily: AssetConstants.poppinsSemiBold),
+              //   ),
+              // ),
             ],
           ),
         ),

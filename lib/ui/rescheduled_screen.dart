@@ -17,44 +17,45 @@ class RescheduledScreen extends StatefulWidget {
 
 class _RescheduledScreenState extends State<RescheduledScreen> {
   final ScrollController _scrollController = ScrollController();
-   ComplaintRepository complaintRepository = ComplaintRepository();
+  ComplaintRepository complaintRepository = ComplaintRepository();
 
   @override
   void initState() {
     context.read<RescheduledBloc>().add(GetRescheduledET(isRefreshed: false));
-     _scrollController.addListener(_loadMoreData);
+    _scrollController.addListener(_loadMoreData);
     super.initState();
   }
+
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
+
   void _loadMoreData() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-            context.read<RescheduledBloc>().add(PagenatedRescheduledEvent());
+      context.read<RescheduledBloc>().add(PagenatedRescheduledEvent());
       // User has reached the end of the list
       // Load more data or trigger pagination in flutter
-     
     }
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RescheduledBloc, RescheduledState>(
       builder: (context, state) {
-         if(state.isLoading==true){
-           return  const CustomShimmerEffect();
-         } 
-         if(state.errorMsg !=null && state.errorMsg!.isNotEmpty ){
+        if (state.isLoading == true) {
+          return const CustomShimmerEffect();
+        }
+        if (state.errorMsg != null && state.errorMsg!.isNotEmpty) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(state.errorMsg!),
             ],
           );
-         } 
+        }
         return Column(
           children: [
             Expanded(
@@ -68,84 +69,93 @@ class _RescheduledScreenState extends State<RescheduledScreen> {
                 ),
               ),
             ),
-             if(state.isPageLoading)
-             Padding(
-              padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeHorizontal*10),
-              child: const CircularProgressIndicator(),
-            ),
+            if (state.isPageLoading)
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: SizeConfig.blockSizeHorizontal * 10),
+                child: const CircularProgressIndicator(),
+              ),
           ],
         );
       },
     );
   }
-Future<void> _refresh() async {
+
+  Future<void> _refresh() async {
     context.read<RescheduledBloc>().add(GetRescheduledET(isRefreshed: true));
     await Future.delayed(const Duration(seconds: 2));
   }
+
   Widget card(ComplaintResult result) {
     String phoneNO = result.complaint!.contactNumber.toString();
     return Padding(
-      padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*2.5),
+      padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2.5),
       child: Card(
         surfaceTintColor: Colors.white,
         color: Colors.white,
         elevation: 4.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*2.5)),
+        shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2.5)),
         child: Padding(
-          padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*2),
+          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-              padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*2),
-              child: Row(
-                children: [
-                  const Text(
-                    'Complaint ID: ',
-                    style: TextStyle(fontFamily: AssetConstants.poppinsRegular),
-                  ),
-                  Text(
-                    result.complaint!.complaintId.toString(),
-                    style:
-                        const TextStyle(fontFamily: AssetConstants.poppinsBold),
-                  ),
-                ],
-              ),
-            ),
-              const Divider(color: ColorConstants.backgroundColor2),
-               Padding(
-              padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    result.complaint!.customerName.toString().toUpperCase(),
-                    style: const TextStyle(
-                      fontFamily: AssetConstants.poppinsBold
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Complaint ID: ',
+                      style:
+                          TextStyle(fontFamily: AssetConstants.poppinsRegular),
                     ),
-                  ),
-                GestureDetector(
-                      onTap: () {
-                        complaintRepository.makePhoneCall(phoneNO);
-                      },
-                      child: const Icon(Icons.phone)),
-                ],
+                    Text(
+                      result.complaint!.complaintId.toString(),
+                      style: const TextStyle(
+                          fontFamily: AssetConstants.poppinsBold),
+                    ),
+                  ],
+                ),
               ),
-            ),
-               Padding(
-              padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*2),
-              child: Text(result.complaint!.houseName.toString(),style: const TextStyle(
-                        fontFamily: AssetConstants.poppinsRegular
-                      ),),
-            ),
               const Divider(color: ColorConstants.backgroundColor2),
-               Padding(
-              padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*2),
-              child: Text(
-                result.status.toString(),
-                style: const TextStyle(color: ColorConstants.primaryColor,fontFamily: AssetConstants.poppinsSemiBold),
+              Padding(
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      result.complaint!.customerName.toString().toUpperCase(),
+                      style: const TextStyle(
+                          fontFamily: AssetConstants.poppinsBold),
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          complaintRepository.makePhoneCall(phoneNO);
+                        },
+                        child: const Icon(Icons.phone)),
+                  ],
+                ),
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                child: Text(
+                  result.complaint!.houseName.toString(),
+                  style: const TextStyle(
+                      fontFamily: AssetConstants.poppinsRegular),
+                ),
+              ),
+              // const Divider(color: ColorConstants.backgroundColor2),
+              // Padding(
+              //   padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+              //   child: Text(
+              //     result.status.toString(),
+              //     style: const TextStyle(
+              //         color: ColorConstants.primaryColor,
+              //         fontFamily: AssetConstants.poppinsSemiBold),
+              //   ),
+              // ),
             ],
           ),
         ),

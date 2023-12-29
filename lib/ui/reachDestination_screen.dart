@@ -8,6 +8,7 @@ import 'package:easy_care/ui/widgets/Buttons/floatingaction_button.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -43,7 +44,7 @@ class _ReachDestinationState extends State<ReachDestination> {
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.red,
               textColor: Colors.white,
-              fontSize: SizeConfig.blockSizeHorizontal * 4);
+              fontSize: 16);
         }
       },
       child: Scaffold(
@@ -55,214 +56,226 @@ class _ReachDestinationState extends State<ReachDestination> {
           title: Text(
             'Complaint : ${complaint.complaint!.complaintId.toString()}',
             style: const TextStyle(
-                color: Colors.white, fontFamily: AssetConstants.poppinsMedium),
+                color: Colors.white, fontFamily: AssetConstants.poppinsSemiBold),
           ),
         ),
-        body: Padding(
-          padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
-          child: Column(
-            children: [
-              Card(
-                surfaceTintColor: Colors.white,
-                color: Colors.white,
-                elevation: 4.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        SizeConfig.blockSizeHorizontal * 2.5)),
-                child: Padding(
-                  padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                  child: BlocBuilder<TripVisibleBloc, TripVisibleState>(
-                    buildWhen: (previous, current) {
-                      return current.card == false;
-                    },
-                    builder: (context, state) {
-                      isVisible = state.isVisible;
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              context.read<TripVisibleBloc>().add(VisibilityET(
-                                    visible: isVisible,
-                                  ));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(
-                                      SizeConfig.blockSizeHorizontal * 2),
-                                  child: const Text(
-                                    'Customer Name & Address',
-                                    style: TextStyle(
-                                        fontFamily: AssetConstants.poppinsBold),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
+            child: Column(
+              children: [
+            //     SizedBox(
+            //   height: SizeConfig.blockSizeHorizontal * 80,
+            //   width: SizeConfig.blockSizeHorizontal * 80,
+            //   child: const FlareActor(
+            //     'assets/animation/Driver_circles.flr',
+            //     fit: BoxFit.cover,
+            //     animation: 'verified',
+          
+            //     // Replace with your animation name
+            //   ),
+            // ),
+                Card(
+                  surfaceTintColor: Colors.white,
+                  color: Colors.white,
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 2.5)),
+                  child: Padding(
+                    padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                    child: BlocBuilder<TripVisibleBloc, TripVisibleState>(
+                      buildWhen: (previous, current) {
+                        return current.card == false;
+                      },
+                      builder: (context, state) {
+                        isVisible = state.isVisible;
+          
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                context.read<TripVisibleBloc>().add(VisibilityET(
+                                      visible: isVisible,
+                                    ));
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 2),
+                                    child: const Text(
+                                      'Customer Name & Address',
+                                      style: TextStyle(
+                                          fontFamily: AssetConstants.poppinsBold),
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(
-                                      SizeConfig.blockSizeHorizontal * 4),
-                                  child: Icon(
-                                    isVisible
-                                        ? Icons.expand_less_rounded
-                                        : Icons.expand_more,
-                                    color: ColorConstants.blackColor,
-                                    size: SizeConfig.blockSizeHorizontal * 5,
+                                  Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 4),
+                                    child: Icon(
+                                      isVisible
+                                          ? Icons.expand_less_rounded
+                                          : Icons.expand_more,
+                                      color: ColorConstants.blackColor,
+                                      size: SizeConfig.blockSizeHorizontal * 5,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Visibility(
-                            visible: isVisible,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Divider(
-                                    color: ColorConstants.backgroundColor2),
-                                Padding(
-                                  padding: EdgeInsets.all(
-                                      SizeConfig.blockSizeHorizontal * 2),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                          complaint.complaint!.customerName
-                                              .toString()
-                                              .toUpperCase(),
-                                          style: const TextStyle(
-                                              fontFamily:
-                                                  AssetConstants.poppinsBold)),
-                                      GestureDetector(
-                                          onTap: () {
-                                            complaintRepository
-                                                .makePhoneCall(phoneNO);
-                                          },
-                                          child: const Icon(Icons.phone)),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(
-                                      SizeConfig.blockSizeHorizontal * 2),
-                                  child: Text(
-                                      complaint.complaint!.houseName.toString(),
-                                      style: const TextStyle(
-                                          fontFamily:
-                                              AssetConstants.poppinsSemiBold)),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(
-                                      SizeConfig.blockSizeHorizontal * 2),
-                                  child: Text(
-                                      'Contact Number: ${complaint.complaint!.contactNumber!.toString()}',
-                                      style: const TextStyle(
-                                          fontFamily:
-                                              AssetConstants.poppinsSemiBold)),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: SizeConfig.blockSizeHorizontal * 4,
-              ),
-              Card(
-                surfaceTintColor: Colors.white,
-                color: Colors.white,
-                elevation: 4.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        SizeConfig.blockSizeHorizontal * 2.5)),
-                child: Padding(
-                  padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                  child: BlocBuilder<TripVisibleBloc, TripVisibleState>(
-                    buildWhen: (previous, current) {
-                      return (current.card == true);
-                    },
-                    builder: (context, state) {
-                      isShow = state.isShow;
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              context
-                                  .read<TripVisibleBloc>()
-                                  .add(ShowET(show: isShow));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(
-                                      SizeConfig.blockSizeHorizontal * 2),
-                                  child: const Text(
-                                    'Complaint:',
-                                    style: TextStyle(
-                                        fontFamily:
-                                            AssetConstants.poppinsSemiBold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(
-                                      SizeConfig.blockSizeHorizontal * 2),
-                                  child: Icon(
-                                    isShow
-                                        ? Icons.expand_less
-                                        : Icons.expand_more,
-                                    color: ColorConstants.blackColor,
-                                    size: SizeConfig.blockSizeHorizontal * 5,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Visibility(
-                            visible: isShow,
-                              child: const Divider(
-                                  color: ColorConstants.backgroundColor2)),
-                          Visibility(
-                            visible: isShow,
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                  SizeConfig.blockSizeHorizontal * 2),
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) => SizedBox(
-                                    height: SizeConfig.blockSizeHorizontal * 2),
-                                shrinkWrap: true,
-                                itemCount: complaintLines.length,
-                                itemBuilder: (context, index) {
-                                  return Text(
-                                    complaintLines[index],
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize:
-                                            SizeConfig.blockSizeHorizontal *
-                                                3.5,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily:
-                                            AssetConstants.poppinsMedium),
-                                  );
-                                },
+                                ],
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
+                            Visibility(
+                              visible: isVisible,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Divider(
+                                      color: ColorConstants.backgroundColor2),
+                                  Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 2),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            complaint.complaint!.customerName
+                                                .toString()
+                                                .toUpperCase(),
+                                            style: const TextStyle(
+                                                fontFamily:
+                                                    AssetConstants.poppinsBold)),
+                                        GestureDetector(
+                                            onTap: () {
+                                              complaintRepository
+                                                  .makePhoneCall(phoneNO);
+                                            },
+                                            child: const Icon(Icons.phone)),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 2),
+                                    child: Text(
+                                        complaint.complaint!.houseName.toString(),
+                                        style: const TextStyle(
+                                            fontFamily:
+                                                AssetConstants.poppinsSemiBold)),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 2),
+                                    child: Text(
+                                        'Contact Number: ${complaint.complaint!.contactNumber!.toString()}',
+                                        style: const TextStyle(
+                                            fontFamily:
+                                                AssetConstants.poppinsBold)),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: SizeConfig.blockSizeHorizontal * 4,
+                ),
+                Card(
+                  surfaceTintColor: Colors.white,
+                  color: Colors.white,
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          SizeConfig.blockSizeHorizontal * 2.5)),
+                  child: Padding(
+                    padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                    child: BlocBuilder<TripVisibleBloc, TripVisibleState>(
+                      buildWhen: (previous, current) {
+                        return (current.card == true);
+                      },
+                      builder: (context, state) {
+                        isShow = state.isShow;
+          
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                context
+                                    .read<TripVisibleBloc>()
+                                    .add(ShowET(show: isShow));
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 2),
+                                    child: const Text(
+                                      'Complaint:',
+                                      style: TextStyle(
+                                          fontFamily:
+                                              AssetConstants.poppinsBold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 2),
+                                    child: Icon(
+                                      isShow
+                                          ? Icons.expand_less
+                                          : Icons.expand_more,
+                                      color: ColorConstants.blackColor,
+                                      size: SizeConfig.blockSizeHorizontal * 5,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Visibility(
+                                visible: isShow,
+                                child: const Divider(
+                                    color: ColorConstants.backgroundColor2)),
+                            Visibility(
+                              visible: isShow,
+                              child: Padding(
+                                padding: EdgeInsets.all(
+                                    SizeConfig.blockSizeHorizontal * 2),
+                                child: ListView.separated(
+                                  separatorBuilder: (context, index) => SizedBox(
+                                      height: SizeConfig.blockSizeHorizontal * 2),
+                                  shrinkWrap: true,
+                                  itemCount: complaintLines.length,
+                                  itemBuilder: (context, index) {
+                                    return Text(
+                                      complaintLines[index],
+                                      textAlign: TextAlign.start,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily:
+                                              AssetConstants.poppinsMedium),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: SizeConfig.blockSizeHorizontal*20,),
+              ],
+            ),
           ),
         ),
         floatingActionButton: BlocBuilder<TripBloc, TripState>(

@@ -7,6 +7,9 @@ import 'package:easy_care/blocs/trip_visible/bloc/trip_visible_bloc.dart';
 
 import 'package:easy_care/ui/home_screen.dart';
 import 'package:easy_care/ui/widgets/Buttons/login_button1.dart';
+import 'package:easy_care/utils/constants/asset_constants.dart';
+import 'package:easy_care/utils/size_config.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,13 +29,29 @@ class _SuccessScreenState extends State<SuccessScreen> {
   }
 
   Widget createBody() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text('Go to Next trip'),
+          SizedBox(
+            height: SizeConfig.blockSizeHorizontal * 80,
+            width: SizeConfig.blockSizeHorizontal * 80,
+            child: const FlareActor(
+              'assets/animation/success.flr',
+              fit: BoxFit.cover,
+              animation: 'verified',
+
+              // Replace with your animation name
+            ),
+          ),
+          const Text(
+            'Go to Next trip',
+            style: TextStyle(fontFamily: AssetConstants.poppinsMedium),
+          ),
+          SizedBox(
+            height: SizeConfig.blockSizeHorizontal * 3,
+          ),
           LoginButton1(
               onTap: () {
                 context.read<TripVisibleBloc>().add(CleanTripVisibleET());

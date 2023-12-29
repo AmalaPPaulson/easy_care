@@ -79,7 +79,7 @@ class _LoginPhoneState extends State<LoginPhone> {
                         horizontal: 0.0),
                     filled: true,
                     fillColor: ColorConstants.backgroundColor2,
-                    prefixText: '  +91',
+                    prefixText: '  +91 ',
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(

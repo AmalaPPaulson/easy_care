@@ -49,7 +49,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.red,
               textColor: Colors.white,
-              fontSize: SizeConfig.blockSizeHorizontal * 4);
+              fontSize: 16);
         }
       },
       child: Scaffold(
@@ -65,9 +65,9 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
             ),
           ),
           title: Text(
-            'Complaint Id: ${complaint.complaint!.complaintId} ',
+            'Complaint ID: ${complaint.complaint!.complaintId} ',
             style: const TextStyle(
-                color: Colors.white, fontFamily: AssetConstants.poppinsMedium),
+                color: Colors.white, fontFamily: AssetConstants.poppinsSemiBold),
           ),
         ),
         body: Column(
@@ -90,7 +90,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                       child: const Text(
                         'Customer Name & Address',
                         style: TextStyle(
-                            fontFamily: AssetConstants.poppinsSemiBold),
+                            fontFamily: AssetConstants.poppinsBold),
                       ),
                     ),
                     const Divider(color: ColorConstants.backgroundColor2),
@@ -127,7 +127,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                       child: Text(
                           'Contact Number: ${complaint.complaint!.contactNumber!.toString()}',
                           style: const TextStyle(
-                              fontFamily: AssetConstants.poppinsSemiBold)),
+                              fontFamily: AssetConstants.poppinsBold)),
                     )
                   ],
                 ),
@@ -151,7 +151,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                       child: const Text(
                         'Complaint:',
                         style: TextStyle(
-                            fontFamily: AssetConstants.poppinsSemiBold),
+                            fontFamily: AssetConstants.poppinsBold),
                       ),
                     ),
                     const Divider(color: ColorConstants.backgroundColor2),
@@ -167,9 +167,9 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                           return Text(
                             complaintLines[index],
                             textAlign: TextAlign.start,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: SizeConfig.blockSizeHorizontal * 3.5,
+                                fontSize:14,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: AssetConstants.poppinsMedium),
                           );

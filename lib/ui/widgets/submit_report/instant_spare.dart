@@ -97,12 +97,13 @@ class _InstantSpareState extends State<InstantSpare> {
                 ),
               ],
             ),
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*5,
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 5,
             ),
             Row(
               children: [
-                 SizedBox(width: SizeConfig.blockSizeHorizontal*2.5), //SizedBox
+                SizedBox(
+                    width: SizeConfig.blockSizeHorizontal * 2.5), //SizedBox
                 /** Checkbox Widget **/
                 Checkbox(
                   value: isChecked,
@@ -112,12 +113,14 @@ class _InstantSpareState extends State<InstantSpare> {
                         .add(CheckET(isChecked: value!));
                   },
                 ),
-                 SizedBox(
-                  width: SizeConfig.blockSizeHorizontal*2.5,
+                SizedBox(
+                  width: SizeConfig.blockSizeHorizontal * 2.5,
                 ), //SizedBox
                 const Text(
                   'Paid replacment',
-                  style: TextStyle(fontSize: 17.0),
+                  style: TextStyle(
+                      fontSize: 17.0,
+                      fontFamily: AssetConstants.poppinsRegular),
                 ), //Text
                 //Checkbox
               ], //<Widget>[]
@@ -143,8 +146,8 @@ class _InstantSpareState extends State<InstantSpare> {
                     )),
               ),
             ),
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*5,
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 5,
             ),
             Container(
               decoration: BoxDecoration(
@@ -351,7 +354,11 @@ class _InstantSpareState extends State<InstantSpare> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
+            title: const Text(
+              'Please choose media to select',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontFamily: AssetConstants.poppinsRegular),
+            ),
             content: SizedBox(
               height: MediaQuery.of(context).size.height / 5,
               child: Column(
@@ -365,7 +372,11 @@ class _InstantSpareState extends State<InstantSpare> {
                     child: const Row(
                       children: [
                         Icon(Icons.image),
-                        Text('From Gallery'),
+                        Text(
+                          'From Gallery',
+                          style: TextStyle(
+                              fontFamily: AssetConstants.poppinsRegular),
+                        ),
                       ],
                     ),
                   ),
@@ -403,7 +414,11 @@ class _InstantSpareState extends State<InstantSpare> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
+            title: const Text(
+              'Please choose media to select',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontFamily: AssetConstants.poppinsRegular),
+            ),
             content: SizedBox(
               height: MediaQuery.of(context).size.height / 5,
               child: Column(
@@ -417,7 +432,11 @@ class _InstantSpareState extends State<InstantSpare> {
                     child: const Row(
                       children: [
                         Icon(Icons.image),
-                        Text('From Gallery'),
+                        Text(
+                          'From Gallery',
+                          style: TextStyle(
+                              fontFamily: AssetConstants.poppinsRegular),
+                        ),
                       ],
                     ),
                   ),
@@ -430,7 +449,11 @@ class _InstantSpareState extends State<InstantSpare> {
                     child: const Row(
                       children: [
                         Icon(Icons.camera),
-                        Text('From Camera'),
+                        Text(
+                          'From Camera',
+                          style: TextStyle(
+                              fontFamily: AssetConstants.poppinsRegular),
+                        ),
                       ],
                     ),
                   ),

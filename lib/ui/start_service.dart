@@ -82,7 +82,11 @@ class _StartState extends State<StartService> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
+            title: const Text(
+              'Please choose media to select',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontFamily: AssetConstants.poppinsMedium),
+            ),
             content: SizedBox(
               height: MediaQuery.of(context).size.height / 5,
               child: Column(
@@ -96,7 +100,12 @@ class _StartState extends State<StartService> {
                     child: const Row(
                       children: [
                         Icon(Icons.image),
-                        Text('From Gallery', overflow: TextOverflow.ellipsis,),
+                        Text(
+                          'From Gallery',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: AssetConstants.poppinsMedium),
+                        ),
                       ],
                     ),
                   ),
@@ -109,7 +118,12 @@ class _StartState extends State<StartService> {
                     child: const Row(
                       children: [
                         Icon(Icons.camera),
-                        Text('From Camera', overflow: TextOverflow.ellipsis,),
+                        Text(
+                          'From Camera',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: AssetConstants.poppinsMedium),
+                        ),
                       ],
                     ),
                   ),
@@ -135,7 +149,11 @@ class _StartState extends State<StartService> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
+            title: const Text(
+              'Please choose media to select',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontFamily: AssetConstants.poppinsMedium),
+            ),
             content: SizedBox(
               height: MediaQuery.of(context).size.height / 5,
               child: Column(
@@ -149,7 +167,12 @@ class _StartState extends State<StartService> {
                     child: const Row(
                       children: [
                         Icon(Icons.image),
-                        Text('From Gallery', overflow: TextOverflow.ellipsis,),
+                        Text(
+                          'From Gallery',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: AssetConstants.poppinsMedium),
+                        ),
                       ],
                     ),
                   ),
@@ -162,7 +185,12 @@ class _StartState extends State<StartService> {
                     child: const Row(
                       children: [
                         Icon(Icons.camera),
-                        Text('From Camera', overflow: TextOverflow.ellipsis,),
+                        Text(
+                          'From Camera',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: AssetConstants.poppinsMedium),
+                        ),
                       ],
                     ),
                   ),
@@ -212,7 +240,7 @@ class _StartState extends State<StartService> {
           title: Text(
             'Complaint Id : ${complaint.complaint!.complaintId.toString()}  ',
             style: const TextStyle(
-                color: Colors.white, fontFamily: AssetConstants.poppinsMedium),
+                color: Colors.white, fontFamily: AssetConstants.poppinsSemiBold),
           ),
         ),
         body: createBody(complaint),
@@ -244,26 +272,26 @@ class _StartState extends State<StartService> {
     return SingleChildScrollView(
       child: SafeArea(
           child: Padding(
-        padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*4),
+        padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
         child: Column(
           children: [
             card(complaint),
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*6,
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 6,
             ),
             textfield(),
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*6,
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 6,
             ),
             audioPlayerCopy(),
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*6,
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 6,
             ),
             imagePicker(),
 
             //example(),
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*14,
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 20,
             ),
           ],
         ),
@@ -471,22 +499,37 @@ class _StartState extends State<StartService> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: const Text('Are you sure you want to delete?',overflow: TextOverflow.ellipsis,),
+                title: const Text(
+                  'Are you sure you want to delete?',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontFamily: AssetConstants.poppinsMedium),
+                ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context, false),
-                    child: const Text('No'),
+                    child: const Text(
+                      'No',
+                      style:
+                          TextStyle(fontFamily: AssetConstants.poppinsMedium),
+                    ),
                   ),
                   TextButton(
                     onPressed: () => Navigator.pop(context, true),
-                    child: const Text('Yes'),
+                    child: const Text(
+                      'Yes',
+                      style:
+                          TextStyle(fontFamily: AssetConstants.poppinsMedium),
+                    ),
                   )
                 ],
               );
             },
           );
         },
-        child: const Text("Delete"),
+        child: const Text(
+          "Delete",
+          style: TextStyle(fontFamily: AssetConstants.poppinsMedium),
+        ),
       ),
       onDismissed: (DismissDirection direction) {
         log('Dismissed with direction $direction');
@@ -569,7 +612,8 @@ class _StartState extends State<StartService> {
                                             ?.group(1) ??
                                         '$remaining',
                                     style: const TextStyle(
-                                        color: Colors.grey, fontSize: 12),
+                                        color: Colors.grey, fontSize: 12,
+                                        fontFamily: AssetConstants.poppinsRegular),
                                   ),
                                 ],
                               );
@@ -604,7 +648,8 @@ class _StartState extends State<StartService> {
                               '$minutes:$seconds',
                               style: const TextStyle(
                                   color: ColorConstants.primaryColor,
-                                  fontSize: 12),
+                                  fontSize: 12,
+                                  fontFamily: AssetConstants.poppinsMedium),
                             )
                           : (recodingFinished
                               ? StreamBuilder<PositionData>(
@@ -692,8 +737,12 @@ class _StartState extends State<StartService> {
                           : GestureDetector(
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
-                                height: recording ? SizeConfig.blockSizeHorizontal*17.5 : SizeConfig.blockSizeHorizontal*10,
-                                width: recording ? SizeConfig.blockSizeHorizontal*17.5: SizeConfig.blockSizeHorizontal*10,
+                                height: recording
+                                    ? SizeConfig.blockSizeHorizontal * 17.5
+                                    : SizeConfig.blockSizeHorizontal * 10,
+                                width: recording
+                                    ? SizeConfig.blockSizeHorizontal * 17.5
+                                    : SizeConfig.blockSizeHorizontal * 10,
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: ColorConstants.primaryColor,
@@ -754,12 +803,12 @@ class _StartState extends State<StartService> {
       children: [
         Padding(
           padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-          child: Text(
+          child: const Text(
             'Add description',
             style: TextStyle(
                 color: Colors.black,
                 fontFamily: AssetConstants.poppinsSemiBold,
-                fontSize: SizeConfig.blockSizeHorizontal * 4),
+                fontSize: 16),
           ),
         ),
         TextField(
@@ -822,9 +871,9 @@ class _StartState extends State<StartService> {
             );
           },
         ),
-         CircleAvatar(
+        CircleAvatar(
             backgroundColor: Colors.grey,
-            radius: SizeConfig.blockSizeHorizontal*1.5,
+            radius: SizeConfig.blockSizeHorizontal * 1.5,
             child: const Icon(
               Icons.play_arrow,
               color: ColorConstants.primaryColor,
@@ -936,7 +985,7 @@ class _StartState extends State<StartService> {
                                 'Contact Number: ${complaint.complaint!.contactNumber!.toString()}',
                                 style: const TextStyle(
                                     fontFamily:
-                                        AssetConstants.poppinsSemiBold)),
+                                        AssetConstants.poppinsBold)),
                           )
                         ],
                       ),
@@ -978,7 +1027,7 @@ class _StartState extends State<StartService> {
                             child: const Text(
                               'Complaint:',
                               style: TextStyle(
-                                  fontFamily: AssetConstants.poppinsSemiBold),
+                                  fontFamily: AssetConstants.poppinsBold),
                             ),
                           ),
                           Padding(
@@ -999,7 +1048,7 @@ class _StartState extends State<StartService> {
                       },
                     ),
                     Visibility(
-                      visible: isShow,
+                        visible: isShow,
                         child: const Divider(
                             color: ColorConstants.backgroundColor2)),
                     Visibility(

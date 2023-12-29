@@ -806,6 +806,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "video_compress",
+      "rootUri": "file:///Users/Amala/.pub-cache/hosted/pub.dev/video_compress-3.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "video_thumbnail",
       "rootUri": "file:///Users/Amala/.pub-cache/hosted/pub.dev/video_thumbnail-0.5.3",
       "packageUri": "lib/",
@@ -848,7 +854,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2023-12-14T06:12:42.072467Z",
+  "generated": "2023-12-28T12:09:53.605646Z",
   "generator": "pub",
   "generatorVersion": "3.2.0"
 }

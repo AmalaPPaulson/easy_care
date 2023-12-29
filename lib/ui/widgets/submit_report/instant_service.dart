@@ -17,7 +17,7 @@ class InstantService extends StatefulWidget {
 
 class _InstantServiceState extends State<InstantService> {
   final ImagePicker picker = ImagePicker();
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -225,7 +225,11 @@ class _InstantServiceState extends State<InstantService> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
+            title: const Text(
+              'Please choose media to select',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontFamily: AssetConstants.poppinsRegular),
+            ),
             content: SizedBox(
               height: MediaQuery.of(context).size.height / 5,
               child: Column(
@@ -239,7 +243,12 @@ class _InstantServiceState extends State<InstantService> {
                     child: const Row(
                       children: [
                         Icon(Icons.image),
-                        Text('From Gallery', overflow: TextOverflow.ellipsis,),
+                        Text(
+                          'From Gallery',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: AssetConstants.poppinsRegular),
+                        ),
                       ],
                     ),
                   ),
@@ -252,7 +261,12 @@ class _InstantServiceState extends State<InstantService> {
                     child: const Row(
                       children: [
                         Icon(Icons.camera),
-                        Text('From Camera', overflow: TextOverflow.ellipsis,),
+                        Text(
+                          'From Camera',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: AssetConstants.poppinsRegular),
+                        ),
                       ],
                     ),
                   ),
@@ -278,7 +292,11 @@ class _InstantServiceState extends State<InstantService> {
             shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2)),
-            title: const Text('Please choose media to select',overflow: TextOverflow.ellipsis,),
+            title: const Text(
+              'Please choose media to select',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontFamily: AssetConstants.poppinsRegular),
+            ),
             content: SizedBox(
               height: MediaQuery.of(context).size.height / 5,
               child: Column(
@@ -292,7 +310,11 @@ class _InstantServiceState extends State<InstantService> {
                     child: const Row(
                       children: [
                         Icon(Icons.image),
-                        Text('From Gallery', overflow: TextOverflow.ellipsis,),
+                        Text(
+                          'From Gallery',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontFamily: AssetConstants.poppinsRegular),
+                        ),
                       ],
                     ),
                   ),
@@ -305,7 +327,11 @@ class _InstantServiceState extends State<InstantService> {
                     child: const Row(
                       children: [
                         Icon(Icons.camera),
-                        Text('From Camera', overflow: TextOverflow.ellipsis,),
+                        Text(
+                          'From Camera',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontFamily: AssetConstants.poppinsRegular),
+                        ),
                       ],
                     ),
                   ),

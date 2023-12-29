@@ -78,7 +78,7 @@ class _InstantProductState extends State<InstantProduct> {
                             fontFamily: AssetConstants.poppinsRegular),
                         contentPadding: EdgeInsets.symmetric(
                             vertical: SizeConfig.blockSizeHorizontal * 5,
-                            horizontal: 12),
+                            horizontal: SizeConfig.blockSizeHorizontal * 3),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(
                                 SizeConfig.blockSizeHorizontal * 1),
@@ -115,7 +115,7 @@ class _InstantProductState extends State<InstantProduct> {
                 ), //SizedBox
                 const Text(
                   'Paid replacement',
-                  style: TextStyle(fontSize: 17.0),
+                  style: TextStyle(fontSize: 17.0,fontFamily: AssetConstants.poppinsRegular),
                 ), //Text
                 //Checkbox
               ], //<Widget>[]

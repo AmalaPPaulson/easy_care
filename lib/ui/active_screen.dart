@@ -5,6 +5,8 @@ import 'package:easy_care/model/complaint_model.dart';
 import 'package:easy_care/repositories/complaint_repo.dart';
 import 'package:easy_care/repositories/user_repo.dart';
 import 'package:easy_care/ui/complaint_detail_screen.dart';
+import 'package:easy_care/ui/start_service.dart';
+import 'package:easy_care/ui/submit_report.dart';
 import 'package:easy_care/ui/widgets/custom_shimmer.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/constants/color_constants.dart';
@@ -22,7 +24,7 @@ class ActiveScreen extends StatefulWidget {
 class _ActiveScreenState extends State<ActiveScreen> {
   final ScrollController _scrollController = ScrollController();
   ComplaintRepository complaintRepository = ComplaintRepository();
-   UserRepository userRepository = UserRepository();
+  UserRepository userRepository = UserRepository();
   @override
   void initState() {
     context
@@ -41,7 +43,7 @@ class _ActiveScreenState extends State<ActiveScreen> {
   void _loadMoreData() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-          log('scroll extent');
+      log('scroll extent');
       context.read<ActiveComplaintsBloc>().add(PagenatedActiveEvent());
       // User has reached the end of the list
       // Load more data or trigger pagination in flutter
@@ -76,15 +78,33 @@ class _ActiveScreenState extends State<ActiveScreen> {
                     return InkWell(
                       child: card(state.activeComplaints![index]),
                       onTap: () async {
-                        
-                        await userRepository.setComplaint(state.activeComplaints![index]);
-                        // ignore: use_build_context_synchronously
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ComplaintDetail(
-                                      
-                                    )));
+                        userRepository
+                            .setComplaint(state.activeComplaints![index])
+                            .then((value) {
+                          if (value) {
+                            if (state.activeComplaints![index].status ==
+                                'Assigned') {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ComplaintDetail()));
+                            } else if (state.activeComplaints![index].status ==
+                                'Ongoing') {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SubmitReport()));
+                            }else if(state.activeComplaints![index].status == 'In Travelling'){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const StartService()));
+                            }
+                          }
+                        });
                       },
                     );
                   },
