@@ -47,7 +47,6 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
               msg: '${state.errorMsg}',
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
               textColor: Colors.white,
               fontSize: 16);
         }
@@ -67,7 +66,8 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
           title: Text(
             'Complaint ID: ${complaint.complaint!.complaintId} ',
             style: const TextStyle(
-                color: Colors.white, fontFamily: AssetConstants.poppinsSemiBold),
+                color: Colors.white,
+                fontFamily: AssetConstants.poppinsSemiBold),
           ),
         ),
         body: Column(
@@ -89,8 +89,8 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                           EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
                       child: const Text(
                         'Customer Name & Address',
-                        style: TextStyle(
-                            fontFamily: AssetConstants.poppinsBold),
+                        style:
+                            TextStyle(fontFamily: AssetConstants.poppinsBold),
                       ),
                     ),
                     const Divider(color: ColorConstants.backgroundColor2),
@@ -150,8 +150,8 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                           EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
                       child: const Text(
                         'Complaint:',
-                        style: TextStyle(
-                            fontFamily: AssetConstants.poppinsBold),
+                        style:
+                            TextStyle(fontFamily: AssetConstants.poppinsBold),
                       ),
                     ),
                     const Divider(color: ColorConstants.backgroundColor2),
@@ -159,6 +159,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                       padding:
                           EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
                       child: ListView.separated(
+                        physics:const NeverScrollableScrollPhysics(),
                         separatorBuilder: (context, index) => SizedBox(
                             height: SizeConfig.blockSizeHorizontal * 2),
                         shrinkWrap: true,
@@ -169,7 +170,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                             textAlign: TextAlign.start,
                             style: const TextStyle(
                                 color: Colors.black,
-                                fontSize:14,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: AssetConstants.poppinsMedium),
                           );
@@ -185,7 +186,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
         floatingActionButton: BlocBuilder<TripBloc, TripState>(
           buildWhen: (previous, current) => (previous != current),
           builder: (context, state) {
-            bool  isPressed = false;
+            bool isPressed = false;
             if (state.isLoading) {
               isPressed = true;
             }

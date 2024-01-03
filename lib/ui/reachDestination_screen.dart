@@ -8,7 +8,7 @@ import 'package:easy_care/ui/widgets/Buttons/floatingaction_button.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
-import 'package:flare_flutter/flare_actor.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -64,17 +64,7 @@ class _ReachDestinationState extends State<ReachDestination> {
             padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
             child: Column(
               children: [
-            //     SizedBox(
-            //   height: SizeConfig.blockSizeHorizontal * 80,
-            //   width: SizeConfig.blockSizeHorizontal * 80,
-            //   child: const FlareActor(
-            //     'assets/animation/Driver_circles.flr',
-            //     fit: BoxFit.cover,
-            //     animation: 'verified',
-          
-            //     // Replace with your animation name
-            //   ),
-            // ),
+            
                 Card(
                   surfaceTintColor: Colors.white,
                   color: Colors.white,
@@ -248,6 +238,7 @@ class _ReachDestinationState extends State<ReachDestination> {
                                 padding: EdgeInsets.all(
                                     SizeConfig.blockSizeHorizontal * 2),
                                 child: ListView.separated(
+                                  physics:const NeverScrollableScrollPhysics(),
                                   separatorBuilder: (context, index) => SizedBox(
                                       height: SizeConfig.blockSizeHorizontal * 2),
                                   shrinkWrap: true,

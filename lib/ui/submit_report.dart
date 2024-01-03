@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
 import 'package:easy_care/blocs/submit_visible/bloc/submit_visible_bloc.dart';
 import 'package:easy_care/model/complaint_model.dart';
@@ -8,6 +7,8 @@ import 'package:easy_care/repositories/user_repo.dart';
 import 'package:easy_care/ui/success_screen.dart';
 import 'package:easy_care/ui/tabTitletile.dart';
 import 'package:easy_care/ui/widgets/Buttons/floatingaction_button.dart';
+import 'package:easy_care/ui/widgets/submit_report/complaintCard.dart';
+import 'package:easy_care/ui/widgets/submit_report/customerCard.dart';
 import 'package:easy_care/ui/widgets/submit_report/instant_product.dart';
 import 'package:easy_care/ui/widgets/submit_report/instant_service.dart';
 import 'package:easy_care/ui/widgets/submit_report/instant_spare.dart';
@@ -30,11 +31,9 @@ class _SubmitReportState extends State<SubmitReport> {
   bool isShow = true;
   bool isVisible = true;
   ComplaintRepository complaintRepository = ComplaintRepository();
-
   TextEditingController serviceController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController sparePartController = TextEditingController();
-
   bool tab = true;
   int currentTab = 0;
   int selectedOption = 1;
@@ -42,9 +41,9 @@ class _SubmitReportState extends State<SubmitReport> {
   @override
   Widget build(BuildContext context) {
     ComplaintResult complaint = userRepository.getComplaint();
-
     return BlocListener<SubmitTabBloc, SubmitTabState>(
       listener: (context, state) {
+        //when Api hit and emit isloading = false , screen navigate to success screen
         if (state.isLoading == false && state.started) {
           Navigator.push(
             context,
@@ -59,9 +58,11 @@ class _SubmitReportState extends State<SubmitReport> {
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: Text(
-            'Complaint Id : ${complaint.complaint!.complaintId.toString()}  ',
+            'Complaint : ${complaint.complaint!.complaintId.toString()}  ',
             style: const TextStyle(
-                color: Colors.white, fontFamily: AssetConstants.poppinsMedium),
+                color: Colors.white,
+                fontFamily: AssetConstants.poppinsSemiBold,
+                fontSize: 20),
           ),
         ),
         body: createBody(complaint),
@@ -95,10 +96,47 @@ class _SubmitReportState extends State<SubmitReport> {
         padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 3),
         child: Column(
           children: [
-            card(complaint),
+            //calling two cards to show
+            BlocBuilder<SubmitVisibleBloc, SubmitVisibleState>(
+              buildWhen: (previous, current) {
+                return current.card == false;
+              },
+              builder: (context, state) {
+                isVisible = state.isVisible;
+                return CustomerCard(
+                    complaint: complaint,
+                    customerOnTap: () {
+                      context.read<SubmitVisibleBloc>().add(VisibilityET(
+                            visible: isVisible,
+                          ));
+                    },
+                    isVisible: isVisible);
+              },
+            ),
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 4,
+            ),
+            BlocBuilder<SubmitVisibleBloc, SubmitVisibleState>(
+              buildWhen: (previous, current) {
+                return (current.card == true);
+              },
+              builder: (context, state) {
+                isShow = state.isShow;
+                return ComplaintCard(
+                    complaintOntap: () {
+                      context
+                          .read<SubmitVisibleBloc>()
+                          .add(ShowET(show: isShow));
+                    },
+                    complaint: complaint,
+                    isShow: isShow);
+              },
+            ),
             SizedBox(
               height: SizeConfig.blockSizeHorizontal * 8,
             ),
+            // here accroding to current tab and radil btn number as selected 
+            //option it shows related UI
             BlocBuilder<SubmitTabBloc, SubmitTabState>(
               builder: (context, state) {
                 if (state.currentTab != null) {
@@ -308,203 +346,6 @@ class _SubmitReportState extends State<SubmitReport> {
             onChanged: (value) {
               option = value!;
             },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget card(ComplaintResult complaint) {
-    String phoneNO = complaint.complaint!.contactNumber.toString();
-    List<String> complaintLines = complaint.complaint!.complaint!.split('\n');
-    return Column(
-      children: [
-        Card(
-          surfaceTintColor: Colors.white,
-          color: Colors.white,
-          elevation: 4.0,
-          shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2.5)),
-          child: Padding(
-            padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-            child: BlocBuilder<SubmitVisibleBloc, SubmitVisibleState>(
-              buildWhen: (previous, current) {
-                return current.card == false;
-              },
-              builder: (context, state) {
-                isVisible = state.isVisible;
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 2),
-                            child: const Text(
-                              'Customer Name & Address',
-                              style: TextStyle(
-                                  fontFamily: AssetConstants.poppinsBold),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 2),
-                            child: Icon(
-                              isVisible
-                                  ? Icons.expand_less_rounded
-                                  : Icons.expand_more,
-                              color: ColorConstants.blackColor,
-                              size: SizeConfig.blockSizeHorizontal * 5,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        context.read<SubmitVisibleBloc>().add(VisibilityET(
-                              visible: isVisible,
-                            ));
-                      },
-                    ),
-                    const Divider(color: ColorConstants.backgroundColor2),
-                    Visibility(
-                      visible: isVisible,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 2),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    complaint.complaint!.customerName
-                                        .toString()
-                                        .toUpperCase(),
-                                    style: const TextStyle(
-                                        fontFamily:
-                                            AssetConstants.poppinsBold)),
-                                GestureDetector(
-                                    onTap: () {
-                                      complaintRepository
-                                          .makePhoneCall(phoneNO);
-                                    },
-                                    child: const Icon(Icons.phone)),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 2),
-                            child: Text(
-                                complaint.complaint!.houseName.toString(),
-                                style: const TextStyle(
-                                    fontFamily:
-                                        AssetConstants.poppinsSemiBold)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 2),
-                            child: Text(
-                                'Contact Number: ${complaint.complaint!.contactNumber!.toString()}',
-                                style: const TextStyle(
-                                    fontFamily:
-                                        AssetConstants.poppinsBold)),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
-        SizedBox(
-          height: SizeConfig.blockSizeHorizontal * 4,
-        ),
-        Card(
-          surfaceTintColor: Colors.white,
-          color: Colors.white,
-          elevation: 4.0,
-          shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(SizeConfig.blockSizeHorizontal * 2.5)),
-          child: Padding(
-            padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-            child: BlocBuilder<SubmitVisibleBloc, SubmitVisibleState>(
-              buildWhen: (previous, current) {
-                return (current.card == true);
-              },
-              builder: (context, state) {
-                isShow = state.isShow;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 2),
-                            child: const Text(
-                              'Complaint:',
-                              style: TextStyle(
-                                  fontFamily: AssetConstants.poppinsBold),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(
-                                SizeConfig.blockSizeHorizontal * 2),
-                            child: Icon(
-                              isShow ? Icons.expand_less : Icons.expand_more,
-                              color: ColorConstants.blackColor,
-                              size: SizeConfig.blockSizeHorizontal * 5,
-                            ),
-                          )
-                        ],
-                      ),
-                      onTap: () {
-                        context
-                            .read<SubmitVisibleBloc>()
-                            .add(ShowET(show: isShow));
-                      },
-                    ),
-                    const Divider(color: ColorConstants.backgroundColor2),
-                    Visibility(
-                      visible: isShow,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                        child: ListView.separated(
-                          separatorBuilder: (context, index) => SizedBox(
-                              height: SizeConfig.blockSizeHorizontal * 2),
-                          shrinkWrap: true,
-                          itemCount: complaintLines.length,
-                          itemBuilder: (context, index) {
-                            return Text(
-                              complaintLines[index],
-                              textAlign: TextAlign.start,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: AssetConstants.poppinsMedium),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
           ),
         ),
       ],

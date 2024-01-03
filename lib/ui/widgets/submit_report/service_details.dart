@@ -25,7 +25,13 @@ class ServiceDetails extends StatelessWidget {
             borderRadius:
                 BorderRadius.circular(SizeConfig.blockSizeHorizontal * 1),
             borderSide: const BorderSide(
-              color: Colors.black45,
+              color: Colors.black26,
+            )),
+            focusedBorder:  OutlineInputBorder(
+            borderRadius:
+                BorderRadius.circular(SizeConfig.blockSizeHorizontal * 1),
+            borderSide: const BorderSide(
+              color: Colors.black26,
             )),
       ),
     );
