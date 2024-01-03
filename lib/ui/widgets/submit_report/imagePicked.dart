@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
+
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 class ImagePicked extends StatefulWidget {
