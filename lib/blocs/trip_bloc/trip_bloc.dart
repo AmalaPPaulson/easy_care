@@ -20,19 +20,16 @@ class TripBloc extends Bloc<TripEvent, TripState> {
   TripBloc() : super(const TripState()) {
     //here status of the complaint changing to in travelling and fetch the location of start trip
     on<UpdateStatusET>((event, emit) async {
-      try {
-        emit(state.copyWith(isLoading: true));
-
-        // checking internet connectivity
-        bool result = await InternetConnectionChecker().hasConnection;
-        if (result == true) {
-          log('internet connection is there');
-
-          Position? position;
+      // checking internet connectivity
+      bool result = await InternetConnectionChecker().hasConnection;
+      if (result == true) {
+        try {
+          emit(state.copyWith(isLoading: true));
 
           /// Determine the current position of the device.
           /// When the location services are not enabled or permissions
           /// are denied the `Future` will return an error.
+          Position? position;
           bool serviceEnabled;
           LocationPermission permission;
 
@@ -92,102 +89,111 @@ class TripBloc extends Bloc<TripEvent, TripState> {
             emit(state.copyWith(isLoading: false));
             emit(const TripState(errorMsg: 'unable to update status'));
           }
-        } else {
-          log('internet connection is not there');
-          Fluttertoast.showToast(
-              msg: ' No internet , please check your connection');  
+        } catch (e) {
+          emit(TripState(errorMsg: e.toString()));
         }
-      } catch (e) {
-        emit(TripState(errorMsg: e.toString()));
+      } else {
+        log('internet connection is not there');
+        Fluttertoast.showToast(
+            msg: ' No internet, please check your connection');
       }
     });
 
     //here tracking the final location and uploading duration & start and final location of the trip
     on<TrackingET>((event, emit) async {
-      try {
-        emit(state.copyWith(isLoading: true));
-        Position? position;
+      // checking internet connectivity
+      bool result = await InternetConnectionChecker().hasConnection;
+      if (result == true) {
+        try {
+          emit(state.copyWith(isLoading: true));
 
-        /// Determine the current position of the device.
-        /// When the location services are not enabled or permissions
-        /// are denied the `Future` will return an error.
-        bool serviceEnabled;
-        LocationPermission permission;
+          Position? position;
 
-        // Test if location services are enabled.
-        serviceEnabled = await Geolocator.isLocationServiceEnabled();
-        if (!serviceEnabled) {
-          // Location services are not enabled don't continue
-          // accessing the position and request users of the
-          // App to enable the location services.
-          return Future.error('Location services are disabled.');
-        }
+          /// Determine the current position of the device.
+          /// When the location services are not enabled or permissions
+          /// are denied the `Future` will return an error.
+          bool serviceEnabled;
+          LocationPermission permission;
 
-        permission = await Geolocator.checkPermission();
-        if (permission == LocationPermission.denied) {
-          permission = await Geolocator.requestPermission();
+          // Test if location services are enabled.
+          serviceEnabled = await Geolocator.isLocationServiceEnabled();
+          if (!serviceEnabled) {
+            // Location services are not enabled don't continue
+            // accessing the position and request users of the
+            // App to enable the location services.
+            return Future.error('Location services are disabled.');
+          }
+
+          permission = await Geolocator.checkPermission();
           if (permission == LocationPermission.denied) {
-            // Permissions are denied, next time you could try
-            // requesting permissions again (this is also where
-            // Android's shouldShowRequestPermissionRationale
-            // returned true. According to Android guidelines
-            // your App should show an explanatory UI now.
-            return Future.error('Location permissions are denied');
+            permission = await Geolocator.requestPermission();
+            if (permission == LocationPermission.denied) {
+              // Permissions are denied, next time you could try
+              // requesting permissions again (this is also where
+              // Android's shouldShowRequestPermissionRationale
+              // returned true. According to Android guidelines
+              // your App should show an explanatory UI now.
+              return Future.error('Location permissions are denied');
+            }
           }
-        }
 
-        if (permission == LocationPermission.deniedForever) {
-          // Permissions are denied forever, handle appropriately.
-          return Future.error(
-              'Location permissions are permanently denied, we cannot request permissions.');
-        }
-        position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
+          if (permission == LocationPermission.deniedForever) {
+            // Permissions are denied forever, handle appropriately.
+            return Future.error(
+                'Location permissions are permanently denied, we cannot request permissions.');
+          }
+          position = await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high);
 
-        DateTime end = DateTime.now();
-        emit(state.copyWith(finalPosition: position, endTime: end));
-        log('final position : ${position.latitude},end time: $end');
+          DateTime end = DateTime.now();
+          emit(state.copyWith(finalPosition: position, endTime: end));
+          log('final position : ${position.latitude},end time: $end');
 
-        double? startLatitude = userRepository.getStartLatitude();
-        double? startLongitude = userRepository.getStartLongitude();
-        String? startTime = userRepository.getStartTime();
-        log('start latitude : $startLatitude');
-        if (startLatitude != null) {
-          double endLat = position.latitude;
-          double endLong = position.longitude;
+          double? startLatitude = userRepository.getStartLatitude();
+          double? startLongitude = userRepository.getStartLongitude();
+          String? startTime = userRepository.getStartTime();
+          log('start latitude : $startLatitude');
+          if (startLatitude != null) {
+            double endLat = position.latitude;
+            double endLong = position.longitude;
 
-          String id = event.id.toString();
-          DateTime end = state.endTime!;
-          DateTime start = DateTime.parse(startTime!);
+            String id = event.id.toString();
+            DateTime end = state.endTime!;
+            DateTime start = DateTime.parse(startTime!);
 
-          final difference = end.difference(start).inMinutes;
-          String duration = difference.toString();
-          duration += 'Minutes';
-          log('time duration ----------------$duration');
-          Response? response = await tripRepository.trackingApi(
-            id,
-            duration,
-            startLatitude,
-            endLat,
-            startLongitude!,
-            endLong,
-          );
-          if (response!.statusCode == 200 || response.statusCode == 201) {
-            await userRepository
-                .setTripStatus(StringConstants.reachDestination);
-            emit(state.copyWith(isLoading: false, reached: true));
+            final difference = end.difference(start).inMinutes;
+            String duration = difference.toString();
+            duration += 'Minutes';
+            log('time duration ----------------$duration');
+            Response? response = await tripRepository.trackingApi(
+              id,
+              duration,
+              startLatitude,
+              endLat,
+              startLongitude!,
+              endLong,
+            );
+            if (response!.statusCode == 200 || response.statusCode == 201) {
+              await userRepository
+                  .setTripStatus(StringConstants.reachDestination);
+              emit(state.copyWith(isLoading: false, reached: true));
+            } else {
+              log('api response in the error : ${response.data.toString()}');
+              log('api response in the error : ${response.statusCode.toString()}');
+              log('api response in the error : ${response.statusMessage.toString()}');
+              emit(state.copyWith(errorMsg: 'Unable to update status '));
+            }
           } else {
-            log('api response in the error : ${response.data.toString()}');
-            log('api response in the error : ${response.statusCode.toString()}');
-            log('api response in the error : ${response.statusMessage.toString()}');
-            emit(state.copyWith(errorMsg: 'Unable to update status '));
+            Fluttertoast.showToast(
+                msg: 'start position and end position are not fetched ');
           }
-        } else {
-          Fluttertoast.showToast(
-              msg: 'start position and end position are not fetched ');
+        } catch (e) {
+          emit(state.copyWith(errorMsg: 'Unable to upload end position '));
         }
-      } catch (e) {
-        emit(state.copyWith(errorMsg: 'Unable to upload end position '));
+      } else {
+        log('internet connection is not there');
+        Fluttertoast.showToast(
+            msg: ' No internet, please check your connection');
       }
     });
 

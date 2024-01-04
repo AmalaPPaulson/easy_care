@@ -262,6 +262,9 @@ class _SubmitReportState extends State<SubmitReport> {
                 onPressed: () {
                   tab = false;
                   context.read<SubmitTabBloc>().add(TabClickET(tabNo: 1));
+                  serviceController.clear();
+              priceController.clear();
+              sparePartController.clear();
                 },
               ),
             ),
@@ -345,6 +348,9 @@ class _SubmitReportState extends State<SubmitReport> {
             groupValue: option,
             onChanged: (value) {
               option = value!;
+              serviceController.clear();
+              priceController.clear();
+              sparePartController.clear();
             },
           ),
         ),

@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_care/repositories/start_service_repo.dart';
@@ -9,9 +8,9 @@ import 'package:easy_care/repositories/user_repo.dart';
 import 'package:easy_care/utils/constants/string_constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:meta/meta.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
- 
 part 'services_event.dart';
 part 'services_state.dart';
 
@@ -79,70 +78,81 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       log('image length ---------------------${state.images.length}');
       imageList = state.images.map<File>((xfile) => File(xfile.path)).toList();
       log('imageList length -------------------------${imageList.length}');
-      try {
-        if ((event.description != null && event.description != '') ||
-            (event.audio != null && event.audio != '')) {
-          audioFile = event.audio;
-          description = event.description;
-          if (event.audio != null) {
-            audio = await MultipartFile.fromFile(audioFile!,
-                filename: "audioDescription.m4a");
-          }
-          bool isValid = false;
-          String videoAudioMsg = '';
-          if (imageList.isNotEmpty || videoFiles.isNotEmpty) {
-            isValid = true;
-          } else {
-            isValid = false;
-            videoAudioMsg = 'please add atleast one video/image';
-          }
-          if (isValid) {
-            emit(state.copyWith(
-              isLoading: true,
-            ));
-            Response? response = await startServiceRepository.startServiceApi(
-                event.id, description, audio, StringConstants.startService);
-            if (response != null) {
-              if (response.statusCode == 200 || response.statusCode == 201) {
-                if (imageList.isNotEmpty) {
-                  log('imagelist above api ----------------------------------${imageList.isNotEmpty}');
-                  startServiceRepository.addVideoAndImages(
-                      index: 0,
-                      id: event.id,
-                      fileType: "image",
-                      imageList: imageList,
-                      isPreCheck: true);
+      // checking internet connectivity
+      bool result = await InternetConnectionChecker().hasConnection;
+      if (result == true) {
+        try {
+          if ((event.description != null && event.description != '') ||
+              (event.audio != null && event.audio != '')) {
+            log('audio file ---------------------${event.audio}');
+            audioFile = event.audio;
+            description = event.description;
+            if (event.audio != null) {
+              audio = await MultipartFile.fromFile(audioFile!,
+                  filename: "audioDescription.m4a");
+            }
+            bool isValid = false;
+            String videoAudioMsg = '';
+            if (imageList.isNotEmpty || videoFiles.isNotEmpty) {
+              isValid = true;
+            } else {
+              isValid = false;
+              videoAudioMsg = 'please add atleast one video/image';
+            }
+            if (isValid) {
+              emit(state.copyWith(
+                isLoading: true,
+              ));
+              Response? response = await startServiceRepository.startServiceApi(
+                  event.id, description, audio, StringConstants.startService);
+              if (response != null) {
+                if (response.statusCode == 200 || response.statusCode == 201) {
+                  if (imageList.isNotEmpty) {
+                    log('imagelist above api ----------------------------------${imageList.isNotEmpty}');
+                    startServiceRepository.addVideoAndImages(
+                        index: 0,
+                        id: event.id,
+                        fileType: "image",
+                        imageList: imageList,
+                        isPreCheck: true);
+                  }
+                  if (state.videoFiles.isNotEmpty) {
+                    startServiceRepository.addVideoAndImages(
+                        index: 0,
+                        id: event.id,
+                        fileType: "video",
+                        imageList: state.videoFiles,
+                        isPreCheck: true);
+                  }
+                  await userRepository
+                      .setTripStatus(StringConstants.tripStartService);
+                  emit(state.copyWith(isLoading: false, started: true));
+                } else {
+                  Fluttertoast.showToast(
+                      msg: response.statusMessage ??
+                          'Something went wrong !Please try agian.');
+                  emit(state.copyWith(isLoading: false));
                 }
-                if (state.videoFiles.isNotEmpty) {
-                  startServiceRepository.addVideoAndImages(
-                      index: 0,
-                      id: event.id,
-                      fileType: "video",
-                      imageList: state.videoFiles,
-                      isPreCheck: true);
-                }
-                await userRepository
-                    .setTripStatus(StringConstants.tripStartService);
-                emit(state.copyWith(isLoading: false, started: true));
               } else {
                 Fluttertoast.showToast(
-                    msg: response.statusMessage ??
-                        'Something went wrong !Please try agian.');
+                    msg: 'Network issue! Please try again..');
                 emit(state.copyWith(isLoading: false));
               }
             } else {
-              Fluttertoast.showToast(msg: 'Network issue! Please try again..');
+              Fluttertoast.showToast(msg: videoAudioMsg);
               emit(state.copyWith(isLoading: false));
             }
           } else {
-            Fluttertoast.showToast(msg: videoAudioMsg);
-            emit(state.copyWith(isLoading: false));
+            log('audio file in else condition ---------------------${event.audio}');
+            Fluttertoast.showToast(msg: 'Please add description(Audio/Text)');
           }
-        } else {
-          Fluttertoast.showToast(msg: 'Please add description(Audio/Text)');
+        } catch (e) {
+          Fluttertoast.showToast(msg: e.toString());
         }
-      } catch (e) {
-        Fluttertoast.showToast(msg: e.toString());
+      } else {
+        log('internet connection is not there');
+        Fluttertoast.showToast(
+            msg: ' No internet, please check your connection');
       }
     });
 

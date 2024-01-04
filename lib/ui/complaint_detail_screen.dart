@@ -64,124 +64,127 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
             ),
           ),
           title: Text(
-            'Complaint ID: ${complaint.complaint!.complaintId} ',
+            'Complaint : ${complaint.complaint!.complaintId} ',
             style: const TextStyle(
                 color: Colors.white,
-                fontFamily: AssetConstants.poppinsSemiBold),
+                fontFamily: AssetConstants.poppinsSemiBold,fontSize: 20),
           ),
         ),
-        body: Column(
-          children: [
-            Card(
-              surfaceTintColor: Colors.white,
-              color: Colors.white,
-              elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                      SizeConfig.blockSizeHorizontal * 2.5)),
-              child: Padding(
-                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                      child: const Text(
-                        'Customer Name & Address',
-                        style:
-                            TextStyle(fontFamily: AssetConstants.poppinsBold),
+        body: Padding(
+          padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
+          child: Column(
+            children: [
+              Card(
+                surfaceTintColor: Colors.white,
+                color: Colors.white,
+                elevation: 4.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 2.5)),
+                child: Padding(
+                  padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                        child: const Text(
+                          'Customer Name & Address',
+                          style:
+                              TextStyle(fontFamily: AssetConstants.poppinsBold),
+                        ),
                       ),
-                    ),
-                    const Divider(color: ColorConstants.backgroundColor2),
-                    Padding(
-                      padding:
-                          EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              complaint.complaint!.customerName
-                                  .toString()
-                                  .toUpperCase(),
-                              style: const TextStyle(
-                                  fontFamily: AssetConstants.poppinsSemiBold)),
-                          GestureDetector(
-                              onTap: () {
-                                complaintRepository.makePhoneCall(phoneNO);
-                              },
-                              child: const Icon(Icons.phone)),
-                        ],
+                      const Divider(color: ColorConstants.backgroundColor2),
+                      Padding(
+                        padding:
+                            EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                                complaint.complaint!.customerName
+                                    .toString()
+                                    .toUpperCase(),
+                                style: const TextStyle(
+                                    fontFamily: AssetConstants.poppinsSemiBold)),
+                            GestureDetector(
+                                onTap: () {
+                                  complaintRepository.makePhoneCall(phoneNO);
+                                },
+                                child: const Icon(Icons.phone)),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                      child: Text(complaint.complaint!.houseName.toString(),
-                          style: const TextStyle(
-                              fontFamily: AssetConstants.poppinsSemiBold)),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                      child: Text(
-                          'Contact Number: ${complaint.complaint!.contactNumber!.toString()}',
-                          style: const TextStyle(
-                              fontFamily: AssetConstants.poppinsBold)),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              surfaceTintColor: Colors.white,
-              color: Colors.white,
-              elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                      SizeConfig.blockSizeHorizontal * 2.5)),
-              child: Padding(
-                padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                      child: const Text(
-                        'Complaint:',
-                        style:
-                            TextStyle(fontFamily: AssetConstants.poppinsBold),
-                      ),
-                    ),
-                    const Divider(color: ColorConstants.backgroundColor2),
-                    Padding(
-                      padding:
-                          EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-                      child: ListView.separated(
-                        physics:const NeverScrollableScrollPhysics(),
-                        separatorBuilder: (context, index) => SizedBox(
-                            height: SizeConfig.blockSizeHorizontal * 2),
-                        shrinkWrap: true,
-                        itemCount: complaintLines.length,
-                        itemBuilder: (context, index) {
-                          return Text(
-                            complaintLines[index],
-                            textAlign: TextAlign.start,
+                      Padding(
+                        padding:
+                            EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                        child: Text(complaint.complaint!.houseName.toString(),
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: AssetConstants.poppinsMedium),
-                          );
-                        },
+                                fontFamily: AssetConstants.poppinsSemiBold)),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding:
+                            EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                        child: Text(
+                            'Contact Number: ${complaint.complaint!.contactNumber!.toString()}',
+                            style: const TextStyle(
+                                fontFamily: AssetConstants.poppinsBold)),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+              Card(
+                surfaceTintColor: Colors.white,
+                color: Colors.white,
+                elevation: 4.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 2.5)),
+                child: Padding(
+                  padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                        child: const Text(
+                          'Complaint:',
+                          style:
+                              TextStyle(fontFamily: AssetConstants.poppinsBold),
+                        ),
+                      ),
+                      const Divider(color: ColorConstants.backgroundColor2),
+                      Padding(
+                        padding:
+                            EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                        child: ListView.separated(
+                          physics:const NeverScrollableScrollPhysics(),
+                          separatorBuilder: (context, index) => SizedBox(
+                              height: SizeConfig.blockSizeHorizontal * 2),
+                          shrinkWrap: true,
+                          itemCount: complaintLines.length,
+                          itemBuilder: (context, index) {
+                            return Text(
+                              complaintLines[index],
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: AssetConstants.poppinsMedium),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         floatingActionButton: BlocBuilder<TripBloc, TripState>(
           buildWhen: (previous, current) => (previous != current),

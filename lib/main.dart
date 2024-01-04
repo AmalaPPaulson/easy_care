@@ -18,16 +18,19 @@ import 'package:easy_care/ui/splash_screen.dart';
 import 'package:easy_care/ui/start_service.dart';
 import 'package:easy_care/ui/submit_report.dart';
 import 'package:easy_care/utils/constants/string_constants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await UserRepository().initLocal();
-  runApp(const MyApp());
+  runApp(DevicePreview(
+      enabled: !kReleaseMode, builder: (context) => const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -74,6 +77,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => TripVisibleBloc()),
       ],
       child: MaterialApp(
+        useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(

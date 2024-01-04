@@ -29,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     @override
   void initState() {
-    
     context.read<HomeScreenBloc>().add(TabClickET(tabNo: 0));
     super.initState();
   }

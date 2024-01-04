@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_care/repositories/user_repo.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:meta/meta.dart';
 
 part 'login_bloc_event.dart';
@@ -32,21 +34,29 @@ class LoginBlocBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
 
     on<VerifyPinET>((event, emit) async {
       emit(LoginPageLoadingST());
-      try {
-        Response? response =
-            await userRepository.login(event.phoneNo!, event.pin!);
-        if (response!.statusCode == 200) {
-          log('loginPhone------------------------------${response.data}');
-          await userRepository.setIsLogged(true);
-          await userRepository.setPhoneNo(event.phoneNo);
-          emit(LoginClearST());
-          emit(LoginSuccessST());
-        } else {
-          emit(LoginFailureST(
-              errorMsg: 'Unable to log in with provided credentials.'));
+      // checking internet connectivity
+      bool result = await InternetConnectionChecker().hasConnection;
+      if (result == true) {
+        try {
+          Response? response =
+              await userRepository.login(event.phoneNo!, event.pin!);
+          if (response!.statusCode == 200) {
+            log('loginPhone------------------------------${response.data}');
+            await userRepository.setIsLogged(true);
+            await userRepository.setPhoneNo(event.phoneNo);
+            emit(LoginClearST());
+            emit(LoginSuccessST());
+          } else {
+            emit(LoginFailureST(
+                errorMsg: 'Unable to log in with provided credentials.'));
+          }
+        } catch (e) {
+          emit(LoginFailureST(errorMsg: e.toString()));
         }
-      } catch (e) {
-        emit(LoginFailureST(errorMsg: e.toString()));
+      } else {
+        log('internet connection is not there');
+        Fluttertoast.showToast(
+            msg: ' No internet, please check your connection');
       }
     });
   }

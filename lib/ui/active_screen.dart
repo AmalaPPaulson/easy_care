@@ -72,6 +72,7 @@ class _ActiveScreenState extends State<ActiveScreen> {
               child: RefreshIndicator(
                 onRefresh: _refresh,
                 child: ListView.builder(
+                  physics:  const AlwaysScrollableScrollPhysics(),
                   controller: _scrollController,
                   itemCount: state.activeComplaints?.length ?? 0,
                   itemBuilder: (BuildContext context, int index) {

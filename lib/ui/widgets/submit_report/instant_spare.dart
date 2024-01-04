@@ -1,5 +1,3 @@
-
-
 import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
 import 'package:easy_care/ui/widgets/submit_report/imagePicked.dart';
 import 'package:easy_care/ui/widgets/submit_report/videoPicked.dart';

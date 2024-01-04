@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_care/repositories/user_repo.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_bloc_event.dart';
@@ -38,18 +42,25 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
     });
 
     on<AuthLogoutEvent>((event, emit) async {
-      try {
-        Response? response = await userRepository.logout();
-        if (response!.statusCode == 200) {
-          await userRepository.setIsLogged(false);
-          await userRepository.setIsStartTrip(false);
-          emit(AuthLogoutSuccST());
-        } else {
-          emit(AuthLogoutFailST(
-              errorMsg: 'Unable to log in with provided credentials.'));
+      // checking internet connectivity
+      bool result = await InternetConnectionChecker().hasConnection;
+      if (result == true) {
+        try {
+          Response? response = await userRepository.logout();
+          if (response!.statusCode == 200) {
+            await userRepository.setIsLogged(false);
+            await userRepository.setIsStartTrip(false);
+            emit(AuthLogoutSuccST());
+          } else {
+            emit(AuthLogoutFailST(errorMsg: 'Unable to log out'));
+          }
+        } catch (e) {
+          emit(AuthLogoutFailST(errorMsg: e.toString()));
         }
-      } catch (e) {
-        emit(AuthLogoutFailST(errorMsg: e.toString()));
+      } else {
+        log('internet connection is not there');
+        Fluttertoast.showToast(
+            msg: ' No internet, please check your connection');
       }
     });
   }

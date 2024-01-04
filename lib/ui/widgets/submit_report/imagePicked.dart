@@ -1,10 +1,7 @@
 import 'dart:io';
-
-
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
 
 class ImagePicked extends StatefulWidget {
@@ -44,7 +41,7 @@ class _ImagePickedState extends State<ImagePicked> {
                   Icon(
                     Icons.image_outlined,
                     size: SizeConfig.blockSizeHorizontal * 25,
-                    color: Colors.black45,
+                    color: Colors.black26,
                   ),
                   const Text(
                     "Click to add picture",

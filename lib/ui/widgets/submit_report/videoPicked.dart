@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,7 @@ class _VideoPickedState extends State<VideoPicked> {
                     Icon(
                       Icons.image_outlined,
                       size: SizeConfig.blockSizeHorizontal * 25,
-                      color: Colors.black45,
+                      color: Colors.black26,
                     ),
                     const Text(
                       "Click to add video",

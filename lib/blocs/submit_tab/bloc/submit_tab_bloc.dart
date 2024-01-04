@@ -9,6 +9,7 @@ import 'package:easy_care/repositories/user_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:meta/meta.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
@@ -249,50 +250,59 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
       }
       if (isValid) {
         log('inside isValid data ----------------$data');
-        try {
-          Response? response = await startServiceRepository.submitReport(
-              event.id.toString(), data);
+        // checking internet connectivity
+        bool result = await InternetConnectionChecker().hasConnection;
+        if (result == true) {
+          try {
+            Response? response = await startServiceRepository.submitReport(
+                event.id.toString(), data);
 
-          if (response != null) {
-            log('api response in the error : ${response.data.toString()}');
-            log('api response in the error : ${response.statusCode.toString()}');
-            log('api response in the error : ${response.statusMessage.toString()}');
-            if (response.statusCode == 200 || response.statusCode == 201) {
-              log('api response in the success of submitreport : ${response.data.toString()}');
-              log('api response in the success : ${response.statusCode.toString()}');
-              log('api response in the success : ${response.statusMessage.toString()}');
-              if (imageList.isNotEmpty) {
-                log('imagelist above api ----------------------------------${imageList.isNotEmpty}');
-                startServiceRepository.addVideoAndImages(
-                    index: 0,
-                    id: event.id!,
-                    fileType: "image",
-                    imageList: imageList,
-                    isPreCheck: false);
+            if (response != null) {
+              log('api response in the error : ${response.data.toString()}');
+              log('api response in the error : ${response.statusCode.toString()}');
+              log('api response in the error : ${response.statusMessage.toString()}');
+              if (response.statusCode == 200 || response.statusCode == 201) {
+                log('api response in the success of submitreport : ${response.data.toString()}');
+                log('api response in the success : ${response.statusCode.toString()}');
+                log('api response in the success : ${response.statusMessage.toString()}');
+                if (imageList.isNotEmpty) {
+                  log('imagelist above api ----------------------------------${imageList.isNotEmpty}');
+                  startServiceRepository.addVideoAndImages(
+                      index: 0,
+                      id: event.id!,
+                      fileType: "image",
+                      imageList: imageList,
+                      isPreCheck: false);
+                }
+                if (state.videoFiles.isNotEmpty) {
+                  startServiceRepository.addVideoAndImages(
+                      index: 0,
+                      id: event.id!,
+                      fileType: "video",
+                      imageList: state.videoFiles,
+                      isPreCheck: false);
+                }
+                await userRepository.setTripStatus('');
+                emit(state.copyWith(isLoading: false, started: true));
+              } else {
+                Fluttertoast.showToast(
+                    msg: response.statusMessage ??
+                        'Something went wrong !Please try agian.');
+                emit(state.copyWith(isLoading: false));
               }
-              if (state.videoFiles.isNotEmpty) {
-                startServiceRepository.addVideoAndImages(
-                    index: 0,
-                    id: event.id!,
-                    fileType: "video",
-                    imageList: state.videoFiles,
-                    isPreCheck: false);
-              }
-              await userRepository.setTripStatus('');
-              emit(state.copyWith(isLoading: false, started: true));
             } else {
-              Fluttertoast.showToast(
-                  msg: response.statusMessage ??
-                      'Something went wrong !Please try agian.');
+              Fluttertoast.showToast(msg: 'Network issue! Please try again..');
               emit(state.copyWith(isLoading: false));
             }
-          } else {
-            Fluttertoast.showToast(msg: 'Network issue! Please try again..');
-            emit(state.copyWith(isLoading: false));
+          } catch (e) {
+            log('error in the submit api ----------------${e.toString()}');
+            Fluttertoast.showToast(msg: e.toString());
           }
-        } catch (e) {
-          log('error in the submit api ----------------${e.toString()}');
-          Fluttertoast.showToast(msg: e.toString());
+        } else {
+          emit(state.copyWith(isLoading: false));
+          log('internet connection is not there');
+          Fluttertoast.showToast(
+              msg: ' No internet, please check your connection');
         }
       }
     });

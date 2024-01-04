@@ -5,10 +5,11 @@ import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 class ComplaintCard extends StatelessWidget {
-  const ComplaintCard({super.key,
-  required this.complaintOntap,
-  required this.complaint,
-  required this.isShow,
+  const ComplaintCard({
+    super.key,
+    required this.complaintOntap,
+    required this.complaint,
+    required this.isShow,
   });
 
   final Function() complaintOntap;
@@ -35,14 +36,17 @@ class ComplaintCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                    padding:
+                        EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
                     child: const Text(
                       'Complaint:',
-                      style: TextStyle(fontFamily: AssetConstants.poppinsBold),
+                      style:
+                          TextStyle(fontFamily: AssetConstants.poppinsBold),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
+                    padding:
+                        EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
                     child: Icon(
                       isShow ? Icons.expand_less : Icons.expand_more,
                       color: ColorConstants.blackColor,
@@ -53,8 +57,8 @@ class ComplaintCard extends StatelessWidget {
               ),
             ),
             Visibility(
-              visible: isShow,
-                child: Divider(color: ColorConstants.backgroundColor2)),
+                visible: isShow,
+                child: const Divider(color: ColorConstants.backgroundColor2)),
             Visibility(
               visible: isShow,
               child: Padding(
