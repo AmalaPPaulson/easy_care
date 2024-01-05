@@ -135,7 +135,7 @@ class _SubmitReportState extends State<SubmitReport> {
             SizedBox(
               height: SizeConfig.blockSizeHorizontal * 8,
             ),
-            // here accroding to current tab and radil btn number as selected 
+            // here accroding to current tab and radil btn number as selected
             //option it shows related UI
             BlocBuilder<SubmitTabBloc, SubmitTabState>(
               builder: (context, state) {
@@ -263,8 +263,8 @@ class _SubmitReportState extends State<SubmitReport> {
                   tab = false;
                   context.read<SubmitTabBloc>().add(TabClickET(tabNo: 1));
                   serviceController.clear();
-              priceController.clear();
-              sparePartController.clear();
+                  priceController.clear();
+                  sparePartController.clear();
                 },
               ),
             ),

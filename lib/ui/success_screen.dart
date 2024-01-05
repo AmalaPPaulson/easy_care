@@ -41,8 +41,6 @@ class _SuccessScreenState extends State<SuccessScreen> {
               'assets/animation/success.flr',
               fit: BoxFit.cover,
               animation: 'verified',
-
-              // Replace with your animation name
             ),
           ),
           const Text(
@@ -54,6 +52,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
           ),
           LoginButton1(
               onTap: () {
+                /// here cleaning all  states in the blocs and navigate to homescreen
                 context.read<TripVisibleBloc>().add(CleanTripVisibleET());
                 context.read<ServicesBloc>().add(CleanServiceET());
                 context.read<StartServiceBloc>().add(CleanStartServiceET());

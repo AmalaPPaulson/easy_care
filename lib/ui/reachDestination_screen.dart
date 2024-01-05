@@ -123,6 +123,6 @@ class _ReachDestinationState extends State<ReachDestination> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
-    //bloc builder
+ 
   }
 }

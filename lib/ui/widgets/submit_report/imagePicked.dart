@@ -131,6 +131,7 @@ class _ImagePickedState extends State<ImagePicked> {
             content: SizedBox(
               height: MediaQuery.of(context).size.height / 5,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     // if user click this button, user can upload image from gallery

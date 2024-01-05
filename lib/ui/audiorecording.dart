@@ -95,55 +95,7 @@ class _AudioRecordingState extends State<AudioRecording> {
         child: Padding(
             padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2.0),
             child: Row(
-            
               children: [
-                StreamBuilder<RecordState>(
-                    stream: record.onStateChanged(),
-                    builder: (context, snapshot) {
-                      bool recodingFinished = false;
-                      if (snapshot.data != null) {
-                        if (snapshot.data == RecordState.stop) {
-                          if (paths != null) {
-                            if (paths!.isNotEmpty) {
-                              recodingFinished = true;
-                            }
-                          }
-                        }
-                      }
-                      if (recodingFinished) {
-                        return StreamBuilder<PositionData>(
-                            stream: _positionDataStream,
-                            builder: (context, snapshot) {
-                              final positionData = snapshot.data;
-                              final duration =
-                                  positionData?.duration ?? Duration.zero;
-                              final position =
-                                  positionData?.position ?? Duration.zero;
-                              Duration remaining = duration - position;
-                              return Column(
-                                children: [
-                                  const Icon(
-                                    Icons.mic,
-                                    color: Colors.grey,
-                                  ),
-                                  Text(
-                                    RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
-                                            .firstMatch("$remaining")
-                                            ?.group(1) ??
-                                        '$remaining',
-                                    style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 12,
-                                        fontFamily:
-                                            AssetConstants.poppinsRegular),
-                                  ),
-                                ],
-                              );
-                            });
-                      }
-
-                      return const SizedBox();
-                    }),
                 StreamBuilder<RecordState>(
                     stream: record.onStateChanged(),
                     builder: (context, snapshot) {
@@ -163,40 +115,48 @@ class _AudioRecordingState extends State<AudioRecording> {
                           }
                         }
                       }
-
                       return recording
-                          ? Row(children: [ Text(
-                              '$minutes:$seconds',
-                              style: const TextStyle(
-                                  color: ColorConstants.primaryColor,
-                                  fontSize: 12,
-                                  fontFamily: AssetConstants.poppinsMedium),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.blockSizeHorizontal*2,
+                          ? Row(
+                              children: [
+                                Text(
+                                  '$minutes:$seconds',
+                                  style: const TextStyle(
+                                      color: ColorConstants.primaryColor,
+                                      fontSize: 12,
+                                      fontFamily: AssetConstants.poppinsMedium),
+                                ),
+                              ],
                             )
-                            ],)
-                          
-                          
                           : (recodingFinished
                               ? StreamBuilder<PositionData>(
                                   stream: _positionDataStream,
                                   builder: (context, snapshot) {
                                     final positionData = snapshot.data;
-                                    return Flexible(
-                                      child: SeekBar(
-                                        duration: positionData?.duration ??
-                                            Duration.zero,
-                                        position: positionData?.position ??
-                                            Duration.zero,
-                                        bufferedPosition:
-                                            positionData?.bufferedPosition ??
-                                                Duration.zero,
-                                        onChangeEnd: player.seek,
-                                      ),
+                                    final duration =
+                                        positionData?.duration ?? Duration.zero;
+                                    final position =
+                                        positionData?.position ?? Duration.zero;
+                                    Duration remaining = duration - position;
+                                    return Column(
+                                      children: [
+                                        const Icon(
+                                          Icons.mic,
+                                          color: Colors.grey,
+                                        ),
+                                        Text(
+                                          RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
+                                                  .firstMatch("$remaining")
+                                                  ?.group(1) ??
+                                              '$remaining',
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12,
+                                              fontFamily: AssetConstants
+                                                  .poppinsRegular),
+                                        ),
+                                      ],
                                     );
-                                  },
-                                )
+                                  })
                               : Flexible(
                                   child: Padding(
                                     padding: EdgeInsets.all(
@@ -212,6 +172,40 @@ class _AudioRecordingState extends State<AudioRecording> {
                                     ),
                                   ),
                                 ));
+                    }),
+                StreamBuilder<RecordState>(
+                    stream: record.onStateChanged(),
+                    builder: (context, snapshot) {
+                      bool recodingFinished = false;
+                      if (snapshot.data != null) {
+                        if (snapshot.data == RecordState.stop) {
+                          if (paths != null) {
+                            if (paths!.isNotEmpty) {
+                              recodingFinished = true;
+                            }
+                          }
+                        }
+                      }
+                      return (recodingFinished)
+                          ? StreamBuilder<PositionData>(
+                              stream: _positionDataStream,
+                              builder: (context, snapshot) {
+                                final positionData = snapshot.data;
+                                return Flexible(
+                                  child: SeekBar(
+                                    duration:
+                                        positionData?.duration ?? Duration.zero,
+                                    position:
+                                        positionData?.position ?? Duration.zero,
+                                    bufferedPosition:
+                                        positionData?.bufferedPosition ??
+                                            Duration.zero,
+                                    onChangeEnd: player.seek,
+                                  ),
+                                );
+                              },
+                            )
+                          : const Spacer();
                     }),
                 StreamBuilder<RecordState>(
                     stream: record.onStateChanged(),
@@ -298,7 +292,7 @@ class _AudioRecordingState extends State<AudioRecording> {
                                     resetTimer();
                                   }
                                 });
-                
+
                                 startRecording(false);
                               },
                             );
@@ -341,43 +335,6 @@ class _AudioRecordingState extends State<AudioRecording> {
           (position, bufferedPosition, duration) => PositionData(
               position, bufferedPosition, duration ?? Duration.zero));
 
-  // Widget changedRow() {
-  //   return Row(
-  //     children: [
-  //       const Column(
-  //         children: [
-  //           Icon(
-  //             Icons.mic,
-  //             color: Colors.white,
-  //           ),
-  //           Text(
-  //             '0.0',
-  //             style: TextStyle(color: Colors.white, fontSize: 12),
-  //           ),
-  //         ],
-  //       ),
-  //       StreamBuilder<PositionData>(
-  //         stream: _positionDataStream,
-  //         builder: (context, snapshot) {
-  //           final positionData = snapshot.data;
-  //           return SeekBar(
-  //             duration: positionData?.duration ?? Duration.zero,
-  //             position: positionData?.position ?? Duration.zero,
-  //             bufferedPosition: positionData?.bufferedPosition ?? Duration.zero,
-  //             onChangeEnd: player.seek,
-  //           );
-  //         },
-  //       ),
-  //       CircleAvatar(
-  //           backgroundColor: Colors.grey,
-  //           radius: SizeConfig.blockSizeHorizontal * 1.5,
-  //           child: const Icon(
-  //             Icons.play_arrow,
-  //             color: ColorConstants.primaryColor,
-  //           )),
-  //     ],
-  //   );
-  // }
 
   //start timer
   void startTimer() {
@@ -407,7 +364,5 @@ class _AudioRecordingState extends State<AudioRecording> {
       }
     });
   }
-  // playAudio() {
-  //   player.play();
-  // }
+
 }

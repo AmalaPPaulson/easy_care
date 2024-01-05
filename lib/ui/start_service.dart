@@ -38,7 +38,6 @@ class _StartState extends State<StartService> {
   @override
   Widget build(BuildContext context) {
     ComplaintResult complaint = userRepository.getComplaint();
-
     return BlocListener<ServicesBloc, ServicesState>(
       listener: (context, state) {
         if (state.isLoading == false && state.started) {
@@ -93,6 +92,7 @@ class _StartState extends State<StartService> {
         padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
         child: Column(
           children: [
+            //here hide and show cards
             BlocBuilder<StartServiceBloc, StartServiceState>(
               buildWhen: (previous, current) {
                 return current.card == false;
@@ -186,6 +186,7 @@ class _StartState extends State<StartService> {
       )),
     );
   }
+  // text field to add description about complaint
   Widget textfield() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -56,6 +56,7 @@ class _RescheduledScreenState extends State<RescheduledScreen> {
             ],
           );
         }
+        /// to list rescheduled complaints
         return Column(
           children: [
             Expanded(
@@ -146,16 +147,6 @@ class _RescheduledScreenState extends State<RescheduledScreen> {
                       fontFamily: AssetConstants.poppinsRegular),
                 ),
               ),
-              // const Divider(color: ColorConstants.backgroundColor2),
-              // Padding(
-              //   padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-              //   child: Text(
-              //     result.status.toString(),
-              //     style: const TextStyle(
-              //         color: ColorConstants.primaryColor,
-              //         fontFamily: AssetConstants.poppinsSemiBold),
-              //   ),
-              // ),
             ],
           ),
         ),

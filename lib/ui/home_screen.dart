@@ -33,8 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-
-
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -58,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: GestureDetector(
           onTap: () => _scaffoldKey.currentState?.openDrawer(),
           /* WScaffold.of(context).openDrawer();rite listener code here */
-
           child: const Icon(
             Icons.menu,
             color: Colors.white, // add custom icons also
@@ -264,7 +261,6 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (index) {
-          //context.read<HomeScreenBloc>().add(TabClickET(tabNo: index));
         },
         children: const [
           ActiveScreen(),

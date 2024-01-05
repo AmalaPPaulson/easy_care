@@ -158,7 +158,6 @@ class _CompletedScreenState extends State<CompletedScreen> {
                       fontFamily: AssetConstants.poppinsRegular),
                 ),
               ),
-           
             ],
           ),
         ),
