@@ -43,20 +43,32 @@ class TripBloc extends Bloc<TripEvent, TripState> {
           }
 
           permission = await Geolocator.checkPermission();
+          log('before checking-------------------$permission');
           if (permission == LocationPermission.denied) {
+            emit(state.copyWith(isLoading: false));
+            log('location denied first time');
             permission = await Geolocator.requestPermission();
+            log('After checking outside if condition-------------------$permission');
             if (permission == LocationPermission.denied) {
+              emit(state.copyWith(isLoading: false));
               // Permissions are denied, next time you could try
               // requesting permissions again (this is also where
               // Android's shouldShowRequestPermissionRationale
               // returned true. According to Android guidelines
               // your App should show an explanatory UI now.
+
+             
               return Future.error('Location permissions are denied');
             }
           }
 
           if (permission == LocationPermission.deniedForever) {
             // Permissions are denied forever, handle appropriately.
+            log('After checking inside if condition-------------------$permission');
+            log('location denied second time');
+            emit(state.copyWith(isLoading: false));
+            Geolocator.openLocationSettings();
+            permission = await Geolocator.requestPermission();
             return Future.error(
                 'Location permissions are permanently denied, we cannot request permissions.');
           }

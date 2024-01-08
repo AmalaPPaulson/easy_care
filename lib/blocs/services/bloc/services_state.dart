@@ -6,16 +6,16 @@ class ServicesState {
   final List<XFile> images;
   final List<Uint8List> thumbnail;
   final List<File> videoFiles;
- 
+  final bool isLoadThumb;
   final bool isLoading;
   final bool started;
   const ServicesState({
     this.images = const [],
     this.thumbnail = const [],
     this.videoFiles = const [],
-   
-    this.isLoading=false,
-     this.started = false,
+    this.isLoading = false,
+    this.started = false,
+    this.isLoadThumb = false,
   });
 
   
@@ -24,7 +24,7 @@ class ServicesState {
     List<XFile>? images,
     List<Uint8List>? thumbnail,
     List<File>? videoFiles,
-   
+    bool? isLoadThumb,
     bool? isLoading,
     bool? started,
   }) {
@@ -32,7 +32,7 @@ class ServicesState {
       images: images ?? this.images,
       thumbnail: thumbnail ?? this.thumbnail,
       videoFiles: videoFiles ?? this.videoFiles,
-      
+      isLoadThumb: isLoadThumb ?? this.isLoadThumb,
       isLoading: isLoading ?? this.isLoading,
       started: started ?? this.started,
     );

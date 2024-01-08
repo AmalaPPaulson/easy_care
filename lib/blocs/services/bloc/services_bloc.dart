@@ -33,6 +33,7 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       emit(state.copyWith(images: updatedImages));
     });
     on<VideoPickerET>((event, emit) async {
+      emit(state.copyWith(isLoadThumb: true));
       File? galleryFile = File(event.xfilePick.path);
       videoFiles.addAll(state.videoFiles);
       videoFiles.add(galleryFile);
@@ -52,7 +53,7 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
         thumbNails.add(uint8list);
         var updatedThumbNails = state.thumbnail.toList();
         updatedThumbNails.add(uint8list);
-        emit(state.copyWith(thumbnail: updatedThumbNails));
+        emit(state.copyWith(thumbnail: updatedThumbNails,isLoadThumb: false));
       }
     });
 
@@ -162,7 +163,8 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
           videoFiles: [],
           thumbnail: [],
           isLoading: false,
-          started: false));
+          started: false,
+          isLoadThumb: false,));
     });
   }
 }

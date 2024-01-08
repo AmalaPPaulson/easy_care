@@ -67,7 +67,8 @@ class _LoginPhoneState extends State<LoginPhone> {
                     // phoneNo = phoneNoController.text;
                   },
                   keyboardType: defaultTargetPlatform == TargetPlatform.iOS
-                      ? const TextInputType.numberWithOptions(decimal: true,signed: true)
+                      ? const TextInputType.numberWithOptions(
+                          decimal: true, signed: true)
                       : TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly,
@@ -79,7 +80,11 @@ class _LoginPhoneState extends State<LoginPhone> {
                         horizontal: 0.0),
                     filled: true,
                     fillColor: ColorConstants.backgroundColor2,
-                    prefixText: '  +91 ',
+                    prefixIcon: Padding(
+                      padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*2),
+                      child: const Text(' +91'),
+                    ),
+                    prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(

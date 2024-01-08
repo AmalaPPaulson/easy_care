@@ -30,7 +30,7 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await UserRepository().initLocal();
   runApp(DevicePreview(
-      enabled: !kReleaseMode, builder: (context) => const MyApp()));
+      enabled: false, builder: (context) => const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => TripVisibleBloc()),
       ],
       child: MaterialApp(
-        useInheritedMediaQuery: true,
+        useInheritedMediaQuery: false,
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
         debugShowCheckedModeBanner: false,

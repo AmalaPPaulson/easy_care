@@ -177,7 +177,10 @@ class _AudioRecordingState extends State<AudioRecording> {
                     stream: record.onStateChanged(),
                     builder: (context, snapshot) {
                       bool recodingFinished = false;
+                      bool recording = false;
+                      //bool recordNotStart = false;
                       if (snapshot.data != null) {
+                        recording = snapshot.data == RecordState.record;
                         if (snapshot.data == RecordState.stop) {
                           if (paths != null) {
                             if (paths!.isNotEmpty) {
@@ -186,26 +189,28 @@ class _AudioRecordingState extends State<AudioRecording> {
                           }
                         }
                       }
-                      return (recodingFinished)
-                          ? StreamBuilder<PositionData>(
-                              stream: _positionDataStream,
-                              builder: (context, snapshot) {
-                                final positionData = snapshot.data;
-                                return Flexible(
-                                  child: SeekBar(
-                                    duration:
-                                        positionData?.duration ?? Duration.zero,
-                                    position:
-                                        positionData?.position ?? Duration.zero,
-                                    bufferedPosition:
-                                        positionData?.bufferedPosition ??
+                      return recording
+                          ? const Spacer()
+                          : (recodingFinished)
+                              ? StreamBuilder<PositionData>(
+                                  stream: _positionDataStream,
+                                  builder: (context, snapshot) {
+                                    final positionData = snapshot.data;
+                                    return Flexible(
+                                      child: SeekBar(
+                                        duration: positionData?.duration ??
                                             Duration.zero,
-                                    onChangeEnd: player.seek,
-                                  ),
-                                );
-                              },
-                            )
-                          : const Spacer();
+                                        position: positionData?.position ??
+                                            Duration.zero,
+                                        bufferedPosition:
+                                            positionData?.bufferedPosition ??
+                                                Duration.zero,
+                                        onChangeEnd: player.seek,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : const SizedBox();
                     }),
                 StreamBuilder<RecordState>(
                     stream: record.onStateChanged(),
@@ -335,7 +340,6 @@ class _AudioRecordingState extends State<AudioRecording> {
           (position, bufferedPosition, duration) => PositionData(
               position, bufferedPosition, duration ?? Duration.zero));
 
-
   //start timer
   void startTimer() {
     countdownTimer =
@@ -364,5 +368,4 @@ class _AudioRecordingState extends State<AudioRecording> {
       }
     });
   }
-
 }

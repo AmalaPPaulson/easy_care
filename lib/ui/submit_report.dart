@@ -86,6 +86,7 @@ class _SubmitReportState extends State<SubmitReport> {
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        resizeToAvoidBottomInset: false,// fluter 2.x 
       ),
     );
   }
@@ -172,7 +173,7 @@ class _SubmitReportState extends State<SubmitReport> {
                           ),
                       },
                     SizedBox(
-                      height: SizeConfig.blockSizeHorizontal * 20,
+                      height: SizeConfig.blockSizeHorizontal * 50,
                     ),
                   ],
                 );

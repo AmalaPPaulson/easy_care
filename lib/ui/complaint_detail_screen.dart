@@ -196,7 +196,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
             return FloatingActionBtn(
                 onTap: () {
                   context.read<TripBloc>().add(UpdateStatusET(
-                        status: StringConstants.startTrip,
+                        status: StringConstants.startTrip, 
                         complaintId: complaint.id.toString(),
                       ));
                 },

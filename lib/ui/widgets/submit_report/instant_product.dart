@@ -2,7 +2,9 @@ import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
 import 'package:easy_care/ui/widgets/submit_report/service_details.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InstantProduct extends StatefulWidget {
@@ -53,13 +55,19 @@ class _InstantProductState extends State<InstantProduct> {
                           borderSide: const BorderSide(
                             color: Colors.black45,
                           )),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.blockSizeHorizontal * 1),
+                          borderSide: const BorderSide(
+                            color: Colors.black26,
+                          )),
                     ),
                   ),
                 ),
                 Visibility(
                   visible: isChecked,
                   child: SizedBox(
-                    width: SizeConfig.blockSizeHorizontal*5,
+                    width: SizeConfig.blockSizeHorizontal * 5,
                   ),
                 ),
                 Visibility(
@@ -69,8 +77,15 @@ class _InstantProductState extends State<InstantProduct> {
                     child: TextField(
                       controller: widget.priceController,
                       enabled: true,
-                      keyboardType: TextInputType.number,
+                      keyboardType: defaultTargetPlatform == TargetPlatform.iOS
+                          ? const TextInputType.numberWithOptions(
+                              decimal: true, signed: true)
+                          : TextInputType.number,
                       textInputAction: TextInputAction.done,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(6),
+                      ],
                       decoration: InputDecoration(
                         hintText: 'Price',
                         hintStyle: const TextStyle(
@@ -85,18 +100,25 @@ class _InstantProductState extends State<InstantProduct> {
                             borderSide: const BorderSide(
                               color: Colors.black45,
                             )),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.blockSizeHorizontal * 1),
+                            borderSide: const BorderSide(
+                              color: Colors.black26,
+                            )),
                       ),
                     ),
                   ),
                 ),
               ],
             ),
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*5,
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 5,
             ),
             Row(
               children: [
-                 SizedBox(width: SizeConfig.blockSizeHorizontal*2.5), //SizedBox
+                SizedBox(
+                    width: SizeConfig.blockSizeHorizontal * 2.5), //SizedBox
                 /** Checkbox Widget **/
                 Checkbox(
                   value: isChecked,
@@ -110,12 +132,14 @@ class _InstantProductState extends State<InstantProduct> {
                     // });
                   },
                 ),
-                 SizedBox(
-                  width: SizeConfig.blockSizeHorizontal*2.5,
+                SizedBox(
+                  width: SizeConfig.blockSizeHorizontal * 2.5,
                 ), //SizedBox
                 const Text(
                   'Paid replacement',
-                  style: TextStyle(fontSize: 17.0,fontFamily: AssetConstants.poppinsRegular),
+                  style: TextStyle(
+                      fontSize: 17.0,
+                      fontFamily: AssetConstants.poppinsRegular),
                 ), //Text
                 //Checkbox
               ], //<Widget>[]
@@ -123,8 +147,8 @@ class _InstantProductState extends State<InstantProduct> {
             ServiceDetails(
               controller: widget.serviceController!,
             ),
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*20,
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 20,
             ),
           ],
         );

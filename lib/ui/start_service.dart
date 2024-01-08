@@ -47,41 +47,43 @@ class _StartState extends State<StartService> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: ColorConstants.primaryColor,
-          leading: null,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Complaint : ${complaint.complaint!.complaintId.toString()}  ',
-            style: const TextStyle(
-                color: Colors.white,
-                fontFamily: AssetConstants.poppinsSemiBold,
-                fontSize: 20),
+          appBar: AppBar(
+            backgroundColor: ColorConstants.primaryColor,
+            leading: null,
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            title: Text(
+              'Complaint : ${complaint.complaint!.complaintId.toString()}  ',
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: AssetConstants.poppinsSemiBold,
+                  fontSize: 20),
+            ),
           ),
-        ),
-        body: createBody(complaint),
-        floatingActionButton: BlocBuilder<ServicesBloc, ServicesState>(
-          buildWhen: (previous, current) => (previous != current),
-          builder: (context, state) {
-            bool isPressed = false;
-            if (state.isLoading) {
-              isPressed = true;
-            }
-            return FloatingActionBtn(
-                onTap: () {
-                  context.read<ServicesBloc>().add(StartServiceApiET(
-                        id: complaint.id.toString(),
-                        description: descriptionController.text,
-                        audio: paths,
-                      ));
-                },
-                isPressed: isPressed,
-                text: 'Start Service');
-          },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      ),
+          body: createBody(complaint),
+          floatingActionButton: BlocBuilder<ServicesBloc, ServicesState>(
+            buildWhen: (previous, current) => (previous != current),
+            builder: (context, state) {
+              bool isPressed = false;
+              if (state.isLoading) {
+                isPressed = true;
+              }
+              return FloatingActionBtn(
+                  onTap: () {
+                    context.read<ServicesBloc>().add(StartServiceApiET(
+                          id: complaint.id.toString(),
+                          description: descriptionController.text,
+                          audio: paths,
+                        ));
+                  },
+                  isPressed: isPressed,
+                  text: 'Start Service');
+            },
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          resizeToAvoidBottomInset: false,// fluter 2.x
+          ),
     );
   }
 
@@ -165,6 +167,7 @@ class _StartState extends State<StartService> {
             BlocBuilder<ServicesBloc, ServicesState>(
               builder: (context, state) {
                 return VideoPicked(
+                  isLoadThumb: state.isLoadThumb,
                     thumbnail: state.thumbnail,
                     deleteOntap: (index) {
                       context
@@ -186,6 +189,7 @@ class _StartState extends State<StartService> {
       )),
     );
   }
+
   // text field to add description about complaint
   Widget textfield() {
     return Column(

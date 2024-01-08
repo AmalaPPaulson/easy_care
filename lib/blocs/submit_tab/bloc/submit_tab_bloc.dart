@@ -82,6 +82,7 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
     });
 
     on<VideoPickerET>((event, emit) async {
+      emit(state.copyWith(isLoadThumb: true));
       File? galleryFile = File(event.xfilePick.path);
       videoFiles.addAll(state.videoFiles);
       videoFiles.add(galleryFile);
@@ -101,7 +102,7 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
         thumbNails.add(uint8list);
         var updatedThumbNails = state.thumbnail.toList();
         updatedThumbNails.add(uint8list);
-        emit(state.copyWith(thumbnail: updatedThumbNails));
+        emit(state.copyWith(thumbnail: updatedThumbNails,isLoadThumb: false));
       }
     });
     on<VideoDeleteET>((event, emit) {
@@ -317,6 +318,7 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
         thumbnail: [],
         videoFiles: [],
         isChecked: false,
+        isLoadThumb: false,
       ));
     });
   }

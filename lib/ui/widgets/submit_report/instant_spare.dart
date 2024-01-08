@@ -1,6 +1,8 @@
 import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
 import 'package:easy_care/ui/widgets/submit_report/imagePicked.dart';
 import 'package:easy_care/ui/widgets/submit_report/videoPicked.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
@@ -59,6 +61,12 @@ class _InstantSpareState extends State<InstantSpare> {
                           borderSide: const BorderSide(
                             color: Colors.black45,
                           )),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.blockSizeHorizontal * 1),
+                          borderSide: const BorderSide(
+                            color: Colors.black26,
+                          )),
                     ),
                   ),
                 ),
@@ -76,7 +84,14 @@ class _InstantSpareState extends State<InstantSpare> {
                       controller: widget.sparePriceController,
                       enabled: true,
                       textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.number,
+                      keyboardType: defaultTargetPlatform == TargetPlatform.iOS
+                      ? const TextInputType.numberWithOptions(
+                          decimal: true, signed: true)
+                      : TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(6),
+                      ],
                       decoration: InputDecoration(
                         hintText: 'Price',
                         hintStyle: const TextStyle(
@@ -90,6 +105,12 @@ class _InstantSpareState extends State<InstantSpare> {
                                 SizeConfig.blockSizeHorizontal * 1),
                             borderSide: const BorderSide(
                               color: Colors.black45,
+                            )),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.blockSizeHorizontal * 1),
+                            borderSide: const BorderSide(
+                              color: Colors.black26,
                             )),
                       ),
                     ),
@@ -144,38 +165,55 @@ class _InstantSpareState extends State<InstantSpare> {
                     borderSide: const BorderSide(
                       color: Colors.black45,
                     )),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                        SizeConfig.blockSizeHorizontal * 1),
+                    borderSide: const BorderSide(
+                      color: Colors.black26,
+                    )),
               ),
             ),
             SizedBox(
               height: SizeConfig.blockSizeHorizontal * 5,
             ),
-           
-           BlocBuilder<SubmitTabBloc, SubmitTabState>(
-             builder: (context, state) {
-               return ImagePicked(deleteOntap: (index){
-                context.read<SubmitTabBloc>().add(ImageDeleteET(index: index));
-               }, images: state.images, imageOntap: (image){
-                context.read<SubmitTabBloc>().add(ImagePickerET(image: image));
-               });
-             },
-           ),
-           SizedBox(
+            BlocBuilder<SubmitTabBloc, SubmitTabState>(
+              builder: (context, state) {
+                return ImagePicked(
+                    deleteOntap: (index) {
+                      context
+                          .read<SubmitTabBloc>()
+                          .add(ImageDeleteET(index: index));
+                    },
+                    images: state.images,
+                    imageOntap: (image) {
+                      context
+                          .read<SubmitTabBloc>()
+                          .add(ImagePickerET(image: image));
+                    });
+              },
+            ),
+            SizedBox(
               height: SizeConfig.blockSizeHorizontal * 6.0,
             ),
-           BlocBuilder<SubmitTabBloc, SubmitTabState>(
-             builder: (context, state) {
-               return VideoPicked(thumbnail: state.thumbnail, deleteOntap: (index){
-                  context.read<SubmitTabBloc>().add(VideoDeleteET(index: index));
-               } ,videoOntap: (xfilePick){
-                 context
-                    .read<SubmitTabBloc>()
-                    .add(VideoPickerET(xfilePick: xfilePick));
-               });
-             },
-           ),
-         
-             SizedBox(
-              height: SizeConfig.blockSizeHorizontal*15,
+            BlocBuilder<SubmitTabBloc, SubmitTabState>(
+              builder: (context, state) {
+                return VideoPicked(
+                  isLoadThumb: state.isLoadThumb,
+                    thumbnail: state.thumbnail,
+                    deleteOntap: (index) {
+                      context
+                          .read<SubmitTabBloc>()
+                          .add(VideoDeleteET(index: index));
+                    },
+                    videoOntap: (xfilePick) {
+                      context
+                          .read<SubmitTabBloc>()
+                          .add(VideoPickerET(xfilePick: xfilePick));
+                    });
+              },
+            ),
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 15,
             ),
           ],
         );

@@ -38,6 +38,7 @@ class _InstantServiceState extends State<InstantService> {
         BlocBuilder<SubmitTabBloc, SubmitTabState>(
           builder: (context, state) {
             return VideoPicked(
+              isLoadThumb: state.isLoadThumb,
               thumbnail: state.thumbnail,
               deleteOntap: (index) {
                 context.read<SubmitTabBloc>().add(VideoDeleteET(index: index));

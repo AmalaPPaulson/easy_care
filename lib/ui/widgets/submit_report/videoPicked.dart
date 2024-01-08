@@ -10,10 +10,12 @@ class VideoPicked extends StatefulWidget {
     required this.thumbnail,
     required this.deleteOntap,
     required this.videoOntap,
+    required this.isLoadThumb,
   });
   final List<Uint8List> thumbnail;
   final Function(XFile xfilePick) videoOntap;
   final Function(int index) deleteOntap;
+  final bool isLoadThumb;
   @override
   State<VideoPicked> createState() => _VideoPickedState();
 }
@@ -54,7 +56,8 @@ class _VideoPickedState extends State<VideoPicked> {
                   child: SizedBox(
                     height: SizeConfig.blockSizeHorizontal * 25,
                     //width:SizeConfig.blockSizeHorizontal*20,
-                    child: ListView.builder(
+                    child: 
+                    ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
@@ -63,7 +66,7 @@ class _VideoPickedState extends State<VideoPicked> {
                           padding: EdgeInsets.symmetric(
                               horizontal: SizeConfig.blockSizeHorizontal * 1.5,
                               vertical: SizeConfig.blockSizeHorizontal * 2.5),
-                          child: ClipRRect(
+                          child: widget.isLoadThumb? const CircularProgressIndicator() : ClipRRect(
                             borderRadius: BorderRadius.circular(
                                 SizeConfig.blockSizeHorizontal * 2),
                             child: Stack(

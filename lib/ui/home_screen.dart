@@ -50,7 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text(
           'Registered Complaints',
           style: TextStyle(
-              color: Colors.white, fontFamily: AssetConstants.poppinsMedium),
+              color: Colors.white, fontFamily: AssetConstants.poppinsMedium,
+              fontSize: 20),
         ),
         backgroundColor: ColorConstants.primaryColor,
         leading: GestureDetector(
