@@ -11,7 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:meta/meta.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
+
 
 part 'submit_tab_event.dart';
 part 'submit_tab_state.dart';
@@ -82,39 +82,39 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
     });
 
     on<VideoPickerET>((event, emit) async {
-      emit(state.copyWith(isLoadThumb: true));
       File? galleryFile = File(event.xfilePick.path);
       videoFiles.addAll(state.videoFiles);
       videoFiles.add(galleryFile);
       var updatedVideos = state.videoFiles.toList();
       updatedVideos.add(galleryFile);
       emit(state.copyWith(videoFiles: updatedVideos));
-      final uint8list = await VideoThumbnail.thumbnailData(
-        video: galleryFile.path,
-        imageFormat: ImageFormat.JPEG,
-        maxWidth:
-            128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-        quality: 25,
-      );
-      List<Uint8List> thumbNails = [];
-      if (uint8list != null) {
-        thumbNails.addAll(state.thumbnail);
-        thumbNails.add(uint8list);
-        var updatedThumbNails = state.thumbnail.toList();
-        updatedThumbNails.add(uint8list);
-        emit(state.copyWith(thumbnail: updatedThumbNails,isLoadThumb: false));
-      }
+      
+      // final uint8list = await VideoThumbnail.thumbnailData(
+      //   video: galleryFile.path,
+      //   imageFormat: ImageFormat.JPEG,
+      //   maxWidth:
+      //       128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+      //   quality: 25,
+      // );
+      // List<Uint8List> thumbNails = [];
+      // if (uint8list != null) {
+      //   thumbNails.addAll(state.thumbnail);
+      //   thumbNails.add(uint8list);
+      //   var updatedThumbNails = state.thumbnail.toList();
+      //   updatedThumbNails.add(uint8list);
+      //   emit(state.copyWith(thumbnail: updatedThumbNails,));
+      // }
     });
     on<VideoDeleteET>((event, emit) {
       state.videoFiles.removeAt(event.index);
       videoFiles.addAll(state.videoFiles);
       var updatedVideos = state.videoFiles.toList();
       emit(state.copyWith(videoFiles: updatedVideos));
-      state.thumbnail.removeAt(event.index);
-      List<Uint8List> thumbNails = [];
-      thumbNails.addAll(state.thumbnail);
-      var updatedThumbnails = state.thumbnail.toList();
-      emit(state.copyWith(thumbnail: updatedThumbnails));
+      // state.thumbnail.removeAt(event.index);
+      // List<Uint8List> thumbNails = [];
+      // thumbNails.addAll(state.thumbnail);
+      // var updatedThumbnails = state.thumbnail.toList();
+      // emit(state.copyWith(thumbnail: updatedThumbnails));
     });
 
     on<CheckET>((event, emit) {
@@ -243,7 +243,7 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
             "post_summary": event.serviceText!,
           };
         } else {
-          Fluttertoast.showToast(msg: 'Please provide Spare part name');
+          Fluttertoast.showToast(msg: 'Please provide service details');
           emit(state.copyWith(
             isLoading: false,
           ));
@@ -318,7 +318,7 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
         thumbnail: [],
         videoFiles: [],
         isChecked: false,
-        isLoadThumb: false,
+       
       ));
     });
   }

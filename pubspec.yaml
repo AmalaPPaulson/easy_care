@@ -60,6 +60,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1 
   flutter_slidable: ^3.0.1
   device_preview: ^1.1.0
+  flutter_svg: ^2.0.9
   
   
  
@@ -92,6 +93,8 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/animation/
+    - assets/svg/
+    - assets/png/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

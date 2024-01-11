@@ -16,11 +16,11 @@ class LoginBlocBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
     on<LoginBtnPressET>((event, emit) async {
       if (event.phoneNo == null && event.phoneNo!.isEmpty) {
         emit(
-          LoginFailureST(errorMsg: 'Please enter Phone Number'),
+          LoginFailureST(errorMsg: 'Please enter phone number'),
         );
       } else if (event.phoneNo!.length < 10) {
         emit(
-          LoginFailureST(errorMsg: 'PhoneNo Should be 10 digits'),
+          LoginFailureST(errorMsg: 'Phone number should be 10 digits'),
         );
       } else {
         emit(LoginPageLoadingST());
@@ -33,10 +33,10 @@ class LoginBlocBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
     });
 
     on<VerifyPinET>((event, emit) async {
-      emit(LoginPageLoadingST());
       // checking internet connectivity
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
+        emit(LoginPageLoadingST());
         try {
           Response? response =
               await userRepository.login(event.phoneNo!, event.pin!);
@@ -54,7 +54,6 @@ class LoginBlocBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
           emit(LoginFailureST(errorMsg: e.toString()));
         }
       } else {
-        log('internet connection is not there');
         Fluttertoast.showToast(
             msg: ' No internet, please check your connection');
       }

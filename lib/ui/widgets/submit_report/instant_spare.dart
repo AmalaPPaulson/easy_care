@@ -119,7 +119,7 @@ class _InstantSpareState extends State<InstantSpare> {
               ],
             ),
             SizedBox(
-              height: SizeConfig.blockSizeHorizontal * 5,
+              height: SizeConfig.blockSizeHorizontal * 3,
             ),
             Row(
               children: [
@@ -135,16 +135,19 @@ class _InstantSpareState extends State<InstantSpare> {
                   },
                 ),
                 SizedBox(
-                  width: SizeConfig.blockSizeHorizontal * 2.5,
+                  width: SizeConfig.blockSizeHorizontal * 2,
                 ), //SizedBox
                 const Text(
-                  'Paid replacment',
+                  'Paid replacement',
                   style: TextStyle(
                       fontSize: 17.0,
                       fontFamily: AssetConstants.poppinsRegular),
                 ), //Text
                 //Checkbox
               ], //<Widget>[]
+            ),
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 3,
             ),
             TextField(
               controller: widget.spareServiceController,
@@ -198,8 +201,7 @@ class _InstantSpareState extends State<InstantSpare> {
             BlocBuilder<SubmitTabBloc, SubmitTabState>(
               builder: (context, state) {
                 return VideoPicked(
-                  isLoadThumb: state.isLoadThumb,
-                    thumbnail: state.thumbnail,
+                    galleryFiles: state.videoFiles,
                     deleteOntap: (index) {
                       context
                           .read<SubmitTabBloc>()

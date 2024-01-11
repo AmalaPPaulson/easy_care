@@ -9,6 +9,8 @@ import 'package:easy_care/ui/widgets/submit_report/customerCard.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,14 +21,23 @@ class ReachDestination extends StatefulWidget {
   @override
   State<ReachDestination> createState() => _ReachDestinationState();
 }
-class _ReachDestinationState extends State<ReachDestination> {
+ 
+
+  class _ReachDestinationState extends State<ReachDestination> {
   bool isShow = true;
   bool isVisible = true;
   UserRepository userRepository = UserRepository();
+   final FlareControls _controls = FlareControls();
+  @override
+  void initState() {
+     repeatAnim();
+    super.initState();
+   
+  }
   @override
   Widget build(BuildContext context) {
     ComplaintResult complaint = userRepository.getComplaint();
-  
+
     return BlocListener<TripBloc, TripState>(
       listener: (context, state) {
         if (state.reached == true && state.isLoading == false) {
@@ -60,6 +71,7 @@ class _ReachDestinationState extends State<ReachDestination> {
             padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
             child: Column(
               children: [
+                animationDriver(context),
                 BlocBuilder<TripVisibleBloc, TripVisibleState>(
                   buildWhen: (previous, current) {
                     return current.card == false;
@@ -81,8 +93,8 @@ class _ReachDestinationState extends State<ReachDestination> {
                 ),
                 BlocBuilder<TripVisibleBloc, TripVisibleState>(
                   buildWhen: (previous, current) {
-                        return (current.card == true);
-                      },
+                    return (current.card == true);
+                  },
                   builder: (context, state) {
                     isShow = state.isShow;
                     return ComplaintCard(
@@ -95,7 +107,6 @@ class _ReachDestinationState extends State<ReachDestination> {
                         isShow: isShow);
                   },
                 ),
-              
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 20,
                 ),
@@ -123,6 +134,73 @@ class _ReachDestinationState extends State<ReachDestination> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
- 
+  }
+
+  Widget animationDriver(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+            height: SizeConfig.blockSizeHorizontal*90,
+            width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/png/map.png"),
+             fit: BoxFit.fill,
+            ),
+          ),
+          child: Center(
+            child: Padding(
+              padding:
+                  EdgeInsets.only(bottom: SizeConfig.blockSizeHorizontal * 7.5),
+              child: SizedBox(
+                width: SizeConfig.blockSizeHorizontal * 50,
+                height: SizeConfig.blockSizeHorizontal * 50,
+                child:  FlareActor(
+                  'assets/animation/Driver_circles.flr',
+                  alignment: Alignment.center,
+                  controller: _controls,
+                  fit: BoxFit.cover,
+                  animation: "main",
+                ),
+              ),
+            ),
+          ),
+        ),
+         Positioned(
+            right: 0,
+          left: 0,
+            bottom: 41,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 45),
+              child: Container(
+                height: 50,
+                 width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*7.5),
+                ),
+                child:  const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      "Don't use your phone while driving",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: ColorConstants.primaryColor,fontSize: 12,
+                            fontFamily: AssetConstants.poppinsSemiBold),
+                    ),
+                  ),
+                ),
+              ),
+            )),
+      ],
+    );
+  }
+  //repeat animation
+  repeatAnim() async {
+    Future.delayed(const Duration(seconds: 2), () {
+      _controls.play('main');
+      repeatAnim();
+    });
   }
 }
+ 

@@ -182,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       height: SizeConfig.blockSizeHorizontal * 15,
       width: MediaQuery.of(context).size.width,
-      color: ColorConstants.backgroundColor1,
+      color: ColorConstants.backgroundColor2,
       child: Row(
         children: <Widget>[
           TabTitleTile(

@@ -7,7 +7,7 @@ class SubmitTabState {
   final int? selectedOption;
   final List<XFile> images;
   final String? errorMsg;
-  final bool isLoadThumb;
+  
   final bool isLoading;
   final bool started;
   final List<Uint8List> thumbnail;
@@ -23,7 +23,7 @@ class SubmitTabState {
     this.thumbnail = const [],
     this.videoFiles = const [],
     this.isChecked = false,
-    this.isLoadThumb =false,
+    
   });
 
   SubmitTabState copyWith({
@@ -36,7 +36,7 @@ class SubmitTabState {
     List<Uint8List>? thumbnail,
     List<File>? videoFiles,
     bool? isChecked,
-    bool? isLoadThumb,
+    
   }) {
     return SubmitTabState(
       currentTab: currentTab ?? this.currentTab,
@@ -48,7 +48,7 @@ class SubmitTabState {
       thumbnail: thumbnail ?? this.thumbnail,
       videoFiles: videoFiles ?? this.videoFiles,
       isChecked: isChecked ?? this.isChecked,
-      isLoadThumb: isLoadThumb ?? this.isLoadThumb,
+     
     );
   }
 }

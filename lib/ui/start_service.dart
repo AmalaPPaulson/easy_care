@@ -167,8 +167,7 @@ class _StartState extends State<StartService> {
             BlocBuilder<ServicesBloc, ServicesState>(
               builder: (context, state) {
                 return VideoPicked(
-                  isLoadThumb: state.isLoadThumb,
-                    thumbnail: state.thumbnail,
+                    galleryFiles: state.videoFiles,
                     deleteOntap: (index) {
                       context
                           .read<ServicesBloc>()

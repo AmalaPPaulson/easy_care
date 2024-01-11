@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 // import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 part 'trip_event.dart';
 part 'trip_state.dart';
@@ -50,7 +51,9 @@ class TripBloc extends Bloc<TripEvent, TripState> {
             permission = await Geolocator.requestPermission();
             log('After checking outside if condition-------------------$permission');
             if (permission == LocationPermission.denied) {
+             
               emit(state.copyWith(isLoading: false));
+           await openAppSettings();
               // Permissions are denied, next time you could try
               // requesting permissions again (this is also where
               // Android's shouldShowRequestPermissionRationale
@@ -67,8 +70,8 @@ class TripBloc extends Bloc<TripEvent, TripState> {
             log('After checking inside if condition-------------------$permission');
             log('location denied second time');
             emit(state.copyWith(isLoading: false));
-            Geolocator.openLocationSettings();
-            permission = await Geolocator.requestPermission();
+            await openAppSettings();
+           // permission = await Geolocator.requestPermission();
             return Future.error(
                 'Location permissions are permanently denied, we cannot request permissions.');
           }

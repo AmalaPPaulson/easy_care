@@ -210,7 +210,7 @@ class _SubmitReportState extends State<SubmitReport> {
       child: Container(
         height: SizeConfig.blockSizeHorizontal * 15,
         width: MediaQuery.of(context).size.width,
-        color: ColorConstants.backgroundColor1,
+        color: ColorConstants.backgroundColor2,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

@@ -10,7 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:meta/meta.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
+//import 'package:video_thumbnail/video_thumbnail.dart';
 part 'services_event.dart';
 part 'services_state.dart';
 
@@ -39,22 +39,22 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       videoFiles.add(galleryFile);
       var updatedVideos = state.videoFiles.toList();
       updatedVideos.add(galleryFile);
-      emit(state.copyWith(videoFiles: updatedVideos));
-      final uint8list = await VideoThumbnail.thumbnailData(
-        video: galleryFile.path,
-        imageFormat: ImageFormat.JPEG,
-        maxWidth:
-            128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-        quality: 25,
-      );
-      List<Uint8List> thumbNails = [];
-      if (uint8list != null) {
-        thumbNails.addAll(state.thumbnail);
-        thumbNails.add(uint8list);
-        var updatedThumbNails = state.thumbnail.toList();
-        updatedThumbNails.add(uint8list);
-        emit(state.copyWith(thumbnail: updatedThumbNails,isLoadThumb: false));
-      }
+      emit(state.copyWith(videoFiles: updatedVideos,isLoadThumb: false));
+      // final uint8list = await VideoThumbnail.thumbnailData(
+      //   video: galleryFile.path,
+      //   imageFormat: ImageFormat.JPEG,
+      //   maxWidth:
+      //       128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+      //   quality: 25,
+      // );
+      // List<Uint8List> thumbNails = [];
+      // if (uint8list != null) {
+      //   thumbNails.addAll(state.thumbnail);
+      //   thumbNails.add(uint8list);
+      //   var updatedThumbNails = state.thumbnail.toList();
+      //   updatedThumbNails.add(uint8list);
+      //   emit(state.copyWith(thumbnail: updatedThumbNails,isLoadThumb: false));
+      // }
     });
 
     on<ImageDeleteET>((event, emit) {
@@ -69,10 +69,10 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       var updatedVideos = state.videoFiles.toList();
       emit(state.copyWith(videoFiles: updatedVideos));
       state.thumbnail.removeAt(event.index);
-      List<Uint8List> thumbNails = [];
-      thumbNails.addAll(state.thumbnail);
-      var updatedThumbnails = state.thumbnail.toList();
-      emit(state.copyWith(thumbnail: updatedThumbnails));
+      // List<Uint8List> thumbNails = [];
+      // thumbNails.addAll(state.thumbnail);
+      // var updatedThumbnails = state.thumbnail.toList();
+      // emit(state.copyWith(thumbnail: updatedThumbnails));
     });
 
     on<StartServiceApiET>((event, emit) async {

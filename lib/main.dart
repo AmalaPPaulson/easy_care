@@ -18,7 +18,6 @@ import 'package:easy_care/ui/splash_screen.dart';
 import 'package:easy_care/ui/start_service.dart';
 import 'package:easy_care/ui/submit_report.dart';
 import 'package:easy_care/utils/constants/string_constants.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

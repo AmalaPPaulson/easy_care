@@ -61,6 +61,9 @@ class _LoginPhoneState extends State<LoginPhone> {
               Padding(
                 padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 4),
                 child: TextFormField(
+                  style: const TextStyle(color: Colors.black,
+              fontSize: 17,
+              fontFamily: AssetConstants.poppinsRegular,),
                   controller: phoneNoController,
                   enabled: true,
                   onChanged: (text) {
@@ -82,7 +85,9 @@ class _LoginPhoneState extends State<LoginPhone> {
                     fillColor: ColorConstants.backgroundColor2,
                     prefixIcon: Padding(
                       padding:  EdgeInsets.all(SizeConfig.blockSizeHorizontal*2),
-                      child: const Text(' +91'),
+                      child: const Text(' +91',style: TextStyle(color: Colors.black,
+              fontSize: 17,
+              fontFamily: AssetConstants.poppinsRegular,),),
                     ),
                     prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
                     border: InputBorder.none,

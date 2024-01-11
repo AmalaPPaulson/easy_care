@@ -113,7 +113,7 @@ class _InstantProductState extends State<InstantProduct> {
               ],
             ),
             SizedBox(
-              height: SizeConfig.blockSizeHorizontal * 5,
+              height: SizeConfig.blockSizeHorizontal * 3,
             ),
             Row(
               children: [
@@ -133,7 +133,7 @@ class _InstantProductState extends State<InstantProduct> {
                   },
                 ),
                 SizedBox(
-                  width: SizeConfig.blockSizeHorizontal * 2.5,
+                  width: SizeConfig.blockSizeHorizontal * 2,
                 ), //SizedBox
                 const Text(
                   'Paid replacement',
@@ -143,6 +143,9 @@ class _InstantProductState extends State<InstantProduct> {
                 ), //Text
                 //Checkbox
               ], //<Widget>[]
+            ),
+            SizedBox(
+              height: SizeConfig.blockSizeHorizontal * 3,
             ),
             ServiceDetails(
               controller: widget.serviceController!,

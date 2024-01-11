@@ -39,7 +39,7 @@ class _TabTitleTileState extends State<TabTitleTile> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            height: SizeConfig.blockSizeHorizontal * 13,
+            height: SizeConfig.blockSizeHorizontal * 13.5,
             width: widget.width ,
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -67,11 +67,12 @@ class _TabTitleTileState extends State<TabTitleTile> {
               ),
             ),
           ),
+          const SizedBox(height: 1,),
           AnimatedOpacity(
             opacity: (widget.currentTab == widget.tabNo) ? 1 : 0,
             duration: const Duration(milliseconds: 400),
             child: AnimatedContainer(
-              height: SizeConfig.blockSizeHorizontal * 0.7,
+              height: SizeConfig.blockSizeHorizontal * 0.9,
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeIn,
               width: (widget.currentTab == widget.tabNo)
