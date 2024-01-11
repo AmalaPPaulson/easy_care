@@ -2,6 +2,7 @@ import 'package:easy_care/blocs/rescheduled/bloc/rescheduled_bloc.dart';
 import 'package:easy_care/model/complaint_model.dart';
 import 'package:easy_care/repositories/complaint_repo.dart';
 import 'package:easy_care/ui/widgets/custom_shimmer.dart';
+import 'package:easy_care/ui/widgets/noInternet.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
@@ -56,6 +57,10 @@ class _RescheduledScreenState extends State<RescheduledScreen> {
             ],
           );
         }
+        if (state.isNoInternet) {
+          return const NoInternetCard();
+        }
+
         /// to list rescheduled complaints
         return Column(
           children: [

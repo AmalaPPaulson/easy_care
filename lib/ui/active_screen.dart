@@ -8,6 +8,7 @@ import 'package:easy_care/ui/complaint_detail_screen.dart';
 import 'package:easy_care/ui/start_service.dart';
 import 'package:easy_care/ui/submit_report.dart';
 import 'package:easy_care/ui/widgets/custom_shimmer.dart';
+import 'package:easy_care/ui/widgets/noInternet.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
@@ -65,6 +66,9 @@ class _ActiveScreenState extends State<ActiveScreen> {
             ],
           );
         }
+        if (state.isNoInternet) {
+          return const NoInternetCard();
+        }
 
         return Column(
           children: [
@@ -72,7 +76,7 @@ class _ActiveScreenState extends State<ActiveScreen> {
               child: RefreshIndicator(
                 onRefresh: _refresh,
                 child: ListView.builder(
-                  physics:  const AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   controller: _scrollController,
                   itemCount: state.activeComplaints?.length ?? 0,
                   itemBuilder: (BuildContext context, int index) {
@@ -97,8 +101,9 @@ class _ActiveScreenState extends State<ActiveScreen> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           const SubmitReport()));
-                            }else if(state.activeComplaints![index].status == 'In Travelling'){
-                                Navigator.push(
+                            } else if (state.activeComplaints![index].status ==
+                                'In Travelling') {
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>

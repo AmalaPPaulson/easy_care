@@ -53,9 +53,9 @@ class RescheduledBloc extends Bloc<RescheduledEvent, RescheduledState> {
           emit(RescheduledState(errorMsg: e.toString()));
         }
       } else {
+        emit(const RescheduledState(isNoInternet: true));
         log('internet connection is not there');
-        Fluttertoast.showToast(
-            msg: ' No internet, please check your connection');
+       
       }
     });
 

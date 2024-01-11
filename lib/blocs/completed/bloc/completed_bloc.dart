@@ -17,7 +17,6 @@ class CompletedBloc extends Bloc<CompletedEvent, CompletedState> {
   ComplaintModel complaintModel = ComplaintModel();
   bool isThereNextPage = false;
   CompletedBloc() : super(const CompletedState()) {
-    
     // here fetching completed complaints from backend and passing it in to a model.
     //here also checking whether model is emplty or null to avoid null cheack operator
     //Also setting pagination to the list
@@ -56,9 +55,9 @@ class CompletedBloc extends Bloc<CompletedEvent, CompletedState> {
           emit(CompletedState(errorMsg: e.toString()));
         }
       } else {
+        emit(const CompletedState(isNoInternet: true));
         log('internet connection is not there');
-        Fluttertoast.showToast(
-            msg: ' No internet, please check your connection');
+        
       }
     });
 

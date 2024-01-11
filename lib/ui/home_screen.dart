@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-    @override
+  @override
   void initState() {
     context.read<HomeScreenBloc>().add(TabClickET(tabNo: 0));
     super.initState();
@@ -43,14 +43,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-     String?  phoneNo = userRepository.getPhoneNo();
+    String? phoneNo = userRepository.getPhoneNo();
+    String? userName = userRepository.getUserName();
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: const Text(
           'Registered Complaints',
           style: TextStyle(
-              color: Colors.white, fontFamily: AssetConstants.poppinsMedium,
+              color: Colors.white,
+              fontFamily: AssetConstants.poppinsSemiBold,
               fontSize: 20),
         ),
         backgroundColor: ColorConstants.primaryColor,
@@ -83,9 +85,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: SizeConfig.blockSizeHorizontal * 4,
                 ),
-               Text(
+                Text(
                   '$phoneNo',
-                  style: const TextStyle(fontFamily: AssetConstants.poppinsBold),
+                  style:
+                      const TextStyle(fontFamily: AssetConstants.poppinsBold),
+                ),
+                 SizedBox(
+                  height: SizeConfig.blockSizeHorizontal * 2,
+                ),
+                Text(
+                  '$userName',
+                  style:
+                      const TextStyle(fontFamily: AssetConstants.poppinsBold),
                 ),
               ],
             ),
@@ -160,11 +171,10 @@ class _HomeScreenState extends State<HomeScreen> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
-          
           builder: (context, state) {
-            int currentTab =0 ;
-            if(state.currentTab !=null){
-              currentTab =state.currentTab!;
+            int currentTab = 0;
+            if (state.currentTab != null) {
+              currentTab = state.currentTab!;
             }
             log('$currentTab');
             return Column(
@@ -186,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: <Widget>[
           TabTitleTile(
-            width: MediaQuery.of(context).size.width/3,
+            width: MediaQuery.of(context).size.width / 3,
             title: 'Active',
             currentTab: currentTab,
             tabNo: 0,
@@ -194,7 +204,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? ColorConstants.backgroundColor1
                 : ColorConstants.backgroundColor2,
             onPressed: () {
-             
               context.read<HomeScreenBloc>().add(TabClickET(tabNo: 0));
               log('inside active: $currentTab');
               _pageController.animateToPage(0,
@@ -208,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : BorderRadius.circular(0),
           ),
           TabTitleTile(
-            width: MediaQuery.of(context).size.width/3,
+            width: MediaQuery.of(context).size.width / 3,
             title: 'Completed',
             tabNo: 1,
             currentTab: currentTab,
@@ -223,7 +232,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         topRight: Radius.circular(8))
                     : const BorderRadius.only(bottomRight: Radius.circular(8)),
             onPressed: () {
-              
               context.read<HomeScreenBloc>().add(TabClickET(tabNo: 1));
               _pageController.animateToPage(1,
                   duration: const Duration(milliseconds: 5),
@@ -231,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           TabTitleTile(
-            width: MediaQuery.of(context).size.width/3,
+            width: MediaQuery.of(context).size.width / 3,
             title: 'Rescheduled',
             currentTab: currentTab,
             tabNo: 2,
@@ -239,7 +247,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? ColorConstants.backgroundColor1
                 : ColorConstants.backgroundColor2,
             onPressed: () {
-
               context.read<HomeScreenBloc>().add(TabClickET(tabNo: 2));
               _pageController.animateToPage(2,
                   duration: const Duration(milliseconds: 5),
@@ -261,8 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: PageView(
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
-        onPageChanged: (index) {
-        },
+        onPageChanged: (index) {},
         children: const [
           ActiveScreen(),
           CompletedScreen(),

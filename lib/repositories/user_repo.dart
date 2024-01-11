@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:easy_care/model/complaint_model.dart';
@@ -18,13 +19,26 @@ class UserRepository {
         "password": pin,
         // "fcm_token": fcmToken
       };
-
       Map<String, String> headers = {
         'Content-Type': 'application/json',
       };
-
       Response? response = await apiQuery.postQuery(
           APIConstants.apiLogin, headers, body, 'Login');
+      return response;
+    } catch (exception) {
+      return null;
+    }
+  }
+
+  //Get User Details
+  Future<Response?> getUserDetails() async {
+    try {
+      Map<String, String> headers = {};
+      Map<String, dynamic> query = {};
+
+      Response? response = await apiQuery.getQuery(APIConstants.apiUserDetails,
+          headers, query, 'UserDetails', true, true, true);
+      log(response!.data.toString());
       return response;
     } catch (exception) {
       return null;
@@ -81,6 +95,15 @@ class UserRepository {
 
   String? getPhoneNo() {
     return prefs.getString('Phone Number');
+  }
+
+//Storing username of the account
+  setUserName(String? userName) async {
+    return prefs.setString('User Name', userName!);
+  }
+
+  String? getUserName() {
+    return prefs.getString('User Name');
   }
 
 // Storing and getting trip status of the complaint

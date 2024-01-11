@@ -43,7 +43,19 @@ class LoginBlocBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
           if (response!.statusCode == 200) {
             log('loginPhone------------------------------${response.data}');
             await userRepository.setIsLogged(true);
-            await userRepository.setPhoneNo(event.phoneNo);
+
+            Response? res = await userRepository.getUserDetails();
+            if (res!.statusCode == 200) {
+              String? firstName = res.data['first_name'];
+              String? secondName = res.data['last_name'];
+              String? phoneNumber = res.data['username'];
+              String userName = '$firstName $secondName';
+              await userRepository.setPhoneNo(phoneNumber);
+              await userRepository.setUserName(userName);
+            }else{
+              emit(LoginFailureST(
+                errorMsg: 'Unable to log in with provided credentials.'));
+            }
             emit(LoginClearST());
             emit(LoginSuccessST());
           } else {

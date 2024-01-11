@@ -53,9 +53,7 @@ class ActiveComplaintsBloc
           emit(ActiveComplaintsState(errorMsg: e.toString()));
         }
       } else {
-        log('internet connection is not there');
-        Fluttertoast.showToast(
-            msg: ' No internet, please check your connection');
+        emit(const ActiveComplaintsState(isNoInternet: true));
       }
     });
 

@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_care/repositories/user_repo.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:meta/meta.dart';
 
@@ -58,9 +55,9 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
           emit(AuthLogoutFailST(errorMsg: e.toString()));
         }
       } else {
-        log('internet connection is not there');
-        Fluttertoast.showToast(
-            msg: ' No internet, please check your connection');
+        await userRepository.setIsLogged(false);
+        await userRepository.setIsStartTrip(false);
+        emit(AuthLogoutSuccST());
       }
     });
   }
