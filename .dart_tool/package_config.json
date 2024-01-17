@@ -542,6 +542,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "percent_indicator",
+      "rootUri": "file:///Users/Amala/.pub-cache/hosted/pub.dev/percent_indicator-4.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "permission_handler",
       "rootUri": "file:///Users/Amala/.pub-cache/hosted/pub.dev/permission_handler-11.0.1",
       "packageUri": "lib/",
@@ -932,7 +938,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-01-10T05:09:04.333774Z",
+  "generated": "2024-01-15T07:24:13.849337Z",
   "generator": "pub",
   "generatorVersion": "3.2.0"
 }

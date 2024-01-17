@@ -72,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
+             SizedBox(height: SizeConfig.blockSizeHorizontal*25,),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -100,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
+            const SizedBox(height: 16,),
             ListTile(
               leading: const Icon(
                 Icons.timer,

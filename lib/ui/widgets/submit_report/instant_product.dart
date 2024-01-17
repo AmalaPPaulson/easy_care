@@ -1,6 +1,7 @@
 import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
 import 'package:easy_care/ui/widgets/submit_report/service_details.dart';
 import 'package:easy_care/utils/constants/asset_constants.dart';
+import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class _InstantProductState extends State<InstantProduct> {
                           borderRadius: BorderRadius.circular(
                               SizeConfig.blockSizeHorizontal * 1),
                           borderSide: const BorderSide(
-                            color: Colors.black26,
+                            color: ColorConstants.primaryColor,
                           )),
                     ),
                   ),
@@ -104,7 +105,7 @@ class _InstantProductState extends State<InstantProduct> {
                             borderRadius: BorderRadius.circular(
                                 SizeConfig.blockSizeHorizontal * 1),
                             borderSide: const BorderSide(
-                              color: Colors.black26,
+                              color: ColorConstants.primaryColor,
                             )),
                       ),
                     ),

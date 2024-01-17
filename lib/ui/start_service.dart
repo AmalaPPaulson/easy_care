@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:easy_care/blocs/services/bloc/services_bloc.dart';
 import 'package:easy_care/blocs/start_service/bloc/start_service_bloc.dart';
 import 'package:easy_care/model/complaint_model.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:record/record.dart';
+import 'package:video_compress/video_compress.dart';
 
 class StartService extends StatefulWidget {
   const StartService({super.key});
@@ -35,55 +37,205 @@ class _StartState extends State<StartService> {
   Duration myDuration = const Duration(days: 5);
   String? paths;
   TextEditingController descriptionController = TextEditingController();
+  Subscription? _subscription;
+  //double? progress;
+  final ValueNotifier<double?> progressNotifier = ValueNotifier<double?>(null);
+
+  @override
+  void initState() {
+    super.initState();
+    _subscription = VideoCompress.compressProgress$.subscribe((pro) {
+      debugPrint('progress 1: $pro');
+      progressNotifier.value = pro;
+      // setState(() {
+      //   progress = pro;
+      // });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _subscription!.unsubscribe();
+  }
+
   @override
   Widget build(BuildContext context) {
     ComplaintResult complaint = userRepository.getComplaint();
     return BlocListener<ServicesBloc, ServicesState>(
       listener: (context, state) {
         if (state.isLoading == false && state.started) {
+          _subscription!.unsubscribe();
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const SubmitReport()),
               (Route route) => false);
         }
       },
       child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: ColorConstants.primaryColor,
-            leading: null,
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            title: Text(
-              'Complaint : ${complaint.complaint!.complaintId.toString()}  ',
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontFamily: AssetConstants.poppinsSemiBold,
-                  fontSize: 20),
-            ),
+        appBar: AppBar(
+          backgroundColor: ColorConstants.primaryColor,
+          leading: null,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Complaint : ${complaint.complaint!.complaintId.toString()}  ',
+            style: const TextStyle(
+                color: Colors.white,
+                fontFamily: AssetConstants.poppinsSemiBold,
+                fontSize: 20),
           ),
-          body: createBody(complaint),
-          floatingActionButton: BlocBuilder<ServicesBloc, ServicesState>(
-            buildWhen: (previous, current) => (previous != current),
-            builder: (context, state) {
-              bool isPressed = false;
-              if (state.isLoading) {
-                isPressed = true;
+        ),
+        body: ValueListenableBuilder<double?>(
+            valueListenable: progressNotifier,
+            builder: (context, double? progress, Widget? child) {
+              debugPrint('in valuelistenable$progress');
+              if (progress != null) {
+                if (progress != 100) {
+                   log('VideoCompress.isCompressing ${VideoCompress.isCompressing}');
+                  return Stack(
+                    children: [
+                      createBody(complaint),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        color: Colors.white.withOpacity(0.7),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: SizeConfig.blockSizeHorizontal * 12.5,
+                              height: SizeConfig.blockSizeHorizontal * 12.5,
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.grey,
+                                strokeCap: StrokeCap.round,
+                                value: progress / 100,
+                                strokeWidth: 8,
+                                color: ColorConstants.primaryColor,
+                              ),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.blockSizeHorizontal * 4,
+                            ),
+                            Container(
+                                decoration: BoxDecoration(
+                                    color: ColorConstants.primaryColor,
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(
+                                        SizeConfig.blockSizeHorizontal * 1),
+                                    border: Border.all(
+                                      color: Colors.black26,
+                                    )),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    ' ${progress.roundToDouble()} %',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontFamily:
+                                            AssetConstants.poppinsSemiBold),
+                                  ),
+                                )),
+                            SizedBox(
+                              height: SizeConfig.blockSizeHorizontal * 4,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(
+                                  SizeConfig.blockSizeHorizontal * 6),
+                              child: Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    SizeConfig.blockSizeHorizontal * 2)),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                          SizeConfig.blockSizeHorizontal * 2),
+                                      border: Border.all(
+                                          color: ColorConstants.primaryColor,
+                                          width: 2)),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 2),
+                                    child: const Text(
+                                      'This video is longer, uploading may take extra time',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontFamily:
+                                              AssetConstants.poppinsMedium,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          color: Colors.black87),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }else if(progress==100){
+                   return createBody(complaint);
+                }
+               
+                
               }
-              return FloatingActionBtn(
-                  onTap: () {
-                    context.read<ServicesBloc>().add(StartServiceApiET(
-                          id: complaint.id.toString(),
-                          description: descriptionController.text,
-                          audio: paths,
-                        ));
-                  },
-                  isPressed: isPressed,
-                  text: 'Start Service');
-            },
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          resizeToAvoidBottomInset: false,// fluter 2.x
-          ),
+              return createBody(complaint);
+            }),
+        floatingActionButton: ValueListenableBuilder<double?>(
+            valueListenable: progressNotifier,
+            builder: (context, double? progress, Widget? child) {
+              if (progress != null) {
+                if (progress != 100) {
+                  return const SizedBox();
+                }
+                if (progress == 100) {
+                  return BlocBuilder<ServicesBloc, ServicesState>(
+                    buildWhen: (previous, current) => (previous != current),
+                    builder: (context, state) {
+                      bool isPressed = false;
+                      if (state.isLoading) {
+                        isPressed = true;
+                      }
+                      return FloatingActionBtn(
+                          onTap: () {
+                            context.read<ServicesBloc>().add(StartServiceApiET(
+                                  id: complaint.id.toString(),
+                                  description: descriptionController.text,
+                                  audio: paths,
+                                ));
+                          },
+                          isPressed: isPressed,
+                          text: 'Start Service');
+                    },
+                  );
+                }
+              }
+              return BlocBuilder<ServicesBloc, ServicesState>(
+                buildWhen: (previous, current) => (previous != current),
+                builder: (context, state) {
+                  bool isPressed = false;
+                  if (state.isLoading) {
+                    isPressed = true;
+                  }
+                  return FloatingActionBtn(
+                      onTap: () {
+                        context.read<ServicesBloc>().add(StartServiceApiET(
+                              id: complaint.id.toString(),
+                              description: descriptionController.text,
+                              audio: paths,
+                            ));
+                      },
+                      isPressed: isPressed,
+                      text: 'Start Service');
+                },
+              );
+            }),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        resizeToAvoidBottomInset: false, // fluter 2.x
+      ),
     );
   }
 
@@ -226,7 +378,7 @@ class _StartState extends State<StartService> {
                 borderRadius:
                     BorderRadius.circular(SizeConfig.blockSizeHorizontal * 1),
                 borderSide: const BorderSide(
-                  color: Colors.black26,
+                  color: ColorConstants.primaryColor,
                 )),
           ),
         ),

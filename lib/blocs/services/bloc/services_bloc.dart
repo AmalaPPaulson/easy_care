@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:meta/meta.dart';
+import 'package:video_compress/video_compress.dart';
 //import 'package:video_thumbnail/video_thumbnail.dart';
 part 'services_event.dart';
 part 'services_state.dart';
@@ -24,6 +25,7 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
     String? description;
     UserRepository userRepository = UserRepository();
     StartServiceRepository startServiceRepository = StartServiceRepository();
+     File? compressFile;
     on<ImagePickerET>((event, emit) {
       //images.addAll(state.images);
       // images.add(event.image);
@@ -32,14 +34,41 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       // log('image length in imagePickerEt---------------------${images.length}');
       emit(state.copyWith(images: updatedImages));
     });
+
+
     on<VideoPickerET>((event, emit) async {
-      emit(state.copyWith(isLoadThumb: true));
       File? galleryFile = File(event.xfilePick.path);
-      videoFiles.addAll(state.videoFiles);
-      videoFiles.add(galleryFile);
-      var updatedVideos = state.videoFiles.toList();
-      updatedVideos.add(galleryFile);
-      emit(state.copyWith(videoFiles: updatedVideos,isLoadThumb: false));
+      if (File(galleryFile.path).existsSync()) {
+        log('File exists!');
+        // Proceed with file operations
+        log('galleryfile path ${galleryFile.path}');
+        // String path = galleryFile.path;
+        final size = await galleryFile.length();
+        if (size < 20000000) {
+          log('size of t he file ------$size');
+          final info = await VideoCompress.compressVideo(
+            galleryFile.path,
+            quality: VideoQuality.MediumQuality,
+            deleteOrigin: false,
+            includeAudio: false,
+          );
+          String mediaInfo = info!.path.toString();
+          log('MediaInfo as String: $mediaInfo');
+          compressFile = File(mediaInfo);
+          final sizeCompress = await compressFile!.length();
+          log('size of the file after compressing ------$sizeCompress');
+           videoFiles.addAll(state.videoFiles);
+          videoFiles.add(compressFile!);
+          var updatedVideos = state.videoFiles.toList();
+          updatedVideos.add(compressFile!);
+          emit(state.copyWith(videoFiles: updatedVideos));
+        }else{
+           log('size is greater than 20 mb');
+          Fluttertoast.showToast(msg: 'Video Size is large please take another video');
+        }
+      } else {
+        log('File does not exist.');
+      }
       // final uint8list = await VideoThumbnail.thumbnailData(
       //   video: galleryFile.path,
       //   imageFormat: ImageFormat.JPEG,
@@ -159,12 +188,13 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
 
     on<CleanServiceET>((event, emit) {
       emit(state.copyWith(
-          images: [],
-          videoFiles: [],
-          thumbnail: [],
-          isLoading: false,
-          started: false,
-          isLoadThumb: false,));
+        images: [],
+        videoFiles: [],
+        thumbnail: [],
+        isLoading: false,
+        started: false,
+        isLoadThumb: false,
+      ));
     });
   }
 }

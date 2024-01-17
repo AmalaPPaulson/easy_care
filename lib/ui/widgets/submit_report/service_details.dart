@@ -1,4 +1,5 @@
 import 'package:easy_care/utils/constants/asset_constants.dart';
+import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class ServiceDetails extends StatelessWidget {
             borderRadius:
                 BorderRadius.circular(SizeConfig.blockSizeHorizontal * 1),
             borderSide: const BorderSide(
-              color: Colors.black26,
+              color: ColorConstants.primaryColor,
             )),
       ),
     );

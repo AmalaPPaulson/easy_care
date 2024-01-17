@@ -1,6 +1,7 @@
 import 'package:easy_care/blocs/submit_tab/bloc/submit_tab_bloc.dart';
 import 'package:easy_care/ui/widgets/submit_report/imagePicked.dart';
 import 'package:easy_care/ui/widgets/submit_report/videoPicked.dart';
+import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,7 +66,7 @@ class _InstantSpareState extends State<InstantSpare> {
                           borderRadius: BorderRadius.circular(
                               SizeConfig.blockSizeHorizontal * 1),
                           borderSide: const BorderSide(
-                            color: Colors.black26,
+                            color: ColorConstants.primaryColor,
                           )),
                     ),
                   ),
@@ -110,7 +111,7 @@ class _InstantSpareState extends State<InstantSpare> {
                             borderRadius: BorderRadius.circular(
                                 SizeConfig.blockSizeHorizontal * 1),
                             borderSide: const BorderSide(
-                              color: Colors.black26,
+                              color: ColorConstants.primaryColor,
                             )),
                       ),
                     ),
@@ -172,7 +173,7 @@ class _InstantSpareState extends State<InstantSpare> {
                     borderRadius: BorderRadius.circular(
                         SizeConfig.blockSizeHorizontal * 1),
                     borderSide: const BorderSide(
-                      color: Colors.black26,
+                      color: ColorConstants.primaryColor,
                     )),
               ),
             ),

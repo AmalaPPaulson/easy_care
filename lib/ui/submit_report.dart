@@ -13,11 +13,13 @@ import 'package:easy_care/ui/widgets/submit_report/instant_product.dart';
 import 'package:easy_care/ui/widgets/submit_report/instant_service.dart';
 import 'package:easy_care/ui/widgets/submit_report/instant_spare.dart';
 import 'package:easy_care/ui/widgets/submit_report/service_details.dart';
+
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/constants/color_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:video_compress/video_compress.dart';
 
 class SubmitReport extends StatefulWidget {
   const SubmitReport({super.key});
@@ -38,6 +40,27 @@ class _SubmitReportState extends State<SubmitReport> {
   int currentTab = 0;
   int selectedOption = 1;
   int option = 1;
+  Subscription? subscription;
+  //double? progress;
+  final ValueNotifier<double?> progressNotifier = ValueNotifier<double?>(null);
+  @override
+  void initState() {
+    super.initState();
+    subscription = VideoCompress.compressProgress$.subscribe((pro) {
+      debugPrint('progress 1: $pro');
+      progressNotifier.value = pro;
+      // setState(() {
+      //   progress = pro;
+      // });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    subscription!.unsubscribe();
+  }
+
   @override
   Widget build(BuildContext context) {
     ComplaintResult complaint = userRepository.getComplaint();
@@ -45,6 +68,7 @@ class _SubmitReportState extends State<SubmitReport> {
       listener: (context, state) {
         //when Api hit and emit isloading = false , screen navigate to success screen
         if (state.isLoading == false && state.started) {
+          subscription!.unsubscribe();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const SuccessScreen()),
@@ -65,28 +89,171 @@ class _SubmitReportState extends State<SubmitReport> {
                 fontSize: 20),
           ),
         ),
-        body: createBody(complaint),
-        floatingActionButton: BlocBuilder<SubmitTabBloc, SubmitTabState>(
-          builder: (context, state) {
-            bool isPressed = false;
-            if (state.isLoading) {
-              isPressed = true;
-            }
-            return FloatingActionBtn(
-                onTap: () {
-                  log(serviceController.text);
-                  context.read<SubmitTabBloc>().add(SubmitReportET(
-                      serviceText: serviceController.text,
-                      id: complaint.id.toString(),
-                      spareName: sparePartController.text,
-                      price: priceController.text));
+        // body: (progress == null || progress ==100)
+        //     ? createBody(complaint)
+        //     : Column(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: [
+        //           const Text('Compressing Video...'),
+        //           const SizedBox(
+        //             height: 16,
+        //           ),
+        //           LinearProgressIndicator(
+        //             value: progress! / 100,
+        //           ),
+        //           Text('progress ${progress! / 100}'),
+        //         ],
+        //       ),
+
+        body: ValueListenableBuilder<double?>(
+            valueListenable: progressNotifier,
+            builder: (context, double? progress, Widget? child) {
+              debugPrint('in valuelistenable$progress');
+              if (progress != null) {
+                if (progress != 100) {
+                  return Stack(
+                    children: [
+                      createBody(complaint),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        color: Colors.white.withOpacity(0.5),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: SizeConfig.blockSizeHorizontal * 12.5,
+                              height: SizeConfig.blockSizeHorizontal * 12.5,
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.grey,
+                                strokeCap: StrokeCap.round,
+                                value: progress / 100,
+                                strokeWidth: 8,
+                                color: ColorConstants.primaryColor,
+                              ),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.blockSizeHorizontal * 4,
+                            ),
+                            Container(
+                                decoration: BoxDecoration(
+                                    color: ColorConstants.primaryColor,
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(
+                                        SizeConfig.blockSizeHorizontal * 1),
+                                    border: Border.all(
+                                      color: Colors.black26,
+                                    )),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    ' ${progress.roundToDouble()} %',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: AssetConstants.poppinsSemiBold),
+                                  ),
+                                )),
+                            SizedBox(
+                              height: SizeConfig.blockSizeHorizontal * 4,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(
+                                  SizeConfig.blockSizeHorizontal * 6),
+                              child: Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    SizeConfig.blockSizeHorizontal * 2)),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                          SizeConfig.blockSizeHorizontal * 2),
+                                      border: Border.all(
+                                          color: ColorConstants.primaryColor,
+                                          width: 2)),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.blockSizeHorizontal * 2),
+                                    child: const Text(
+                                      'This video is longer, uploading may take extra time',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontFamily: AssetConstants.poppinsMedium,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          color: Colors.black87),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              //  if(VideoCompress.isCompressing== false){
+              //   return createBody(complaint);
+              //  }
+                if (progress == 100) {
+                  return createBody(complaint);
+                }
+              }
+              return createBody(complaint);
+            }),
+        floatingActionButton: ValueListenableBuilder<double?>(
+            valueListenable: progressNotifier,
+            builder: (context, double? progress, Widget? child) {
+              if (progress != null) {
+                if (progress != 100) {
+                  return const SizedBox();
+                }
+                if (progress == 100) {
+                  return BlocBuilder<SubmitTabBloc, SubmitTabState>(
+                    builder: (context, state) {
+                      bool isPressed = false;
+                      if (state.isLoading) {
+                        isPressed = true;
+                      }
+                      return FloatingActionBtn(
+                          onTap: () {
+                            log(serviceController.text);
+                            context.read<SubmitTabBloc>().add(SubmitReportET(
+                                serviceText: serviceController.text,
+                                id: complaint.id.toString(),
+                                spareName: sparePartController.text,
+                                price: priceController.text));
+                          },
+                          isPressed: isPressed,
+                          text: 'Submit Report');
+                    },
+                  );
+                }
+              }
+              return BlocBuilder<SubmitTabBloc, SubmitTabState>(
+                builder: (context, state) {
+                  bool isPressed = false;
+                  if (state.isLoading) {
+                    isPressed = true;
+                  }
+                  return FloatingActionBtn(
+                      onTap: () {
+                        log(serviceController.text);
+                        context.read<SubmitTabBloc>().add(SubmitReportET(
+                            serviceText: serviceController.text,
+                            id: complaint.id.toString(),
+                            spareName: sparePartController.text,
+                            price: priceController.text));
+                      },
+                      isPressed: isPressed,
+                      text: 'Submit Report');
                 },
-                isPressed: isPressed,
-                text: 'Submit Report');
-          },
-        ),
+              );
+            }),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        resizeToAvoidBottomInset: false,// fluter 2.x 
+        resizeToAvoidBottomInset: false, // fluter 2.x
       ),
     );
   }

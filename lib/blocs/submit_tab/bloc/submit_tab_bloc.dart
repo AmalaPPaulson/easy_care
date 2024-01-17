@@ -11,7 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:meta/meta.dart';
-
+import 'package:video_compress/video_compress.dart';
 
 part 'submit_tab_event.dart';
 part 'submit_tab_state.dart';
@@ -28,6 +28,7 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
     String serviceText, priceText, sparePartText;
     UserRepository userRepository = UserRepository();
     StartServiceRepository startServiceRepository = StartServiceRepository();
+    File? compressFile;
     on<TabClickET>((event, emit) {
       currentTab = event.tabNo;
       var removedImages = state.images.toList();
@@ -82,13 +83,39 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
     });
 
     on<VideoPickerET>((event, emit) async {
-      File? galleryFile = File(event.xfilePick.path);
-      videoFiles.addAll(state.videoFiles);
-      videoFiles.add(galleryFile);
-      var updatedVideos = state.videoFiles.toList();
-      updatedVideos.add(galleryFile);
-      emit(state.copyWith(videoFiles: updatedVideos));
-      
+      File galleryFile = File(event.xfilePick.path);
+      if (File(galleryFile.path).existsSync()) {
+        log('File exists!');
+        // Proceed with file operations
+        log('galleryfile path ${galleryFile.path}');
+        // String path = galleryFile.path;
+        final size = await galleryFile.length();
+        if (size < 20000000) {
+          log('size of t he file ------$size');
+          final info = await VideoCompress.compressVideo(
+            galleryFile.path,
+            quality: VideoQuality.MediumQuality,
+            deleteOrigin: false,
+            includeAudio: false,
+          );
+          String mediaInfo = info!.path.toString();
+          log('MediaInfo as String: $mediaInfo');
+          compressFile = File(mediaInfo);
+          final sizeCompress = await compressFile!.length();
+          log('size of the file after compressing ------$sizeCompress');
+          videoFiles.addAll(state.videoFiles);
+          videoFiles.add(compressFile!);
+          var updatedVideos = state.videoFiles.toList();
+          updatedVideos.add(compressFile!);
+          emit(state.copyWith(videoFiles: updatedVideos));
+        } else {
+          log('size is greater than 20 mb');
+          Fluttertoast.showToast(msg: 'Video Size is large please take another video');
+        }
+      } else {
+        log('File does not exist.');
+      }
+
       // final uint8list = await VideoThumbnail.thumbnailData(
       //   video: galleryFile.path,
       //   imageFormat: ImageFormat.JPEG,
@@ -318,7 +345,6 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
         thumbnail: [],
         videoFiles: [],
         isChecked: false,
-       
       ));
     });
   }

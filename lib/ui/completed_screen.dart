@@ -53,15 +53,23 @@ class _CompletedScreenState extends State<CompletedScreen> {
         }
 
         if (state.errorMsg != null && state.errorMsg!.isNotEmpty) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(state.errorMsg!),
-            ],
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+               
+                SizedBox(
+                    width: SizeConfig.blockSizeHorizontal*60,
+                    child: Image.asset('assets/png/error_img_easy_care.png')),
+                     Text(state.errorMsg!,style: const TextStyle(fontFamily: AssetConstants.poppinsMedium,
+              fontSize: 15),),
+              ],
+
+            ),
           );
         }
         if (state.isNoInternet) {
-          return const NoInternetCard();
+          return const Center(child: NoInternetCard());
         }
         return Column(
           children: [
