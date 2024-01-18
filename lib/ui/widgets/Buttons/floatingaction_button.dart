@@ -11,7 +11,7 @@ class FloatingActionBtn extends StatelessWidget {
     required this.isPressed,
     required this.text,
   });
-  final Function() onTap;
+  final Function()? onTap;
   final String text;
   final bool isPressed;
   @override
@@ -27,7 +27,7 @@ class FloatingActionBtn extends StatelessWidget {
             curve: Curves.fastOutSlowIn,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(isPressed ? 70.0 : 30.0),
-              color: ColorConstants.buttonColor,
+              color: (onTap==null)?Colors.grey:ColorConstants.buttonColor,
             ),
             duration: const Duration(milliseconds: 400),
             child: Center(

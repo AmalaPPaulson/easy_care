@@ -46,10 +46,7 @@ class ReachDestination extends StatefulWidget {
         } else if (state.errorMsg != null) {
           Fluttertoast.showToast(
               msg: '${state.errorMsg}',
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              textColor: Colors.white,
-              fontSize: 16);
+             );
         }
       },
       child: Scaffold(
@@ -171,9 +168,9 @@ class ReachDestination extends StatefulWidget {
           left: 0,
             bottom: 41,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 45),
+              padding:  EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*4),
               child: Container(
-                height: 50,
+                height: SizeConfig.blockSizeHorizontal*15,
                  width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -184,7 +181,7 @@ class ReachDestination extends StatefulWidget {
                     padding: EdgeInsets.all(16),
                     child: Text(
                       "Don't use your phone while driving",
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.justify,
                       style: TextStyle(color: ColorConstants.primaryColor,fontSize: 12,
                             fontFamily: AssetConstants.poppinsSemiBold),
                     ),

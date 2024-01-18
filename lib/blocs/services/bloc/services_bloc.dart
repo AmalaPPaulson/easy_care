@@ -25,7 +25,7 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
     String? description;
     UserRepository userRepository = UserRepository();
     StartServiceRepository startServiceRepository = StartServiceRepository();
-     File? compressFile;
+    File? compressFile;
     on<ImagePickerET>((event, emit) {
       //images.addAll(state.images);
       // images.add(event.image);
@@ -34,7 +34,6 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       // log('image length in imagePickerEt---------------------${images.length}');
       emit(state.copyWith(images: updatedImages));
     });
-
 
     on<VideoPickerET>((event, emit) async {
       File? galleryFile = File(event.xfilePick.path);
@@ -55,16 +54,33 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
           String mediaInfo = info!.path.toString();
           log('MediaInfo as String: $mediaInfo');
           compressFile = File(mediaInfo);
+
+          final uint8list =
+              await VideoCompress.getByteThumbnail(compressFile!.path,
+                  quality: 50, // default(100)
+                  position: -1 // default(-1)
+                  );
+
           final sizeCompress = await compressFile!.length();
           log('size of the file after compressing ------$sizeCompress');
-           videoFiles.addAll(state.videoFiles);
+          videoFiles.addAll(state.videoFiles);
           videoFiles.add(compressFile!);
           var updatedVideos = state.videoFiles.toList();
           updatedVideos.add(compressFile!);
           emit(state.copyWith(videoFiles: updatedVideos));
-        }else{
-           log('size is greater than 20 mb');
-          Fluttertoast.showToast(msg: 'Video Size is large please take another video');
+          List<Uint8List> thumbNails = [];
+          if (uint8list != null) {
+            thumbNails.addAll(state.thumbnail);
+            thumbNails.add(uint8list);
+            var updatedThumbNails = state.thumbnail.toList();
+            updatedThumbNails.add(uint8list);
+            emit(state.copyWith(
+                thumbnail: updatedThumbNails,));
+          }
+        } else {
+          log('size is greater than 20 mb');
+          Fluttertoast.showToast(
+              msg: 'Video Size is large please take another video');
         }
       } else {
         log('File does not exist.');
@@ -98,10 +114,10 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       var updatedVideos = state.videoFiles.toList();
       emit(state.copyWith(videoFiles: updatedVideos));
       state.thumbnail.removeAt(event.index);
-      // List<Uint8List> thumbNails = [];
-      // thumbNails.addAll(state.thumbnail);
-      // var updatedThumbnails = state.thumbnail.toList();
-      // emit(state.copyWith(thumbnail: updatedThumbnails));
+      List<Uint8List> thumbNails = [];
+      thumbNails.addAll(state.thumbnail);
+      var updatedThumbnails = state.thumbnail.toList();
+      emit(state.copyWith(thumbnail: updatedThumbnails));
     });
 
     on<StartServiceApiET>((event, emit) async {

@@ -1,5 +1,5 @@
-import 'dart:io';
-import 'package:easy_care/ui/widgets/submit_report/videoThumb.dart';
+
+import 'dart:typed_data';
 import 'package:easy_care/utils/constants/asset_constants.dart';
 import 'package:easy_care/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +9,12 @@ import 'package:image_picker/image_picker.dart';
 class VideoPicked extends StatefulWidget {
   const VideoPicked({
     super.key,
-    required this.galleryFiles,
     required this.deleteOntap,
     required this.videoOntap,
+    required this.thumbNails,
     
   });
-  final List<File> galleryFiles;
+  final List<Uint8List> thumbNails;
   final Function(XFile xfilePick) videoOntap;
   final Function(int index) deleteOntap;
  
@@ -37,7 +37,7 @@ class _VideoPickedState extends State<VideoPicked> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          widget.galleryFiles.isEmpty
+          widget.thumbNails.isEmpty
               ? Row(
                   children: [
                     Icon(
@@ -72,14 +72,14 @@ class _VideoPickedState extends State<VideoPicked> {
                                 SizeConfig.blockSizeHorizontal * 2),
                             child: Stack(
                               children: [
-                                // Image.memory(
-                                //   //to show image, you type like this.
-                                //  widget.thumbnail[index],
-                                //   fit: BoxFit.cover,
-                                //   width: SizeConfig.blockSizeHorizontal * 20,
-                                //   height: SizeConfig.blockSizeHorizontal * 25,
-                                // ), 
-                                VideoThumb(galleryFile: widget.galleryFiles[index]),
+                                Image.memory(
+                                  //to show image, you type like this.
+                                 widget.thumbNails[index],
+                                  fit: BoxFit.cover,
+                                  width: SizeConfig.blockSizeHorizontal * 20,
+                                  height: SizeConfig.blockSizeHorizontal * 25,
+                                ), 
+                                //VideoThumb(galleryFile: widget.galleryFiles[index]),
                                 InkWell(
                                   onTap: () => widget.deleteOntap(index),
                                   child: const Align(
@@ -94,11 +94,11 @@ class _VideoPickedState extends State<VideoPicked> {
                           ),
                         );
                       },
-                      itemCount: widget.galleryFiles.length,
+                      itemCount: widget.thumbNails.length,
                     ),
                   ),
                 ),
-          if (widget.galleryFiles.length != 3)
+          if (widget.thumbNails.length != 3)
             Padding(
               padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
               child: IconButton(

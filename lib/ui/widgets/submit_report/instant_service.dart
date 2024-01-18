@@ -39,7 +39,7 @@ class _InstantServiceState extends State<InstantService> {
           builder: (context, state) {
             return VideoPicked(
         
-              galleryFiles: state.videoFiles,
+              thumbNails: state.thumbnail,
               deleteOntap: (index) {
                 context.read<SubmitTabBloc>().add(VideoDeleteET(index: index));
               },

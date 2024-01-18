@@ -45,10 +45,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
         } else if (state.isLoading == false && state.errorMsg != null) {
           Fluttertoast.showToast(
               msg: '${state.errorMsg}',
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              textColor: Colors.white,
-              fontSize: 16);
+              );
         }
       },
       child: Scaffold(

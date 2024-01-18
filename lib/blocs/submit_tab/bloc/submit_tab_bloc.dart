@@ -101,6 +101,15 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
           String mediaInfo = info!.path.toString();
           log('MediaInfo as String: $mediaInfo');
           compressFile = File(mediaInfo);
+
+           final uint8list =
+              await VideoCompress.getByteThumbnail(compressFile!.path,
+                  quality: 50, // default(100)
+                  position: -1 // default(-1)
+                  );
+
+
+
           final sizeCompress = await compressFile!.length();
           log('size of the file after compressing ------$sizeCompress');
           videoFiles.addAll(state.videoFiles);
@@ -108,6 +117,16 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
           var updatedVideos = state.videoFiles.toList();
           updatedVideos.add(compressFile!);
           emit(state.copyWith(videoFiles: updatedVideos));
+
+           List<Uint8List> thumbNails = [];
+          if (uint8list != null) {
+            thumbNails.addAll(state.thumbnail);
+            thumbNails.add(uint8list);
+            var updatedThumbNails = state.thumbnail.toList();
+            updatedThumbNails.add(uint8list);
+            emit(state.copyWith(
+                thumbnail: updatedThumbNails,));
+          }
         } else {
           log('size is greater than 20 mb');
           Fluttertoast.showToast(msg: 'Video Size is large please take another video');
@@ -137,11 +156,11 @@ class SubmitTabBloc extends Bloc<SubmitTabEvent, SubmitTabState> {
       videoFiles.addAll(state.videoFiles);
       var updatedVideos = state.videoFiles.toList();
       emit(state.copyWith(videoFiles: updatedVideos));
-      // state.thumbnail.removeAt(event.index);
-      // List<Uint8List> thumbNails = [];
-      // thumbNails.addAll(state.thumbnail);
-      // var updatedThumbnails = state.thumbnail.toList();
-      // emit(state.copyWith(thumbnail: updatedThumbnails));
+      state.thumbnail.removeAt(event.index);
+      List<Uint8List> thumbNails = [];
+      thumbNails.addAll(state.thumbnail);
+      var updatedThumbnails = state.thumbnail.toList();
+      emit(state.copyWith(thumbnail: updatedThumbnails));
     });
 
     on<CheckET>((event, emit) {

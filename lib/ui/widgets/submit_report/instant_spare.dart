@@ -202,7 +202,7 @@ class _InstantSpareState extends State<InstantSpare> {
             BlocBuilder<SubmitTabBloc, SubmitTabState>(
               builder: (context, state) {
                 return VideoPicked(
-                    galleryFiles: state.videoFiles,
+                    thumbNails: state.thumbnail,
                     deleteOntap: (index) {
                       context
                           .read<SubmitTabBloc>()

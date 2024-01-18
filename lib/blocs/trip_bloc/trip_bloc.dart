@@ -76,6 +76,7 @@ class TripBloc extends Bloc<TripEvent, TripState> {
                 'Location permissions are permanently denied, we cannot request permissions.');
           }
 
+          emit(state.copyWith(isLoading: true));
           // When we reach here, permissions are granted and we can
           // continue accessing the position of the device.
           position = await Geolocator.getCurrentPosition(
