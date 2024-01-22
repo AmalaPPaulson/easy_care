@@ -34,16 +34,57 @@ class _SubmitReportState extends State<SubmitReport> {
   bool isShow = true;
   bool isVisible = true;
   ComplaintRepository complaintRepository = ComplaintRepository();
-  late TextEditingController serviceController;
+  late TextEditingController serviceController = TextEditingController();
   TextEditingController priceController = TextEditingController();
-  TextEditingController sparePartController = TextEditingController();
+  late TextEditingController sparePartController = TextEditingController();
   bool tab = true;
   int currentTab = 0;
   int selectedOption = 1;
   int option = 1;
- 
+  //bool isBtnActive = false;
+  bool isText = false;
+  bool isCheck = false;
+  int imageLength = 0;
+  int videoLength = 0;
 
-  
+
+//validation of UI 
+  bool checkRegister() {
+    if (currentTab == 0) {
+      if (selectedOption == 1) {
+        isText = serviceController.text.isNotEmpty &&
+            (imageLength != 0 || videoLength != 0);
+      } else if (selectedOption == 2) {
+        isText = serviceController.text.isNotEmpty &&
+            sparePartController.text.isNotEmpty &&
+            checkText() &&
+            (imageLength != 0 || videoLength != 0);
+      } else if (selectedOption == 3) {
+        isText = serviceController.text.isNotEmpty &&
+            sparePartController.text.isNotEmpty &&
+            checkText();
+      }
+    } else {
+      isText = serviceController.text.isNotEmpty;
+    }
+    return isText;
+  }
+
+//validation of check biox
+  bool checkText() {
+    if (isCheck) {
+      return priceController.text.isNotEmpty;
+    } else {
+      priceController.clear();
+    
+      if (priceController.text.isEmpty) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -83,17 +124,29 @@ class _SubmitReportState extends State<SubmitReport> {
                 if (state.isLoading) {
                   isPressed = true;
                 }
+                isCheck = state.isChecked;
+
+                imageLength = state.images.length;
+                videoLength = state.thumbnail.length;
                 return FloatingActionBtn(
-                    onTap: 
-                        () {
+                    onTap: (checkRegister() == true)
+                        ? () {
                             log(serviceController.text);
                             context.read<SubmitTabBloc>().add(SubmitReportET(
                                 serviceText: serviceController.text,
                                 id: complaint.id.toString(),
                                 spareName: sparePartController.text,
                                 price: priceController.text));
-                          },
-                        
+                          }
+                        : null,
+                    // onTap: () {
+                    //   log(serviceController.text);
+                    //   context.read<SubmitTabBloc>().add(SubmitReportET(
+                    //       serviceText: serviceController.text,
+                    //       id: complaint.id.toString(),
+                    //       spareName: sparePartController.text,
+                    //       price: priceController.text));
+                    // },
                     isPressed: isPressed,
                     text: 'Submit Report');
               },
@@ -239,6 +292,12 @@ class _SubmitReportState extends State<SubmitReport> {
                 onPressed: () {
                   tab = true;
                   context.read<SubmitTabBloc>().add(TabClickET(tabNo: 0));
+                  serviceController.clear();
+                  priceController.clear();
+                  sparePartController.clear();
+                  // setState(() {
+                  //   isBtnActive = false;
+                  // });
                 },
                 title: 'Instant',
                 tabNo: 0,
@@ -284,6 +343,9 @@ class _SubmitReportState extends State<SubmitReport> {
                   serviceController.clear();
                   priceController.clear();
                   sparePartController.clear();
+                  // setState(() {
+                  //   isBtnActive = false;
+                  // });
                 },
               ),
             ),
@@ -311,6 +373,9 @@ class _SubmitReportState extends State<SubmitReport> {
               serviceController.clear();
               priceController.clear();
               sparePartController.clear();
+              // setState(() {
+              //   isBtnActive = false;
+              // });
             },
           ),
         ),
@@ -329,6 +394,9 @@ class _SubmitReportState extends State<SubmitReport> {
               serviceController.clear();
               priceController.clear();
               sparePartController.clear();
+              // setState(() {
+              //   isBtnActive = false;
+              // });
             },
           ),
         ),
@@ -347,6 +415,9 @@ class _SubmitReportState extends State<SubmitReport> {
               serviceController.clear();
               priceController.clear();
               sparePartController.clear();
+              // setState(() {
+              //   isBtnActive = false;
+              // });
             },
           ),
         ),
