@@ -108,7 +108,7 @@ class _MyAppState extends State<MyApp> {
               }
             }
 
-            return const SplashScreen();
+            return const SplashScreen(); 
           },
         ),
       ),

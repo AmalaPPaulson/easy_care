@@ -41,14 +41,12 @@ class _SubmitReportState extends State<SubmitReport> {
   int currentTab = 0;
   int selectedOption = 1;
   int option = 1;
-  //bool isBtnActive = false;
   bool isText = false;
   bool isCheck = false;
   int imageLength = 0;
   int videoLength = 0;
 
-
-//validation of UI 
+//validation of submit report UI
   bool checkRegister() {
     if (currentTab == 0) {
       if (selectedOption == 1) {
@@ -70,13 +68,12 @@ class _SubmitReportState extends State<SubmitReport> {
     return isText;
   }
 
-//validation of check biox
+//validation of check biox in the submit report UI
   bool checkText() {
     if (isCheck) {
       return priceController.text.isNotEmpty;
     } else {
       priceController.clear();
-    
       if (priceController.text.isEmpty) {
         return true;
       } else {
@@ -84,7 +81,6 @@ class _SubmitReportState extends State<SubmitReport> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -115,9 +111,7 @@ class _SubmitReportState extends State<SubmitReport> {
                     fontSize: 20),
               ),
             ),
-
             body: createBody(complaint),
-
             floatingActionButton: BlocBuilder<SubmitTabBloc, SubmitTabState>(
               builder: (context, state) {
                 bool isPressed = false;
@@ -125,7 +119,6 @@ class _SubmitReportState extends State<SubmitReport> {
                   isPressed = true;
                 }
                 isCheck = state.isChecked;
-
                 imageLength = state.images.length;
                 videoLength = state.thumbnail.length;
                 return FloatingActionBtn(
@@ -139,14 +132,6 @@ class _SubmitReportState extends State<SubmitReport> {
                                 price: priceController.text));
                           }
                         : null,
-                    // onTap: () {
-                    //   log(serviceController.text);
-                    //   context.read<SubmitTabBloc>().add(SubmitReportET(
-                    //       serviceText: serviceController.text,
-                    //       id: complaint.id.toString(),
-                    //       spareName: sparePartController.text,
-                    //       price: priceController.text));
-                    // },
                     isPressed: isPressed,
                     text: 'Submit Report');
               },
@@ -295,9 +280,6 @@ class _SubmitReportState extends State<SubmitReport> {
                   serviceController.clear();
                   priceController.clear();
                   sparePartController.clear();
-                  // setState(() {
-                  //   isBtnActive = false;
-                  // });
                 },
                 title: 'Instant',
                 tabNo: 0,
@@ -343,9 +325,6 @@ class _SubmitReportState extends State<SubmitReport> {
                   serviceController.clear();
                   priceController.clear();
                   sparePartController.clear();
-                  // setState(() {
-                  //   isBtnActive = false;
-                  // });
                 },
               ),
             ),
@@ -373,9 +352,6 @@ class _SubmitReportState extends State<SubmitReport> {
               serviceController.clear();
               priceController.clear();
               sparePartController.clear();
-              // setState(() {
-              //   isBtnActive = false;
-              // });
             },
           ),
         ),
@@ -394,9 +370,6 @@ class _SubmitReportState extends State<SubmitReport> {
               serviceController.clear();
               priceController.clear();
               sparePartController.clear();
-              // setState(() {
-              //   isBtnActive = false;
-              // });
             },
           ),
         ),
@@ -415,9 +388,6 @@ class _SubmitReportState extends State<SubmitReport> {
               serviceController.clear();
               priceController.clear();
               sparePartController.clear();
-              // setState(() {
-              //   isBtnActive = false;
-              // });
             },
           ),
         ),

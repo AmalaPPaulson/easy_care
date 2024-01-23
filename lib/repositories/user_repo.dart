@@ -10,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
   ApiQuery apiQuery = ApiQuery();
-  ComplaintModel complaintModel = ComplaintModel();
   //Login
   Future<Response?> login(String phoneNo, String pin) async {
     try {
